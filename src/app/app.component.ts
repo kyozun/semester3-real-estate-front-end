@@ -5,11 +5,12 @@ import {PrimeNGConfig} from 'primeng/api';
 import {RippleModule} from 'primeng/ripple';
 import {NavComponent} from './nav/nav.component';
 import { HomeSearchComponent } from './home-search/home-search.component'
+import {HomeComponent} from './home/home.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet, ButtonModule, RippleModule, NavComponent, HomeSearchComponent],
+    imports: [RouterOutlet, ButtonModule, RippleModule, NavComponent, HomeSearchComponent, HomeComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
 })

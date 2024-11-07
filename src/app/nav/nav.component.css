@@ -1,0 +1,9 @@
+.nav-item {
+  @apply px-4 py-3 rounded-full cursor-pointer;
+  @apply transition-all ease-out duration-300;
+}
+
+.nav-item:hover {
+  @apply bg-gray-300;
+}
+
