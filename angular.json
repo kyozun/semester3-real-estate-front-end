@@ -7,11 +7,13 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "skipTests": true
+          "skipTests": true,
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:service": {
           "skipTests": true
         }
+
       },
       "root": "",
       "sourceRoot": "src",

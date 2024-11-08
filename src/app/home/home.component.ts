@@ -7,6 +7,7 @@ import {HomeMostViewedComponent} from '../home-most-viewed/home-most-viewed.comp
 import {HomeNewsComponent} from '../home-news/home-news.component';
 import {HomeLocationComponent} from '../home-location/home-location.component';
 import { LoginComponent } from '../login/login.component'
+import { FooterComponent } from '../footer/footer.component'
 
 @Component({
     selector: 'app-home',
@@ -20,6 +21,7 @@ import { LoginComponent } from '../login/login.component'
         HomeNewsComponent,
         HomeLocationComponent,
         LoginComponent,
+        FooterComponent,
     ],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
