@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import {NavComponent} from "../nav/nav.component";
-import {HomeSearchComponent} from '../home-search/home-search.component';
-import {HomeAgentComponent} from '../home-agent/home-agent.component';
-import {HomeForYouComponent} from '../home-for-you/home-for-you.component';
-import {HomeMostViewedComponent} from '../home-most-viewed/home-most-viewed.component';
-import {HomeNewsComponent} from '../home-news/home-news.component';
-import {HomeLocationComponent} from '../home-location/home-location.component';
-import { LoginComponent } from '../login/login.component'
-import { FooterComponent } from '../footer/footer.component'
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { NavComponent } from '../nav/nav.component';
+import { HomeSearchComponent } from '../home-search/home-search.component';
+import { HomeAgentComponent } from '../home-agent/home-agent.component';
+import { HomeForYouComponent } from '../home-for-you/home-for-you.component';
+import { HomeMostViewedComponent } from '../home-most-viewed/home-most-viewed.component';
+import { HomeNewsComponent } from '../home-news/home-news.component';
+import { HomeLocationComponent } from '../home-location/home-location.component';
+import { LoginComponent } from '../login/login.component';
+import { FooterComponent } from '../footer/footer.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -25,5 +26,6 @@ import { FooterComponent } from '../footer/footer.component'
     ],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {}

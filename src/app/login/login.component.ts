@@ -1,9 +1,9 @@
-import { Component } from '@angular/core'
-import { InputTextModule } from 'primeng/inputtext'
-import { ButtonModule } from 'primeng/button'
-import { CheckboxModule } from 'primeng/checkbox'
-import { Ripple } from 'primeng/ripple'
-import { RouterLink } from '@angular/router'
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { Ripple } from 'primeng/ripple';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -11,5 +11,6 @@ import { RouterLink } from '@angular/router'
     imports: [InputTextModule, ButtonModule, CheckboxModule, Ripple, RouterLink],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {}

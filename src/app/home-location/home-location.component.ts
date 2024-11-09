@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Button } from 'primeng/button'
-import { Ripple } from 'primeng/ripple'
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Button } from 'primeng/button';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
     selector: 'app-home-location',
@@ -8,5 +8,6 @@ import { Ripple } from 'primeng/ripple'
     imports: [Button, Ripple],
     templateUrl: './home-location.component.html',
     styleUrl: './home-location.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeLocationComponent {}

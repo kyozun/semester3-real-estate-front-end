@@ -1,8 +1,9 @@
-import { Routes } from '@angular/router'
-import { LoginComponent } from './login/login.component'
-import { HomeComponent } from './home/home.component'
-import { RegisterComponent } from './register/register.component'
-import { NotFoundComponent } from './not-found/not-found.component'
+import { Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { RealEstateListComponent } from './real-estate-list/real-estate-list.component';
 
 export const routes: Routes = [
     {
@@ -19,8 +20,12 @@ export const routes: Routes = [
         ],
     },
     {
+        path: 'search',
+        component: RealEstateListComponent,
+    },
+    {
         path: '**',
         component: NotFoundComponent,
         title: 'Not Found',
     },
-]
+];
