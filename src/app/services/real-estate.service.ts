@@ -16,8 +16,11 @@ export class RealEstateService {
         this.http
             .get<any>(`${this.baseUrl}?q=${query}`)
             .pipe(map((response) => response.products))
-            .subscribe((realEstates) => {
-                this.realEstatesSubject.next(realEstates);
+            .subscribe({
+                next: (realEstates) => {
+                    this.realEstatesSubject.next(realEstates);
+                },
+                error: (error) => console.error(error),
             });
     }
 }

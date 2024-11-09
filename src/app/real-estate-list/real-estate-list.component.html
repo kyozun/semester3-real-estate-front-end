@@ -1,15 +1,40 @@
 <app-nav></app-nav>
 
 <div class="container mx-auto">
-    <div class="text-black">
-        @if (realEstates$ | async; as realEstates) {
-            @if (realEstates.length > 0) {
-                <p>{{ realEstates }}</p>
-            } @else {
-                <p>No real estate found.</p>
-            }
-        }
-    </div>
+  <div class="text-black">
+    @if (realEstates$ | async; as realEstates) {
+      @if (realEstates.length > 0) {
+        <div class="grid grid-cols-12 gap-4">
+          <!--Column 1-->
+          <div class="col-span-8 space-y-4">
+            @for (realEstate of realEstates; track realEstate.id) {
+              <div class="flex flex-row border border-solid border-gray-300 p-2">
+                <div class="w-[300px]">
+                  <img class="w-full object-cover" [src]="realEstate.thumbnail" alt="" />
+                </div>
+                <div class="flex-1">
+                  <p>{{ realEstate.title }}</p>
+                  <p>{{ realEstate.price | currency }}</p>
+                  <p>{{ realEstate.description }}</p>
 
-    <app-footer></app-footer>
+                  <div class="flex items-center justify-between">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="normal" shape="circle" />
+                    <p>Tô</p>
+
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!--Column 2-->
+          <div class="col-span-4"></div>
+        </div>
+      } @else {
+        <p>No real estate found.</p>
+      }
+    }
+  </div>
+
+  <app-footer></app-footer>
 </div>
