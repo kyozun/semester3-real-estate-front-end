@@ -1,1 +1,122 @@
-<p>footer works!</p>
+<div class="border-0 border-t border-solid border-gray-300 pt-16">
+  <div class="container mx-auto">
+    <div class="grid grid-cols-12 gap-8">
+      <!--Col 1-->
+      <div class="col-span-4 text-sm font-medium">
+        <img class="w-16 object-cover" src="favicon.ico" alt="Logo" />
+        <div class="my-4 space-y-2">
+          <h3 class="font-bold">VIETNAM REAL ESTATE JOINT STOCK COMPANY</h3>
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined"> location_on </span>
+            <p>Floor 1, Ton That Thuyet, Pham Hung, Nam Tu Liem, Hanoi</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined"> phone </span>
+            <p>(012) 345 6789 - (012) 345 6789</p>
+          </div>
+
+          <div class="flex items-center gap-8">
+            <img class="w-32" src="https://staticfile.batdongsan.com.vn/images/mobile/footer/google-play.png" alt="Google Play" />
+            <img class="w-32" src="https://staticfile.batdongsan.com.vn/images/mobile/footer/app_store.png" alt="App Store" />
+          </div>
+        </div>
+      </div>
+
+      <!--Col 2-->
+      <div class="col-span-2 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-size: 32px"> phone_in_talk </span>
+          <div>
+            <p class="text-sm">Hotline</p>
+            <p class="font-semibold">123456789</p>
+          </div>
+        </div>
+
+        <div class="my-4 space-y-2">
+          <p class="font-bold uppercase">Guides</p>
+          <p>Pricing & Support</p>
+          <p>FAQs</p>
+          <p>Notifications</p>
+          <p>Contact</p>
+          <p>Sitemap</p>
+        </div>
+      </div>
+
+      <!--Col 3-->
+      <div class="col-span-3 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-size: 32px"> crowdsource </span>
+          <div>
+            <p class="text-sm">Customer Support</p>
+            <p class="font-semibold">help-gmail.com</p>
+          </div>
+        </div>
+
+        <div class="my-4 space-y-2">
+          <p class="font-bold uppercase">REGULATIONS</p>
+          <p>Posting Rules</p>
+          <p>Operational Regulations</p>
+          <p>Terms of Agreement</p>
+          <p>Privacy Policy</p>
+          <p>Complaint Resolution</p>
+          <p>Feedback & Report</p>
+        </div>
+      </div>
+
+      <!--Col 4-->
+      <div class="col-span-3 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-size: 32px"> headphones </span>
+          <div>
+            <p class="text-sm">Customer Care</p>
+            <p class="font-semibold">help-gmail.com</p>
+          </div>
+        </div>
+
+        <div class="my-4">
+          <div class="my-4">
+            <label class="mb-4 font-bold uppercase" for="promotion">SUBSCRIBE TO UPDATES</label>
+            <p-inputGroup class="mt-2">
+              <input id="promotion" type="text" pInputText [(ngModel)]="value" placeholder="Enter your email" />
+              <button type="button" pButton label="Send"></button>
+            </p-inputGroup>
+          </div>
+
+          <div>
+            <p class="mb-2 font-bold uppercase">COUNTRY & LANGUAGE</p>
+            <p-dropdown [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [showClear]="true" placeholder="Vietnamese"></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border"></div>
+
+    <div class="flex items-center justify-end">
+      <!-- Facebook Icon -->
+      <svg class="h-24 w-12" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
+        <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path>
+        <path
+          fill="#fff"
+          d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"
+        ></path>
+      </svg>
+
+      <!-- YouTube Icon -->
+      <svg class="h-24 w-12" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
+        <path
+          fill="#FF3D00"
+          d="M43.2,33.9c-0.4,2.1-2.1,3.7-4.2,4c-3.3,0.5-8.8,1.1-15,1.1c-6.1,0-11.6-0.6-15-1.1c-2.1-0.3-3.8-1.9-4.2-4C4.4,31.6,4,28.2,4,24c0-4.2,0.4-7.6,0.8-9.9c0.4-2.1,2.1-3.7,4.2-4C12.3,9.6,17.8,9,24,9c6.2,0,11.6,0.6,15,1.1c2.1,0.3,3.8,1.9,4.2,4c0.4,2.3,0.9,5.7,0.9,9.9C44,28.2,43.6,31.6,43.2,33.9z"
+        ></path>
+        <path fill="#FFF" d="M20 31L20 17 32 24z"></path>
+      </svg>
+
+      <!-- Instagram Icon -->
+      <svg class="h-24 w-12" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 64 64">
+        <path
+          d="M48,8H16c-4.418,0-8,3.582-8,8v32c0,4.418,3.582,8,8,8h32c4.418,0,8-3.582,8-8V16C56,11.582,52.418,8,48,8z M50,27c-3.964,0-6.885-1.09-9-2.695V38.5C41,44.841,35.841,50,29.5,50S18,44.841,18,38.5S23.159,27,29.5,27h2v5h-2c-3.584,0-6.5,2.916-6.5,6.5s2.916,6.5,6.5,6.5s6.5-2.916,6.5-6.5V14h5c0.018,1.323,0.533,8,9,8V27z"
+        ></path>
+      </svg>
+    </div>
+  </div>
+</div>

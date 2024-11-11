@@ -1,40 +1,176 @@
 <app-nav></app-nav>
 
-<div class="container mx-auto">
-  <div class="text-black">
-    @if (realEstates$ | async; as realEstates) {
-      @if (realEstates.length > 0) {
-        <div class="grid grid-cols-12 gap-4">
-          <!--Column 1-->
-          <div class="col-span-8 space-y-4">
-            @for (realEstate of realEstates; track realEstate.id) {
-              <div class="flex flex-row border border-solid border-gray-300 p-2">
-                <div class="w-[300px]">
-                  <img class="w-full object-cover" [src]="realEstate.thumbnail" alt="" />
-                </div>
-                <div class="flex-1">
-                  <p>{{ realEstate.title }}</p>
-                  <p>{{ realEstate.price | currency }}</p>
-                  <p>{{ realEstate.description }}</p>
+<!--<input type="text" pInputText [(ngModel)]="value" class="mb-3 w-full" />-->
+<!--<p-slider [(ngModel)]="value" class="w-full" />-->
 
-                  <div class="flex items-center justify-between">
-                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="normal" shape="circle" />
-                    <p>Tô</p>
+<div class="bg-gray-100">
+  <div class="container mx-auto py-6 font-sans">
+    <div class="text-black">
+      @if (realEstates$ | async; as realEstates) {
+        @if (realEstates.length > 0) {
+          <div class="grid grid-cols-12 gap-6">
+            <!--Column 1-->
+            <div class="col-span-9 space-y-4">
+              <p class="text- xl rounded-xl bg-white p-4 font-bold text-blue-600 shadow">Results: 4</p>
+              @for (realEstate of realEstates; track realEstate.id) {
+                <div class="relative flex flex-row rounded-xl border border-solid border-gray-300 bg-white p-6">
+                  <div class="h-[300px] w-[300px]">
+                    <img class="w-full object-cover" [src]="realEstate.thumbnail" alt="" />
+                  </div>
+                  <div class="flex-1">
+                    <div class="mb-4">
+                      <p class="text-xl font-semibold">{{ realEstate.title }}</p>
+                      <p class="text-xl font-bold">{{ realEstate.price | currency }}</p>
+                    </div>
+                    <div>
+                      <p class="mb-2 text-gray-800">{{ realEstate.description }}</p>
+                      <div class="absolute right-6 top-6">
+                        <p-toggleButton
+                          [(ngModel)]="checked"
+                          onIcon="pi pi-bookmark-fill"
+                          offIcon="pi pi-bookmark
+"
+                          ariaLabel="Do you confirm"
+                        />
+                      </div>
+                    </div>
 
+                    <div class="flex items-center justify-between">
+                      <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="normal" shape="circle" />
+                      <p>Tô</p>
+                    </div>
                   </div>
                 </div>
+              }
+            </div>
+
+            <!--Column 2-->
+            <div class="col-span-3 gap-4 rounded-xl bg-white p-4 shadow">
+              <div class="flex flex-row items-center gap-2">
+                <span class="material-symbols-rounded text-blue-600"> tune </span>
+                <h1 class="text-2xl font-bold text-blue-600">Sort By</h1>
               </div>
-            }
+              <hr class="my-4 border-0 border-b border-solid border-gray-300" />
+
+              <form class="flex flex-col gap-8" [formGroup]="filterForm">
+                <!--Price-->
+                <div formGroupName="price">
+                  <h2 class="mb-4 text-xl font-semibold">Price</h2>
+                  <div class="flex flex-col gap-2">
+                    <p-checkbox formControlName="allPrices" label="All Prices" [binary]="true" />
+                    <p-checkbox formControlName="price" label="1 2000 000" [binary]="true" />
+                  </div>
+                </div>
+
+                <!--Property type-->
+                <div formGroupName="propertyTypes">
+                  <h2 class="mb-4 text-xl font-semibold">Property type</h2>
+                  <div class="flex flex-row gap-4">
+                    <p-checkbox formControlName="allTypes" label="All Types" [binary]="true" />
+                    <p-checkbox formControlName="house" label="House" [binary]="true" />
+                    <p-checkbox formControlName="apartment" label="Apartment" [binary]="true" />
+                  </div>
+                </div>
+
+                <!--Area-->
+                <div formGroupName="area">
+                  <h2 class="mb-4 text-xl font-semibold">Area</h2>
+                  <div class="flex flex-col gap-2">
+                    <p-checkbox formControlName="allAreas" label="All Areas" [binary]="true" />
+                    <p-checkbox formControlName="area" label="1 2000 000 m2" [binary]="true" />
+                  </div>
+                </div>
+
+                <!--bedrooms-->
+                <div formGroupName="bedrooms">
+                  <h2 class="mb-4 text-xl font-semibold">Bedroom</h2>
+                  <div class="mb-2 flex flex-row gap-2">
+                    <!--                      <label class="mb-2" for="min-bedroom">Min Bedrooms:</label>-->
+                    <!--                      <input id="min-bedroom" type="tel" pInputText [value]="bedroomRange?.[0]" (input)="setMinBedroom(+$event)" class="mb-4 w-full" />-->
+                    <!--                    </div>-->
+                    <!--                    <div class="flex-1">-->
+                    <!--                      <p class="mb-2">Max</p>-->
+                    <!--                      <input type="text" pInputText [value]="bedroomRange?.[1]" (input)="setMaxBedroom(+$event)" class="mb-4 w-full" />-->
+                    <!--                    </div>-->
+                    <div>
+                      <label for="min-bedroom">Min</label>
+                      <input
+                        class="my-4 w-full"
+                        [value]="this.filterForm.controls.bedrooms.controls.bedroomRange?.value?.[0]"
+                        id="min-bedroom"
+                        type="text"
+                        pInputText
+                        #minBedroom
+                      />
+                    </div>
+
+                    <div>
+                      <label for="min-bedroom">Max</label>
+                      <input
+                        class="my-4 w-full"
+                        id="max-bedroom"
+                        type="text"
+                        pInputText
+                        #maxBedroom
+                        [value]="this.filterForm.controls.bedrooms.controls.bedroomRange?.value?.[1]"
+                      />
+                    </div>
+                  </div>
+
+                  <p-slider formControlName="bedroomRange" [min]="1" [max]="50" (onChange)="OnBedroomChange($event)" class="w-full" [range]="true" />
+                </div>
+
+                <!--bathrooms-->
+                <div formGroupName="bathrooms">
+                  <h2 class="mb-4 text-xl font-semibold">Badthroom</h2>
+                  <div class="mb-2 flex flex-row gap-2">
+                    <!--                      <label class="mb-2" for="min-bedroom">Min Bedrooms:</label>-->
+                    <!--                      <input id="min-bedroom" type="tel" pInputText [value]="bedroomRange?.[0]" (input)="setMinBedroom(+$event)" class="mb-4 w-full" />-->
+                    <!--                    </div>-->
+                    <!--                    <div class="flex-1">-->
+                    <!--                      <p class="mb-2">Max</p>-->
+                    <!--                      <input type="text" pInputText [value]="bedroomRange?.[1]" (input)="setMaxBedroom(+$event)" class="mb-4 w-full" />-->
+                    <!--                    </div>-->
+                    <div>
+                      <label for="min-bathroom">Min</label>
+                      <input
+                        class="my-4 w-full"
+                        [value]="this.filterForm.controls.bedrooms.controls.bedroomRange?.value?.[0]"
+                        id="min-bathroom"
+                        type="text"
+                        pInputText
+                        #minBedroom
+                      />
+                    </div>
+
+                    <div>
+                      <label for="min-bathroom">Max</label>
+                      <input
+                        class="my-4 w-full"
+                        id="max-bathroom"
+                        type="text"
+                        pInputText
+                        #maxBedroom
+                        [value]="this.filterForm.controls.bedrooms.controls.bedroomRange?.value?.[1]"
+                      />
+                    </div>
+                  </div>
+
+                  <p-slider formControlName="bedroomRange" [min]="1" [max]="50" (onChange)="OnBedroomChange($event)" class="w-full" [range]="true" />
+                </div>
+              </form>
+            </div>
           </div>
+        } @else {
+          <p>No real estate found.</p>
+        }
 
-          <!--Column 2-->
-          <div class="col-span-4"></div>
-        </div>
-      } @else {
-        <p>No real estate found.</p>
+        <hr class="my-8 border-0 border-b border-solid border-gray-300" />
+        <!--Pagination-->
+        <!--        <p-paginator (onPageChange)="onPageChange($any($event))" [first]="first" [rows]="rows" [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]" />-->
       }
-    }
+    </div>
   </div>
-
-  <app-footer></app-footer>
 </div>
+
+<app-footer></app-footer>

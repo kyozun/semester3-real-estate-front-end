@@ -9,23 +9,27 @@ import { HomeLocationComponent } from '../home-location/home-location.component'
 import { LoginComponent } from '../login/login.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { SliderModule } from 'primeng/slider';
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    imports: [
-        NavComponent,
-        HomeSearchComponent,
-        HomeAgentComponent,
-        HomeForYouComponent,
-        HomeMostViewedComponent,
-        HomeNewsComponent,
-        HomeLocationComponent,
-        LoginComponent,
-        FooterComponent,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-home',
+  standalone: true,
+  imports: [
+    NavComponent,
+    HomeSearchComponent,
+    HomeAgentComponent,
+    HomeForYouComponent,
+    HomeMostViewedComponent,
+    HomeNewsComponent,
+    HomeLocationComponent,
+    LoginComponent,
+    FooterComponent,
+    FormsModule,
+    SliderModule,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {}
