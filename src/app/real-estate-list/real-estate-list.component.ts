@@ -11,12 +11,21 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SliderChangeEvent, SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SkeletonModule } from 'primeng/skeleton';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 interface PageEvent {
   first: number;
   rows: number;
   page: number;
   pageCount: number;
+}
+
+interface City {
+  name: string;
+  code: string;
 }
 
 @Component({
@@ -34,6 +43,10 @@ interface PageEvent {
     CheckboxModule,
     ReactiveFormsModule,
     FooterComponent,
+    DropdownModule,
+    MultiSelectModule,
+    SkeletonModule,
+    ProgressBarModule,
   ],
   templateUrl: './real-estate-list.component.html',
   styleUrl: './real-estate-list.component.css',
@@ -42,15 +55,23 @@ interface PageEvent {
 export class RealEstateListComponent implements OnInit {
   @ViewChild('minBedroom') minBedroomInput: ElementRef;
   @ViewChild('maxBedroom') maxBedroomInput: ElementRef;
+
+  @ViewChild('minBathroom') minBathroomInput: ElementRef;
+  @ViewChild('maxBathroom') maxBathroomInput: ElementRef;
   query: string = '';
   page: number = 1;
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
+
+  cities!: City[];
   // }
   private route = inject(ActivatedRoute);
   private realEstateService = inject(RealEstateService);
+
+  /*Observable*/
   realEstates$: Observable<any[]> = this.realEstateService.realEstates$;
+  isLoading$ = this.realEstateService.isLoading$;
 
   // get bedroomRange() {
   //   return this.filterForm.get('bedrooms.bedroomRange')?.value;
@@ -74,9 +95,10 @@ export class RealEstateListComponent implements OnInit {
       bedroomRange: [[1, 5]],
     }),
     bathrooms: this.formBuilder.group({
-      minBathrooms: [''],
-      maxBathrooms: [''],
+      bathroomRange: [[1, 5]],
     }),
+    directions: [''],
+
     outdoorFeatures: this.formBuilder.group({
       swimmingPool: [false],
       garage: [false],
@@ -105,6 +127,17 @@ export class RealEstateListComponent implements OnInit {
     });
 
     this.getRealEstates('phone');
+
+    this.cities = [
+      { name: 'East', code: 'NY' },
+      { name: 'West', code: 'RM' },
+      { name: 'North', code: 'LDN' },
+      { name: 'South', code: 'IST' },
+      { name: 'North-east', code: 'PRS' },
+      { name: 'North-west', code: 'PRS' },
+      { name: 'South-east', code: 'PRS' },
+      { name: 'South-west', code: 'PRS' },
+    ];
   }
 
   searchData(query: string, page: number) {
@@ -120,6 +153,13 @@ export class RealEstateListComponent implements OnInit {
     if ($event.values) {
       this.minBedroomInput.nativeElement.value = $event.values[0];
       this.maxBedroomInput.nativeElement.value = $event.values[1];
+    }
+  }
+
+  OnBathroomChange($event: SliderChangeEvent) {
+    if ($event.values) {
+      this.minBathroomInput.nativeElement.value = $event.values[0];
+      this.maxBathroomInput.nativeElement.value = $event.values[1];
     }
   }
 }

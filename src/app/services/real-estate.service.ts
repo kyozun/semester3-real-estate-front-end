@@ -1,26 +1,38 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, tap } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class RealEstateService {
-    private baseUrl = 'https://dummyjson.com/products/search';
-    private http = inject(HttpClient);
+  public isLoading = true;
+  private baseUrl = 'https://dummyjson.com/products/search';
+  private http = inject(HttpClient);
+  private realEstatesSubject = new BehaviorSubject<any[]>([]);
+  realEstates$ = this.realEstatesSubject.asObservable();
 
-    private realEstatesSubject = new BehaviorSubject<any[]>([]);
-    realEstates$ = this.realEstatesSubject.asObservable();
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoadingSubject.asObservable();
 
-    getRealEstates(query: string) {
-        this.http
-            .get<any>(`${this.baseUrl}?q=${query}`)
-            .pipe(map((response) => response.products))
-            .subscribe({
-                next: (realEstates) => {
-                    this.realEstatesSubject.next(realEstates);
-                },
-                error: (error) => console.error(error),
-            });
-    }
+  getRealEstates(query: string) {
+    this.isLoadingSubject.next(true);
+    this.http
+      .get<any>(`${this.baseUrl}?q=${query}`)
+      .pipe(
+        map((response) => response.products),
+        tap(() => {
+          // Stop loading
+          this.isLoadingSubject.next(false);
+        })
+      )
+      .subscribe({
+        next: (realEstates) => {
+          this.realEstatesSubject.next(realEstates);
+        },
+        error: () => {
+          this.isLoadingSubject.next(false);
+        },
+      });
+  }
 }
