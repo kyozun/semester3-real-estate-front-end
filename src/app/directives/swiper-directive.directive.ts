@@ -8,7 +8,7 @@ import { SwiperContainer } from 'swiper/element';
 })
 export class SwiperDirectiveDirective implements AfterViewInit {
   @Input() swiperConfig?: SwiperOptions;
-  private swiperContainer = inject(ElementRef<SwiperContainer>);
+  public swiperContainer = inject(ElementRef<SwiperContainer>);
 
   ngAfterViewInit(): void {
     Object.assign(this.swiperContainer.nativeElement, this.swiperConfig);

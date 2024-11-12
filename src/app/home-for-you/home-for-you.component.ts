@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
 import { NgForOf, NgStyle } from '@angular/common';
@@ -21,12 +21,14 @@ interface Card {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeForYouComponent {
+  @ViewChild(SwiperDirectiveDirective) swiperDirective?: SwiperDirectiveDirective;
+
   swiperConfig: SwiperOptions = {
-    spaceBetween: 20,
-    slidesPerView: 3,
-    height: 100,
-    pagination: { clickable: true },
-    navigation: true,
+    slidesPerView: 4,
+    spaceBetween: 16,
+    autoplay: {delay: 2000},
+    loop: true,
+    autoHeight: true,
   };
 
   contents: Card[] = [
@@ -56,4 +58,12 @@ export class HomeForYouComponent {
       url: 'https://picsum.photos/id/401/640/480',
     },
   ];
+
+  onBack() {
+    this.swiperDirective?.swiperContainer.nativeElement.swiper.slidePrev();
+  }
+
+  onNext() {
+    this.swiperDirective?.swiperContainer.nativeElement.swiper.slideNext();
+  }
 }
