@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NavComponent } from '../nav/nav.component';
 import { HomeSearchComponent } from '../home-search/home-search.component';
 import { HomeAgentComponent } from '../home-agent/home-agent.component';
@@ -8,9 +8,12 @@ import { HomeNewsComponent } from '../home-news/home-news.component';
 import { HomeLocationComponent } from '../home-location/home-location.component';
 import { LoginComponent } from '../login/login.component';
 import { FooterComponent } from '../footer/footer.component';
-import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SliderModule } from 'primeng/slider';
+import { SwiperOptions } from 'swiper/types';
+import { SwiperDirectiveDirective } from '../directives/swiper-directive.directive';
+import { NgForOf, NgStyle } from '@angular/common';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +30,9 @@ import { SliderModule } from 'primeng/slider';
     FooterComponent,
     FormsModule,
     SliderModule,
+    SwiperDirectiveDirective,
+    NgStyle,
+    NgForOf,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
