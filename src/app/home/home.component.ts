@@ -14,6 +14,7 @@ import { SwiperOptions } from 'swiper/types';
 import { SwiperDirectiveDirective } from '../directives/swiper-directive.directive';
 import { NgForOf, NgStyle } from '@angular/common';
 import Swiper from 'swiper';
+import { ScrollTopModule } from 'primeng/scrolltop';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ import Swiper from 'swiper';
     SwiperDirectiveDirective,
     NgStyle,
     NgForOf,
+    ScrollTopModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

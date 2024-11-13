@@ -27,8 +27,6 @@
 }
 
 
-
-
 .material-symbols-rounded {
   font-variation-settings: 'FILL' 0,
   'wght' 400,
@@ -44,6 +42,16 @@
   width: 100%;
 }
 
+/*Custom Scrolltop*/
+.custom-scrolltop {
+  background-color: #0060ff;
+  width: 3rem;
+  height: 3rem;
+}
+
+.custom-scrolltop:hover {
+  background-color: #054cc7;
+}
 
 
 

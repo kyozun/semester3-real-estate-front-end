@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonDirective } from 'primeng/button';
+import { NgOptimizedImage } from '@angular/common';
 
 interface City {
   name: string;
@@ -13,7 +14,7 @@ interface City {
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [DropdownModule, FormsModule, InputGroupModule, InputTextModule, ButtonDirective],
+  imports: [DropdownModule, FormsModule, InputGroupModule, InputTextModule, ButtonDirective, NgOptimizedImage],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,18 +3,21 @@ import { FooterComponent } from '../footer/footer.component';
 import { NavComponent } from '../nav/nav.component';
 import { ActivatedRoute } from '@angular/router';
 import { RealEstateService } from '../services/real-estate.service';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxModule } from 'primeng/checkbox';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { SliderChangeEvent, SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { Button } from 'primeng/button';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { PropertyFilter } from '../interfaces/property-filter';
 
 interface PageEvent {
   first: number;
@@ -47,6 +50,9 @@ interface City {
     MultiSelectModule,
     SkeletonModule,
     ProgressBarModule,
+    Button,
+    ScrollTopModule,
+    NgOptimizedImage,
   ],
   templateUrl: './real-estate-list.component.html',
   styleUrl: './real-estate-list.component.css',
@@ -79,13 +85,11 @@ export class RealEstateListComponent implements OnInit {
   filterForm = this.formBuilder.group({
     propertyTypes: this.formBuilder.group({
       allTypes: [false],
-      house: [false],
-      apartment: [false],
-      villa: [false],
+      types: [],
     }),
     price: this.formBuilder.group({
       allPrices: [true],
-      price: [false],
+      price: [0],
     }),
     area: this.formBuilder.group({
       allAreas: [true],
@@ -160,6 +164,39 @@ export class RealEstateListComponent implements OnInit {
     if ($event.values) {
       this.minBathroomInput.nativeElement.value = $event.values[0];
       this.maxBathroomInput.nativeElement.value = $event.values[1];
+    }
+  }
+
+  clearFilters() {
+    this.filterForm.reset();
+  }
+
+  onFilterFormChange() {
+    const formValues = this.filterForm.value;
+
+    const filterParams: PropertyFilter = {
+      price: formValues.price?.price ?? 0,
+      allPrices: formValues.price?.allPrices ?? false,
+    };
+
+    console.log(filterParams);
+  }
+
+  // This function is triggered when 'All Prices' checkbox is changed
+  onAllTypesChange($event: any): void {
+    const checkAll = $event.checked;
+    this.filterForm.controls.propertyTypes.controls.forEach((control) => control.setValue(checkAll));
+  }
+
+  onHouseChange($event: CheckboxChangeEvent) {
+    const propertyTypesControl = this.filterForm.controls.propertyTypes;
+
+    if ($event.checked) {
+      propertyTypesControl?.patchValue({
+        allTypes: false,
+        house: $event.checked,
+        apartment: $event.checked,
+      });
     }
   }
 }

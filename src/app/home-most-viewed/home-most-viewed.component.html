@@ -1,41 +1,56 @@
-<!--Most Viewed-->
-<div class="flex items-center mb-4">
-    <span class="material-symbols-rounded mr-4 rounded bg-red-500 p-2 text-white"> visibility </span>
-    <h1 class=" font-sans text-2xl font-bold">Most Viewed</h1>
-</div>
-
-<div class="grid grid-cols-4 gap-6 font-sans">
-    <!--Column 1-->
-    <div class="col-span-1">
-        <div class="relative rounded border border-solid border-gray-300">
-            <div class="absolute left-2 top-2 flex items-center space-x-2 rounded bg-gray-800/70 p-1.5 text-sm font-semibold text-white">
-                <span class="material-symbols-rounded"> visibility </span>
-                <span>512 Views</span>
-            </div>
-
-            <img class="w-full" src="https://images.homes.com/listings/214/9589073204-200303781/10614-crimson-trace-beasley-tx-buildingphoto-2.jpg" alt="" />
-            <p-button class="absolute right-2 top-2" icon="pi pi-heart" [rounded]="true" severity="danger" />
-
-            <div class="space-y-2 p-4 pt-2">
-                <div class="flex items-center justify-between">
-                    <div class="text-2xl font-bold">$300,000</div>
-                    <div class="flex items-center gap-2">
-                        <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-600 p-1 font-bold text-white" pRipple>
-                            <span class="material-symbols-rounded"> bed </span>
-                            <span> 4 Beds</span>
-                        </div>
-
-                        <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-600 p-1 font-bold text-white" pRipple>
-                            <span class="material-symbols-rounded"> shower </span>
-                            <span>3 Baths</span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div>10614 Crimson Trace</div>
-                    <div>Beasley, TX 77417</div>
-                </div>
-            </div>
-        </div>
+<div class="font-sans">
+  <!--  For You-->
+  <div class="mb-6 flex flex-row items-center justify-between">
+    <h1 class="text-3xl font-semibold">Most View</h1>
+    <div>
+      <p-button class="mr-2" icon="pi pi-chevron-left" size="small" iconPos="left" [rounded]="true" severity="primary" (click)="onBack()" />
+      <p-button icon="pi pi-chevron-right" size="small" iconPos="left" [rounded]="true" severity="primary" (click)="onNext()" />
     </div>
+  </div>
+
+  <div class="grid grid-cols-4 gap-6 font-sans">
+    <!--Column 1-->
+    <div class="col-span-1"></div>
+  </div>
+
+  <swiper-container class="swiper" appSwiperDirective [swiperConfig]="swiperConfig" init="false">
+    @for (item of contents; track $index) {
+      <swiper-slide>
+        <div class="relative rounded-xl border border-t-0 border-solid border-gray-300">
+          <img class="aspect-video w-full rounded-t-xl object-cover" src="https://images.homes.com/listings/214/9589073204-200303781/10614-crimson-trace-beasley-tx-buildingphoto-2.jpg" alt="" />
+          <p-button class="absolute right-2 top-2" icon="pi pi-bookmark" [rounded]="true" severity="secondary" />
+
+          <div class="p-4 pt-2">
+            <div class="flex flex-row items-center justify-between">
+              <div class="text-2xl font-black">$300,000</div>
+              <div class="flex items-center gap-2">
+                <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-200 p-1 text-gray-900" pRipple>
+                  <span class="material-symbols-rounded" style="font-size: 20px"> bed </span>
+                  <span> 4 Beds</span>
+                </div>
+
+                <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-200 p-1 text-gray-900" pRipple>
+                  <span class="material-symbols-rounded" style="font-size: 20px"> bathtub </span>
+                  <span>3 Baths</span>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-2 border-0 border-b border-solid border-gray-300" />
+
+            <div class="flex flex-row items-center justify-between">
+              <div class="text-gray-800">
+                <div class="font-semibold">10614 Crimson Trace</div>
+                <div>Beasley, TX 77417</div>
+              </div>
+              <div class="flex flex-row items-center space-x-2 rounded bg-blue-500 p-1.5 font-semibold text-white shadow-2xl">
+                <span class="material-symbols-rounded" style="font-size: 20px"> visibility </span>
+                <span>512 views</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </swiper-slide>
+    }
+  </swiper-container>
 </div>

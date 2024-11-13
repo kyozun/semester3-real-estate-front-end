@@ -1,4 +1,4 @@
-<div class="flex min-h-screen flex-col font-sans">
+<div class="flex min-h-screen select-none flex-col font-sans">
   <app-nav></app-nav>
 
   @if (isLoading$ | async) {
@@ -14,19 +14,34 @@
             <div class="col-span-9 space-y-4">
               @if (realEstates.length > 0) {
                 <!--Nên để slider-->
-                <p class="text- xl rounded-xl bg-white p-4 font-bold text-blue-600 shadow">Results: 4</p>
+                <p class="text- xl rounded-xl border border-solid border-gray-200 bg-white p-4 font-bold text-blue-600">Results: 4</p>
                 @for (realEstate of realEstates; track realEstate.id) {
-                  <div class="relative flex flex-row rounded-xl border border-solid border-gray-300 bg-white p-6">
-                    <div class="h-[300px] w-[300px]">
-                      <img class="w-full object-cover" [src]="realEstate.thumbnail" alt="" />
+                  <div class="relative flex flex-row gap-6 rounded-xl border border-solid border-gray-200 bg-white p-6">
+                    <!-- 2 Column-->
+                    <div class="flex h-64 w-[600px] flex-row gap-6">
+                      <!-- Column 1 -->
+                      <div class="relative h-full w-2/3">
+                        <img class="absolute inset-0 h-full w-full object-cover duration-300" fill [ngSrc]="realEstate.thumbnail" alt="Thumbnail" />
+                      </div>
+
+                      <!-- Column 2 with 2 rows -->
+                      <div class="flex h-full w-1/3 flex-col gap-6">
+                        <div class="relative flex-1">
+                          <img class="absolute inset-0 h-full w-full object-cover duration-300" fill [ngSrc]="realEstate.thumbnail" alt="Thumbnail" />
+                        </div>
+                        <div class="relative flex-1">
+                          <img class="absolute inset-0 h-full w-full object-cover duration-300" fill [ngSrc]="realEstate.thumbnail" alt="Thumbnail" />
+                        </div>
+                      </div>
                     </div>
+
                     <div class="flex-1">
                       <div class="mb-4">
-                        <p class="text-xl font-semibold">{{ realEstate.title }}</p>
+                        <p class="mb-2 text-xl font-semibold">{{ realEstate.title }}</p>
                         <p class="text-xl font-bold">{{ realEstate.price | currency }}</p>
                       </div>
                       <div>
-                        <p class="mb-2 text-gray-800">{{ realEstate.description }}</p>
+                        <p class="mb-4 text-gray-800">{{ realEstate.description }}</p>
                         <div class="absolute right-6 top-6">
                           <p-toggleButton [(ngModel)]="checked" onIcon="pi pi-bookmark-fill" offIcon="pi pi-bookmark" ariaLabel="Do you confirm" />
                         </div>
@@ -41,7 +56,7 @@
                 }
               } @else {
                 <div class="relative">
-                  <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="absolute inset-0 top-12">
                     <p class="mb-4 text-center text-2xl font-semibold">No real estate found</p>
                   </div>
                   <img class="w-full rounded-xl object-cover" src="theme.png" alt="" />
@@ -52,32 +67,41 @@
             <!--Column 2-->
             <div class="col-span-3 flex flex-col gap-6">
               <!--Row 1-->
-              <div class="rounded-xl bg-white px-6 py-4 shadow">
-                <div class="flex flex-row items-center gap-2">
-                  <span class="material-symbols-rounded text-blue-600"> tune </span>
-                  <h1 class="text-2xl font-bold text-blue-600">Sort By</h1>
+              <div class="rounded-xl border border-solid border-gray-200 bg-white px-6 py-4">
+                <div class="flex flex-row justify-between">
+                  <div class="flex flex-row items-center gap-2">
+                    <span class="material-symbols-rounded text-blue-600"> tune </span>
+                    <h1 class="text-2xl font-bold text-blue-600">Sort By</h1>
+                  </div>
+                  <p-button label="Clear Filters" icon="pi pi-times" iconPos="right" severity="secondary" [rounded]="true" size="small" (click)="clearFilters()" />
                 </div>
+
                 <hr class="my-4 border-0 border-b border-solid border-gray-300" />
 
-                <form class="flex flex-col gap-8" [formGroup]="filterForm">
+                <form class="flex flex-col gap-4" [formGroup]="filterForm">
                   <!--Price-->
                   <div formGroupName="price">
                     <h2 class="mb-4 text-xl font-semibold">Price</h2>
                     <div class="flex flex-col gap-2">
-                      <p-checkbox formControlName="allPrices" label="All Prices" [binary]="true" />
-                      <p-checkbox formControlName="price" label="1 2000 000" [binary]="true" />
+                      <p-checkbox formControlName="allPrices" label="All Prices" [binary]="true" (onChange)="onFilterFormChange()" />
+                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" (onChange)="onFilterFormChange()" />
+                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" (onChange)="onFilterFormChange()" />
                     </div>
                   </div>
+
+                  <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Property type-->
                   <div formGroupName="propertyTypes">
                     <h2 class="mb-4 text-xl font-semibold">Property type</h2>
                     <div class="flex flex-row gap-4">
-                      <p-checkbox formControlName="allTypes" label="All Types" [binary]="true" />
-                      <p-checkbox formControlName="house" label="House" [binary]="true" />
-                      <p-checkbox formControlName="apartment" label="Apartment" [binary]="true" />
+                      <p-checkbox formControlName="allTypes" label="All Types" [binary]="true" (onChange)="onAllTypesChange($event)" />
+                      <p-checkbox formControlName="house" label="House" [binary]="true" (onChange)="onAllTypesChange($event)" />
+                      <p-checkbox formControlName="apartment" label="Apartment" [binary]="true" (onChange)="onAllTypesChange($event)" />
                     </div>
                   </div>
+
+                  <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Area-->
                   <div formGroupName="area">
@@ -88,41 +112,46 @@
                     </div>
                   </div>
 
+                  <hr class="w-full border-0 border-b border-solid border-gray-200" />
+
                   <!--bedrooms-->
                   <div formGroupName="bedrooms">
                     <h2 class="mb-4 text-xl font-semibold">Bedroom</h2>
-                    <div class="mb-2 flex flex-row gap-2">
+                    <div class="mb-2 flex flex-row gap-4">
                       <div>
                         <label for="min-bedroom">Min</label>
-                        <input class="my-4 w-full" [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[0]" id="min-bedroom" type="text" pInputText #minBedroom />
+                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[0]" id="min-bedroom" type="text" pInputText #minBedroom />
                       </div>
 
                       <div>
                         <label for="max-bedroom">Max</label>
-                        <input class="my-4 w-full" id="max-bedroom" type="text" pInputText #maxBedroom [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[1]" />
+                        <input class="mb-4 mt-2 w-full" id="max-bedroom" type="text" pInputText #maxBedroom [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[1]" />
                       </div>
                     </div>
-
                     <p-slider formControlName="bedroomRange" [min]="1" [max]="50" (onChange)="OnBedroomChange($event)" class="w-full" [range]="true" />
                   </div>
+
+                  <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Bathrooms-->
                   <div formGroupName="bathrooms">
                     <h2 class="mb-4 text-xl font-semibold">Bathroom</h2>
-                    <div class="mb-2 flex flex-row gap-2">
+                    <div class="mb-2 flex flex-row gap-4">
                       <div>
                         <label for="min-bathroom">Min</label>
-                        <input class="my-4 w-full" [value]="this.filterForm.controls.bathrooms.controls.bathroomRange.value?.[0]" id="min-bathroom" type="text" pInputText #minBathroom />
+                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.controls.bathrooms.controls.bathroomRange.value?.[0]" id="min-bathroom" type="text" pInputText #minBathroom />
                       </div>
 
                       <div>
                         <label for="max-bathroom">Max</label>
-                        <input class="my-4 w-full" id="max-bathroom" type="text" pInputText #maxBathroom [value]="this.filterForm.controls.bathrooms.controls.bathroomRange.value?.[1]" />
+                        <input class="mb-4 mt-2 w-full" id="max-bathroom" type="text" pInputText #maxBathroom [value]="this.filterForm.controls.bathrooms.controls.bathroomRange.value?.[1]" />
                       </div>
                     </div>
 
                     <p-slider formControlName="bathroomRange" [min]="1" [max]="50" (onChange)="OnBathroomChange($event)" class="w-full" [range]="true" />
                   </div>
+
+                  <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Direction-->
                   <div>
@@ -134,7 +163,7 @@
 
               <!--Row 2-->
               <!--Top Agents-->
-              <div class="rounded-xl bg-white px-6 py-4 shadow">
+              <div class="rounded-xl border border-solid border-gray-200 bg-white px-6 py-4">
                 <div>
                   <div class="relative flex items-center justify-center gap-2 rounded-xl border-0 border-b-8 border-solid border-blue-800 bg-blue-200 p-3 shadow">
                     <!--Pattern-->
@@ -182,7 +211,7 @@
           </div>
         }
 
-        <hr class="my-8 border-0 border-b border-solid border-gray-300" />
+        <hr class="my-8 border-0 border-b border-solid border-gray-200" />
         <!--Pagination-->
         <!--        <p-paginator (onPageChange)="onPageChange($any($event))" [first]="first" [rows]="rows" [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]" />-->
       </div>
@@ -191,3 +220,5 @@
 
   <app-footer></app-footer>
 </div>
+
+<p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up" />

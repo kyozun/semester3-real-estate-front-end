@@ -4,20 +4,20 @@
 
   <div class="grid grid-cols-12 gap-6">
     <div class="col-span-3">
-      <div class="flex max-w-sm flex-col overflow-hidden rounded-xl border border-solid border-gray-200 bg-white shadow-lg">
+      <div class="flex flex-col overflow-hidden rounded-xl border border-solid border-gray-200 bg-white shadow-lg">
         <!-- Header with Profile -->
-        <div class="flex flex-row items-center gap-4 rounded-t-lg border-b border-gray-200 bg-gray-200 p-4">
+        <div class="relative flex flex-col items-center gap-2 rounded-t-lg border-b border-gray-200 bg-gray-100 p-4">
           <p-avatar image="https://imagescdn.homes.com/i2/qENtFit5K52Yr15k0wNTqdXkCZDKHAi7S4374PoYxwU/117/tilah-spruel.jpg?p=1" styleClass="mr-2 shadow-md" size="xlarge" shape="circle" />
-          <div>
-            <div class="text-xl font-semibold text-gray-800">Tom Jonson</div>
-            <form>
-              <p-rating [readonly]="true" [cancel]="false" stars="5"></p-rating>
-            </form>
-          </div>
+          <div class="text-xl font-semibold text-gray-800">Tom Jonson</div>
+          <form>
+            <p-rating [readonly]="true" [cancel]="false" stars="5"></p-rating>
+          </form>
+
+          <span class="absolute right-2 top-2 text-4xl">🥇</span>
         </div>
 
         <!-- Body with Information -->
-        <div class="space-y-4 p-6 text-gray-700">
+        <div class="space-y-4 border-0 border-b border-solid border-gray-300 p-6 text-gray-700">
           <div class="flex justify-between">
             <div><strong>100</strong> Total Sales</div>
             <div class="text-right"><strong>$100,000</strong> Price</div>
@@ -27,20 +27,19 @@
               <span class="material-symbols-rounded text-blue-600">phone_iphone</span>
               <span>0123456789</span>
             </div>
-            <p-button icon="pi pi-copy" size="small" severity="help" />
+            <p-button pTooltip="Copy" [text]="true" icon="pi pi-copy" size="small" severity="help" />
           </div>
+        </div>
 
-          <div class="mt-4 flex items-center justify-between">
-            <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" />
-            <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" />
-          </div>
+        <div class="flex items-end justify-end gap-2 p-4">
+          <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" />
+          <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" />
         </div>
       </div>
     </div>
-
   </div>
 
   <div class="text-right">
-    <p-button label="See More Agents" icon="pi pi-arrow-right " iconPos="right" severity="contrast" />
+    <p-button size="small" label="See More Agents" icon="pi pi-arrow-right " iconPos="right" severity="contrast" />
   </div>
 </div>
