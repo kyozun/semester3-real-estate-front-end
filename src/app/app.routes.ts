@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RealEstateListComponent } from './real-estate-list/real-estate-list.component';
+import { RealEstateDetailComponent } from './real-estate-detail/real-estate-detail.component';
 
 export const routes: Routes = [
     {
@@ -23,6 +24,10 @@ export const routes: Routes = [
         path: 'search',
         component: RealEstateListComponent,
     },
+  {
+    path: 'real-estate/details/:id',
+    component: RealEstateDetailComponent,
+  },
     {
         path: '**',
         component: NotFoundComponent,

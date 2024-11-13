@@ -182,21 +182,8 @@ export class RealEstateListComponent implements OnInit {
     console.log(filterParams);
   }
 
-  // This function is triggered when 'All Prices' checkbox is changed
-  onAllTypesChange($event: any): void {
-    const checkAll = $event.checked;
-    this.filterForm.controls.propertyTypes.controls.forEach((control) => control.setValue(checkAll));
-  }
 
   onHouseChange($event: CheckboxChangeEvent) {
-    const propertyTypesControl = this.filterForm.controls.propertyTypes;
 
-    if ($event.checked) {
-      propertyTypesControl?.patchValue({
-        allTypes: false,
-        house: $event.checked,
-        apartment: $event.checked,
-      });
-    }
   }
 }
