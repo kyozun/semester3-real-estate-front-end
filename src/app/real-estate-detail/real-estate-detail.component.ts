@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NavComponent } from '../nav/nav.component';
 import { FooterComponent } from '../footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular/16';
@@ -9,40 +9,50 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgAutoPlay from 'lightgallery/plugins/autoplay';
 import { BeforeSlideDetail } from 'lightgallery/lg-events';
 import { LightGallerySettings } from 'lightgallery/lg-settings';
+import { YouTubePlayer } from '@angular/youtube-player';
+import lightGallery from 'lightgallery';
+import { NgClass, NgStyle } from '@angular/common';
+import { YtPlayerComponent } from '../components/yt-player/yt-player.component';
 
 @Component({
   selector: 'app-real-estate-detail',
   standalone: true,
-  imports: [NavComponent, FooterComponent, LightgalleryModule],
+  imports: [NavComponent, FooterComponent, LightgalleryModule, YouTubePlayer, NgStyle, NgClass, YtPlayerComponent],
   templateUrl: './real-estate-detail.component.html',
   styleUrl: './real-estate-detail.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RealEstateDetailComponent {
-  settings: LightGallerySettings = {
-    counter: true,
-    closable: true,
-    rotate: true,
-    fullScreen: true,
-    download: false,
-    thumbnail: true,
-    autoplay: true,
-    autoplayControls: false,
-    slideShowAutoplay : true,
+export class RealEstateDetailComponent implements AfterViewInit {
+  @ViewChild('galleryContainer') galleryContainer!: ElementRef;
 
-    thumbMargin: 6,
-    plugins: [lgZoom, lgRotate, lgFullScreen, lgThumbnail, lgAutoPlay],
-    slideDelay: 0,
-    animateThumb: true,
-    loop: true,
-    startAnimationDuration: 300,
-    mode: 'lg-fade',
-    speed: 200,
-    closeOnTap: true,
-  };
   onBeforeSlide = (detail: BeforeSlideDetail): void => {
     const { index, prevIndex } = detail;
     console.log(index, prevIndex);
   };
+
+  ngAfterViewInit() {
+    lightGallery(this.galleryContainer.nativeElement, {
+      selector: '.item',
+      counter: true,
+      closable: true,
+      rotate: true,
+      fullScreen: true,
+      download: false,
+      thumbnail: true,
+      autoplay: true,
+      autoplayControls: false,
+      slideShowAutoplay: true,
+
+      thumbMargin: 6,
+      plugins: [lgZoom, lgRotate, lgFullScreen, lgThumbnail, lgAutoPlay],
+      slideDelay: 0,
+      animateThumb: true,
+      loop: true,
+      startAnimationDuration: 300,
+      mode: 'lg-fade',
+      speed: 200,
+      closeOnTap: true,
+    });
+  }
 }

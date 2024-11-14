@@ -1,34 +1,175 @@
-<div class="flex min-h-screen flex-col">
+<div class="flex min-h-screen flex-col font-sans">
   <app-nav></app-nav>
 
-  <div class="container mx-auto flex-1">
-    <lightgallery   [settings]="settings" [onBeforeSlide]="onBeforeSlide">
-      <a data-lg-size="480-475-480, 800-791-800, 1406-1390" class="gallery-item"
-         data-src="https://images.unsplash.com/photo-1581894158358-5ecd2c518883?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1406&q=80"
-         data-responsive="https://images.unsplash.com/photo-1581894158358-5ecd2c518883?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1581894158358-5ecd2c518883?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800"
-         data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@entrycube' >Diego Guzmán </a></h4> <p> Location - <a href='https://unsplash.com/s/photos/fushimi-inari-taisha-shrine-senbontorii%2C-68%E7%95%AA%E5%9C%B0-fukakusa-yabunouchicho%2C-fushimi-ward%2C-kyoto%2C-japan'>Fushimi Ward, Kyoto, Japan</a></p>">
-        <img class="img-responsive"
-             src="https://images.unsplash.com/photo-1581894158358-5ecd2c518883?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80" />
-      </a>
-      <a data-lg-size="480-480-480, 800-800-800, 1400-1400" data-pinterest-text="Shinimamiya, Osaka, Japan"
-         data-tweet-text="Shinimamiya, Osaka, Japan" class="gallery-item"
-         data-src="https://images.unsplash.com/photo-1544550285-f813152fb2fd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
-         data-responsive="https://images.unsplash.com/photo-1544550285-f813152fb2fd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1544550285-f813152fb2fd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800"
-         data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@asoshiation' >Shah </a></h4><p> Location - <a href='https://unsplash.com/s/photos/shinimamiya%2C-osaka%2C-japan'>Shinimamiya, Osaka, Japan</a></p>">
-        <img class="img-responsive"
-             src="https://images.unsplash.com/photo-1544550285-f813152fb2fd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80" />
-      </a>
-      <a data-lg-size="480-480-480, 800-800-800, 1400-1400" data-pinterest-text="Pin it3"
-         data-tweet-text="share on twitter 4" class="gallery-item"
-         data-src="https://images.unsplash.com/photo-1584592740039-cddf0671f3d4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80"
-         data-responsive="https://images.unsplash.com/photo-1584592740039-cddf0671f3d4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1584592740039-cddf0671f3d4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800"
-         data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@katherine_xx11' >Katherine Gu </a></h4><p> For all those years we were alone and helpless.</p>">
-        <img class="img-responsive"
-             src="https://images.unsplash.com/photo-1584592740039-cddf0671f3d4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80" />
-      </a>
-    </lightgallery>
+  <div class="container mx-auto my-8 flex-1">
+    <h1 class="mb-2">9 Eden Court, Tamborine Mountain, Qld 4272</h1>
+    <div class="mb-4 flex items-center gap-4">
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-rounded"> bathtub </span>
+        <span>3</span>
+      </div>
 
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-rounded"> bed </span>
+        <span>2</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-rounded"> garage </span>
+        <span>2</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-rounded"> crop </span>
+        <span>200 m<sup>2</sup></span>
+      </div>
+
+      <div class="flex items-center">
+        <span>House</span>
+      </div>
+    </div>
+
+    <div #galleryContainer class="grid h-96 grid-cols-2 gap-4">
+      <div class="">
+        <div
+          class="item"
+          data-src="https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1080&q=80"
+          data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@therawhunter' >Massimiliano Morosinotto </a></h4><p> Location - <a href='https://unsplash.com/s/photos/tre-cime-di-lavaredo%2C-italia'>Tre Cime di Lavaredo, Italia</a>This is the Way</p>">
+          <img
+            class="h-96 w-full rounded object-cover"
+            src="https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1080&q=80" />
+        </div>
+      </div>
+
+      <div class="grid h-96 grid-cols-2 grid-rows-2 gap-4">
+        <div
+          class="item row-span-1"
+          data-src="https://images.unsplash.com/photo-1605973029521-8154da591bd7?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80"
+          data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@thesaboo' >Sascha Bosshard </a></h4><p> Location - <a href='https://unsplash.com/s/photos/pizol%2C-mels%2C-schweiz'>Pizol, Mels, Schweiz</a></p>">
+          <img
+            class="h-full w-full rounded object-cover"
+            src="https://images.unsplash.com/photo-1605973029521-8154da591bd7?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+        </div>
+
+        <div
+          class="item row-span-1"
+          data-src="https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80"
+          data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@yusufevli' >Yusuf Evli </a></h4><p> Foggy Road</p>">
+          <img
+            class="h-full w-full rounded object-cover"
+            src="https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+        </div>
+
+        <div
+          class="item row-span-1"
+          data-src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80">
+          <img
+            class="h-full w-full rounded object-cover"
+            src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+        </div>
+
+        <div
+          class="item row-span-1"
+          data-src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80">
+          <img
+            class="h-full w-full rounded object-cover"
+            src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-8 border-0 border-b border-solid border-gray-300" />
+
+    <div class="grid grid-cols-12">
+      <div class="col-span-9 border-0 border-r border-solid border-gray-300 pr-8">
+        <!--Description-->
+
+        <div>
+          <h1 class="mb-4 text-2xl font-semibold">Description</h1>
+          <div class="text-gray-800">
+            Vendors Committed Elsewhere! Contract Needed This Weekend! Building & Pest Report Available 9 Eden Court, Tamborine Mountain Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Adipisci, consectetur consequuntur dolore dolorem earum eius error excepturi id ipsum iste magni maxime odio pariatur quasi quo rem, saepe, tenetur voluptates!
+          </div>
+        </div>
+
+        <hr class="my-8 border-0 border-b border-solid border-gray-300" />
+
+        <!--Property features-->
+        <div>
+          <div class="mb-4 text-2xl font-semibold">Property features</div>
+          <!--2 Columns-->
+          <div class="grid grid-cols-2 gap-6 text-gray-800">
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> ac_unit </span>
+              <span>Air conditioning</span>
+            </div>
+
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> wifi </span>
+              <span>Broadband</span>
+            </div>
+
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> wifi </span>
+              <span>Broadband</span>
+            </div>
+
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> wifi </span>
+              <span>Broadband</span>
+            </div>
+
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> wifi </span>
+              <span>Broadband</span>
+            </div>
+
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> wifi </span>
+              <span>Broadband</span>
+            </div>
+
+            <div class="flex w-1/2 items-center gap-4">
+              <span class="material-symbols-rounded"> wifi </span>
+              <span>Broadband</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-8 border-0 border-b border-solid border-gray-300" />
+
+        <!--Floorplans and tours-->
+        <div class="mb-4">
+          <div class="mb-4 text-2xl font-semibold">Floorplans and tours</div>
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <div class="mb-4 flex items-center gap-4">
+                <span class="material-symbols-rounded"> smart_display </span>
+                <span>Videos</span>
+              </div>
+              <app-yt-player videoID="bn0Kh9c4Zv4"></app-yt-player>
+            </div>
+
+            <div>
+              <div class="mb-4 flex items-center gap-4">
+                <span class="material-symbols-rounded"> edit_document </span>
+                <span>Floorplan</span>
+              </div>
+              <div class="w-full">
+                <img class="h-48 w-full object-cover object-center" src="https://www.drawio.com/assets/img/blog/floorplan-apartment-ground-floor.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Property video-->
+
+        <hr class="my-8 border-0 border-b border-solid border-gray-300" />
+      </div>
+    </div>
+
+    <div class="col-span-3"></div>
   </div>
-
-  <app-footer></app-footer>
 </div>
+
+<app-footer></app-footer>

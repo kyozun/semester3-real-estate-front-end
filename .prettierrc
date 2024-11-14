@@ -5,7 +5,7 @@
   "singleQuote": true,
   "printWidth": 200,
   "singleAttributePerLine": false,
-  "bracketSameLine": false,
+  "bracketSameLine": true,
   "plugins": [
     "prettier-plugin-tailwindcss"
   ]
