@@ -1,27 +1,30 @@
-<div class="flex min-h-screen flex-col font-sans">
+<div class="flex min-h-screen select-none flex-col font-sans">
   <app-nav></app-nav>
 
   <div class="container mx-auto my-8 flex-1">
-    <h1 class="mb-2">9 Eden Court, Tamborine Mountain, Qld 4272</h1>
-    <div class="mb-4 flex items-center gap-4">
-      <div class="flex items-center gap-4">
-        <span class="material-symbols-rounded"> bathtub </span>
+    <h1 class="mb-4 text-3xl font-semibold">9 Eden Court, Tamborine Mountain, Qld 4272</h1>
+    <div class="mb-4 flex items-center gap-4 text-gray-800">
+      <div class="flex items-center gap-1">
+        <span class="material-symbols-rounded">bathtub</span>
         <span>3</span>
       </div>
 
-      <div class="flex items-center gap-4">
-        <span class="material-symbols-rounded"> bed </span>
+      <div class="flex items-center gap-1">
+        <span class="material-symbols-rounded">bed</span>
         <span>2</span>
       </div>
 
-      <div class="flex items-center gap-4">
-        <span class="material-symbols-rounded"> garage </span>
+      <div class="flex items-center gap-1">
+        <span class="material-symbols-rounded">garage</span>
         <span>2</span>
       </div>
 
-      <div class="flex items-center gap-4">
-        <span class="material-symbols-rounded"> crop </span>
-        <span>200 m<sup>2</sup></span>
+      <div class="flex items-center gap-1">
+        <span class="material-symbols-rounded">crop</span>
+        <span>
+          200 m
+          <sup>2</sup>
+        </span>
       </div>
 
       <div class="flex items-center">
@@ -29,51 +32,37 @@
       </div>
     </div>
 
-    <div #galleryContainer class="grid h-96 grid-cols-2 gap-4">
+    <div #galleryContainer class="grid h-96 grid-cols-2 gap-1">
       <div class="">
         <div
           class="item"
           data-src="https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1080&q=80"
           data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@therawhunter' >Massimiliano Morosinotto </a></h4><p> Location - <a href='https://unsplash.com/s/photos/tre-cime-di-lavaredo%2C-italia'>Tre Cime di Lavaredo, Italia</a>This is the Way</p>">
-          <img
-            class="h-96 w-full rounded object-cover"
-            src="https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1080&q=80" />
+          <img class="h-96 w-full rounded object-cover" src="https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1080&q=80" />
         </div>
       </div>
 
-      <div class="grid h-96 grid-cols-2 grid-rows-2 gap-4">
+      <div class="grid h-96 grid-cols-2 grid-rows-2 gap-1">
         <div
           class="item row-span-1"
           data-src="https://images.unsplash.com/photo-1605973029521-8154da591bd7?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80"
           data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@thesaboo' >Sascha Bosshard </a></h4><p> Location - <a href='https://unsplash.com/s/photos/pizol%2C-mels%2C-schweiz'>Pizol, Mels, Schweiz</a></p>">
-          <img
-            class="h-full w-full rounded object-cover"
-            src="https://images.unsplash.com/photo-1605973029521-8154da591bd7?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+          <img class="h-full w-full cursor-pointer rounded object-cover" src="https://images.unsplash.com/photo-1605973029521-8154da591bd7?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
         </div>
 
         <div
           class="item row-span-1"
           data-src="https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80"
           data-sub-html="<h4>Photo by - <a href='https://unsplash.com/@yusufevli' >Yusuf Evli </a></h4><p> Foggy Road</p>">
-          <img
-            class="h-full w-full rounded object-cover"
-            src="https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+          <img class="h-full w-full cursor-pointer rounded object-cover" src="https://images.unsplash.com/photo-1526281216101-e55f00f0db7a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
         </div>
 
-        <div
-          class="item row-span-1"
-          data-src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80">
-          <img
-            class="h-full w-full rounded object-cover"
-            src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+        <div class="item row-span-1" data-src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80">
+          <img class="h-full w-full cursor-pointer rounded object-cover" src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
         </div>
 
-        <div
-          class="item row-span-1"
-          data-src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80">
-          <img
-            class="h-full w-full rounded object-cover"
-            src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
+        <div class="item row-span-1" data-src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1600&q=80">
+          <img class="h-full w-full cursor-pointer rounded object-cover" src="https://images.unsplash.com/photo-1609342122563-a43ac8917a3a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80" />
         </div>
       </div>
     </div>
@@ -87,8 +76,8 @@
         <div>
           <h1 class="mb-4 text-2xl font-semibold">Description</h1>
           <div class="text-gray-800">
-            Vendors Committed Elsewhere! Contract Needed This Weekend! Building & Pest Report Available 9 Eden Court, Tamborine Mountain Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Adipisci, consectetur consequuntur dolore dolorem earum eius error excepturi id ipsum iste magni maxime odio pariatur quasi quo rem, saepe, tenetur voluptates!
+            Vendors Committed Elsewhere! Contract Needed This Weekend! Building & Pest Report Available 9 Eden Court, Tamborine Mountain Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, consectetur consequuntur dolore dolorem earum eius error excepturi id ipsum iste magni maxime
+            odio pariatur quasi quo rem, saepe, tenetur voluptates!
           </div>
         </div>
 
@@ -100,37 +89,37 @@
           <!--2 Columns-->
           <div class="grid grid-cols-2 gap-6 text-gray-800">
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> ac_unit </span>
+              <span class="material-symbols-rounded">ac_unit</span>
               <span>Air conditioning</span>
             </div>
 
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> wifi </span>
+              <span class="material-symbols-rounded">wifi</span>
               <span>Broadband</span>
             </div>
 
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> wifi </span>
+              <span class="material-symbols-rounded">wifi</span>
               <span>Broadband</span>
             </div>
 
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> wifi </span>
+              <span class="material-symbols-rounded">wifi</span>
               <span>Broadband</span>
             </div>
 
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> wifi </span>
+              <span class="material-symbols-rounded">wifi</span>
               <span>Broadband</span>
             </div>
 
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> wifi </span>
+              <span class="material-symbols-rounded">wifi</span>
               <span>Broadband</span>
             </div>
 
             <div class="flex w-1/2 items-center gap-4">
-              <span class="material-symbols-rounded"> wifi </span>
+              <span class="material-symbols-rounded">wifi</span>
               <span>Broadband</span>
             </div>
           </div>
@@ -144,7 +133,7 @@
           <div class="grid grid-cols-2 gap-6">
             <div>
               <div class="mb-4 flex items-center gap-4">
-                <span class="material-symbols-rounded"> smart_display </span>
+                <span class="material-symbols-rounded">smart_display</span>
                 <span>Videos</span>
               </div>
               <app-yt-player videoID="bn0Kh9c4Zv4"></app-yt-player>
@@ -152,11 +141,11 @@
 
             <div>
               <div class="mb-4 flex items-center gap-4">
-                <span class="material-symbols-rounded"> edit_document </span>
+                <span class="material-symbols-rounded">edit_document</span>
                 <span>Floorplan</span>
               </div>
               <div class="w-full">
-                <img class="h-48 w-full object-cover object-center" src="https://www.drawio.com/assets/img/blog/floorplan-apartment-ground-floor.png" alt="" />
+                <img class="h-64 w-full rounded border border-solid border-gray-300 object-cover object-center" src="https://www.drawio.com/assets/img/blog/floorplan-apartment-ground-floor.png" alt="" />
               </div>
             </div>
           </div>
@@ -166,10 +155,38 @@
 
         <hr class="my-8 border-0 border-b border-solid border-gray-300" />
       </div>
-    </div>
 
-    <div class="col-span-3"></div>
+      <!--Contact-->
+      <div class="col-span-3 ml-8">
+        <div class="sticky top-8 rounded border border-solid border-gray-300 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <p-avatar class="mr-4" image="https://primefaces.org/cdn/primeng/images/demo/avatar/walter.jpg" size="xlarge" badgeSize="large" />
+              <div>
+                <div class="font-semibold">Donald Trump</div>
+                <div>0123456****</div>
+              </div>
+            </div>
+
+            <span pRipple class="material-symbols-rounded cursor-pointer rounded-full border-0 bg-gray-200 p-2 font-bold text-gray-600" [pTooltip]="tooltipCopyPhone" tooltipPosition="top">content_copy</span>
+          </div>
+
+          <div class="mt-4 w-full">
+            <p-button label=" Send email" [rounded]="true" [outlined]="true" icon="pi pi-google" size="small" class="w-full" severity="secondary" />
+          </div>
+          <div class="mt-4 w-full">
+            <p-button label="Save property" [rounded]="true" icon="pi pi-bookmark-fill" size="small" class="w-full" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <app-footer></app-footer>
+
+<ng-template #tooltipCopyPhone>
+  <div class="align-items-center flex">
+    <span>😘 Copy</span>
+  </div>
+</ng-template>

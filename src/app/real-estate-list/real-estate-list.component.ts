@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FooterComponent } from '../footer/footer.component';
 import { NavComponent } from '../nav/nav.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RealEstateService } from '../services/real-estate.service';
 import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -53,6 +53,7 @@ interface City {
     Button,
     ScrollTopModule,
     NgOptimizedImage,
+    RouterLink,
   ],
   templateUrl: './real-estate-list.component.html',
   styleUrl: './real-estate-list.component.css',
@@ -182,8 +183,5 @@ export class RealEstateListComponent implements OnInit {
     console.log(filterParams);
   }
 
-
-  onHouseChange($event: CheckboxChangeEvent) {
-
-  }
+  onHouseChange($event: CheckboxChangeEvent) {}
 }
