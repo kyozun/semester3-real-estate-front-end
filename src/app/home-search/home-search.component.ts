@@ -21,21 +21,7 @@ interface City {
 @Component({
   selector: 'app-home-search',
   standalone: true,
-  imports: [
-    TabViewModule,
-    InputTextModule,
-    ButtonModule,
-    HomeMostViewedComponent,
-    HomeForYouComponent,
-    HomeAgentComponent,
-    DialogModule,
-    CheckboxModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DropdownModule,
-    Ripple,
-    SliderModule,
-  ],
+  imports: [TabViewModule, InputTextModule, ButtonModule, HomeMostViewedComponent, HomeForYouComponent, HomeAgentComponent, DialogModule, CheckboxModule, FormsModule, ReactiveFormsModule, DropdownModule, Ripple, SliderModule],
   templateUrl: './home-search.component.html',
   styleUrl: './home-search.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -96,9 +82,10 @@ export class HomeSearchComponent implements OnInit {
 
   ngOnInit() {}
 
+  /* Submit the form */
   onSubmit() {
     const formValues = this.searchForm.value;
-    console.log(formValues); // This will log all form values as an object
+    console.log(formValues);
 
     const queryParams: any = {
       ...formValues.price,
@@ -110,7 +97,7 @@ export class HomeSearchComponent implements OnInit {
     console.log(queryParams);
 
     // Navigate to a new route with the query parameters
-    this.router.navigate(['/search'], { queryParams });
+    this.router.navigate(['/property/search'], { queryParams });
 
     // Close the dialog
     this.visible = false;

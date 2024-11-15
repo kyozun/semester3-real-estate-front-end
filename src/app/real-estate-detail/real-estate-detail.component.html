@@ -2,6 +2,7 @@
   <app-nav></app-nav>
 
   <div class="container mx-auto my-8 flex-1">
+    {{realEstate$ | async}}
     <h1 class="mb-4 text-3xl font-semibold">9 Eden Court, Tamborine Mountain, Qld 4272</h1>
     <div class="mb-4 flex items-center gap-4 text-gray-800">
       <div class="flex items-center gap-1">
@@ -190,3 +191,8 @@
     <span>😘 Copy</span>
   </div>
 </ng-template>
+
+
+@if (isLoading$ | async) {
+  <p-progressBar class="progress-bar-container" mode="indeterminate" [style]="{ height: '3px' }" />
+}

@@ -7,10 +7,16 @@ import { BehaviorSubject, map, tap } from 'rxjs';
 })
 export class RealEstateService {
   public isLoading = true;
-  private baseUrl = 'https://dummyjson.com/products/search';
+  private baseUrl = 'https://dummyjson.com/products';
   private http = inject(HttpClient);
+
+  /*PropertyList*/
   private realEstatesSubject = new BehaviorSubject<any[]>([]);
   realEstates$ = this.realEstatesSubject.asObservable();
+
+  /*Property Detail*/
+  private realEstateSubject = new BehaviorSubject<any>('');
+  realEstate$ = this.realEstateSubject.asObservable();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
@@ -18,7 +24,7 @@ export class RealEstateService {
   getRealEstates(query: string) {
     this.isLoadingSubject.next(true);
     this.http
-      .get<any>(`${this.baseUrl}?q=${query}`)
+      .get<any>(`${this.baseUrl}/search?q=${query}`)
       .pipe(
         map((response) => response.products),
         tap(() => {
@@ -29,6 +35,27 @@ export class RealEstateService {
       .subscribe({
         next: (realEstates) => {
           this.realEstatesSubject.next(realEstates);
+        },
+        error: () => {
+          this.isLoadingSubject.next(false);
+          ``;
+        },
+      });
+  }
+
+  getRealEstate(id: string) {
+    this.isLoadingSubject.next(true);
+    this.http
+      .get<any>(`${this.baseUrl}/${id}`)
+      .pipe(
+        tap(() => {
+          // Stop loading
+          this.isLoadingSubject.next(false);
+        })
+      )
+      .subscribe({
+        next: (realEstate) => {
+          this.realEstateSubject.next(realEstate);
         },
         error: () => {
           this.isLoadingSubject.next(false);

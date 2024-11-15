@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FooterComponent } from '../footer/footer.component';
 import { NavComponent } from '../nav/nav.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RealEstateService } from '../services/real-estate.service';
 import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
+import { CheckboxModule } from 'primeng/checkbox';
 import { SliderChangeEvent, SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
@@ -62,7 +62,6 @@ interface City {
 export class RealEstateListComponent implements OnInit {
   @ViewChild('minBedroom') minBedroomInput: ElementRef;
   @ViewChild('maxBedroom') maxBedroomInput: ElementRef;
-
   @ViewChild('minBathroom') minBathroomInput: ElementRef;
   @ViewChild('maxBathroom') maxBathroomInput: ElementRef;
   query: string = '';
@@ -70,15 +69,14 @@ export class RealEstateListComponent implements OnInit {
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
-
   cities!: City[];
-  // }
+  private router = inject(Router);
   private route = inject(ActivatedRoute);
   private realEstateService = inject(RealEstateService);
 
   /*Observable*/
   realEstates$: Observable<any[]> = this.realEstateService.realEstates$;
-  isLoading$ = this.realEstateService.isLoading$;
+  isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
 
   // get bedroomRange() {
   //   return this.filterForm.get('bedrooms.bedroomRange')?.value;
@@ -117,20 +115,8 @@ export class RealEstateListComponent implements OnInit {
     }),
   });
 
-  // onPageChange(event: PageEvent) {
-  //   this.first = event.first;
-  //   this.rows = event.rows;
-  // }
-
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.query = params['query'] || '';
-      this.page = +params['page'] || 1;
-
-      // Use this.query and this.page to fetch or filter data
-      this.searchData(this.query, this.page);
-    });
-
+    /*Get All Real Estate*/
     this.getRealEstates('phone');
 
     this.cities = [
@@ -145,13 +131,12 @@ export class RealEstateListComponent implements OnInit {
     ];
   }
 
-  searchData(query: string, page: number) {
-    // Fetch or filter data based on query and page
-    console.log('Searching for:', query, 'Page:', page);
-  }
-
   getRealEstates(query: string): void {
     this.realEstateService.getRealEstates(query);
+  }
+
+  getRealEstate(id: string) {
+    this.realEstateService.getRealEstates(id);
   }
 
   OnBedroomChange($event: SliderChangeEvent) {
@@ -183,5 +168,7 @@ export class RealEstateListComponent implements OnInit {
     console.log(filterParams);
   }
 
-  onHouseChange($event: CheckboxChangeEvent) {}
+  openPropertyDetail(property: any) {
+    this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
+  }
 }
