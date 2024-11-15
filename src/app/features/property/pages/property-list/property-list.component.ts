@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { FooterComponent } from '../footer/footer.component';
-import { NavComponent } from '../nav/nav.component';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { RealEstateService } from '../services/real-estate.service';
+import { FooterComponent } from '../../../../core/layout/footer/footer.component';
+import { HeaderComponent } from '../../../../core/layout/header/header.component';
+import { Router, RouterLink } from '@angular/router';
+import { PropertyService } from '../../services/property.service';
 import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AvatarModule } from 'primeng/avatar';
@@ -17,7 +17,6 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { Button } from 'primeng/button';
 import { ScrollTopModule } from 'primeng/scrolltop';
-import { PropertyFilter } from '../interfaces/property-filter';
 
 interface PageEvent {
   first: number;
@@ -32,13 +31,13 @@ interface City {
 }
 
 @Component({
-  selector: 'app-real-estate-list',
+  selector: 'app-property-list',
   standalone: true,
   imports: [
     FormsModule,
     SliderModule,
     InputTextModule,
-    NavComponent,
+    HeaderComponent,
     AsyncPipe,
     CurrencyPipe,
     ToggleButtonModule,
@@ -55,24 +54,22 @@ interface City {
     NgOptimizedImage,
     RouterLink,
   ],
-  templateUrl: './real-estate-list.component.html',
-  styleUrl: './real-estate-list.component.css',
+  templateUrl: './property-list.component.html',
+  styleUrl: './property-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RealEstateListComponent implements OnInit {
+export class PropertyListComponent implements OnInit {
   @ViewChild('minBedroom') minBedroomInput: ElementRef;
   @ViewChild('maxBedroom') maxBedroomInput: ElementRef;
   @ViewChild('minBathroom') minBathroomInput: ElementRef;
   @ViewChild('maxBathroom') maxBathroomInput: ElementRef;
   query: string = '';
-  page: number = 1;
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
   cities!: City[];
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private realEstateService = inject(RealEstateService);
+  private realEstateService = inject(PropertyService);
 
   /*Observable*/
   realEstates$: Observable<any[]> = this.realEstateService.realEstates$;
@@ -84,7 +81,8 @@ export class RealEstateListComponent implements OnInit {
   filterForm = this.formBuilder.group({
     propertyTypes: this.formBuilder.group({
       allTypes: [false],
-      types: [],
+      house: [false],
+      apartment: [false],
     }),
     price: this.formBuilder.group({
       allPrices: [true],
@@ -116,6 +114,7 @@ export class RealEstateListComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.onFilterFormChange();
     /*Get All Real Estate*/
     this.getRealEstates('phone');
 
@@ -158,17 +157,54 @@ export class RealEstateListComponent implements OnInit {
   }
 
   onFilterFormChange() {
-    const formValues = this.filterForm.value;
+    this.filterForm.valueChanges.subscribe((value) => {
+      if (value.propertyTypes?.allTypes) {
+        this.selectAllTypes();
+        this.getRealEstates('phone');
+      } else if (!value.propertyTypes?.allTypes) {
+        this.deselectAllTypes();
+      }
+      else {}
+    });
+  }
 
-    const filterParams: PropertyFilter = {
-      price: formValues.price?.price ?? 0,
-      allPrices: formValues.price?.allPrices ?? false,
-    };
+  selectAllTypes() {
+    this.filterForm.controls.propertyTypes.patchValue(
+      {
+        allTypes: true,
+        house: true,
+        apartment: true,
+      },
+      { emitEvent: false }
+    );
+  }
 
-    console.log(filterParams);
+  deselectAllTypes() {
+    this.filterForm.controls.propertyTypes.patchValue(
+      {
+        allTypes: false,
+        house: false,
+        apartment: false,
+      },
+      { emitEvent: false }
+    );
   }
 
   openPropertyDetail(property: any) {
     this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
+  }
+
+  clearSpecificTypes(selectAll = true) {
+    this.filterForm.controls.propertyTypes.patchValue(
+      {
+        allTypes: true,
+        house: false,
+        apartment: false,
+      },
+      { emitEvent: false }
+    );
+    if (selectAll) {
+      this.filterForm.controls.propertyTypes.controls.allTypes.setValue(true, { emitEvent: false });
+    }
   }
 }

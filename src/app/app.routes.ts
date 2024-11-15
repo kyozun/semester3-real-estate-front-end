@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { RealEstateListComponent } from './real-estate-list/real-estate-list.component';
-import { RealEstateDetailComponent } from './real-estate-detail/real-estate-detail.component';
+import { LoginComponent } from './core/auth/pages/login/login.component';
+import { HomeComponent } from './features/property/pages/home/home.component';
+import { RegisterComponent } from './core/auth/pages/register/register.component';
+import { NotFoundComponent } from './features/property/components/not-found/not-found.component';
+import { PropertyListComponent } from './features/property/pages/property-list/property-list.component';
+import { PropertyDetail } from './features/property/pages/property-detail/property-detail.component';
 
 export const routes: Routes = [
   {
@@ -22,11 +22,11 @@ export const routes: Routes = [
   },
   {
     path: 'property/search',
-    component: RealEstateListComponent,
+    component: PropertyListComponent,
   },
   {
     path: 'property',
-    component: RealEstateDetailComponent,
+    component: PropertyDetail,
   },
   {
     path: '**',

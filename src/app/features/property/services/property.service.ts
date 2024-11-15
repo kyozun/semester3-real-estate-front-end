@@ -5,8 +5,7 @@ import { BehaviorSubject, map, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class RealEstateService {
-  public isLoading = true;
+export class PropertyService {
   private baseUrl = 'https://dummyjson.com/products';
   private http = inject(HttpClient);
 
@@ -38,7 +37,6 @@ export class RealEstateService {
         },
         error: () => {
           this.isLoadingSubject.next(false);
-          ``;
         },
       });
   }

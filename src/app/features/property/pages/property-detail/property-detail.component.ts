@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NavComponent } from '../nav/nav.component';
-import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../../../../core/layout/header/header.component';
+import { FooterComponent } from '../../../../core/layout/footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular/16';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgRotate from 'lightgallery/plugins/rotate';
@@ -10,7 +10,7 @@ import lgAutoPlay from 'lightgallery/plugins/autoplay';
 import { YouTubePlayer } from '@angular/youtube-player';
 import lightGallery from 'lightgallery';
 import { AsyncPipe, NgClass, NgIf, NgStyle } from '@angular/common';
-import { YtPlayerComponent } from '../components/yt-player/yt-player.component';
+import { YtPlayerComponent } from '../../../../shared/components/yt-player/yt-player.component';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { Button } from 'primeng/button';
@@ -19,24 +19,25 @@ import { Ripple } from 'primeng/ripple';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
-import { RealEstateService } from '../services/real-estate.service';
+import { PropertyService } from '../../services/property.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
-  selector: 'app-real-estate-detail',
+  selector: 'app-property-detail',
   standalone: true,
-  imports: [NavComponent, FooterComponent, LightgalleryModule, YouTubePlayer, NgStyle, NgClass, YtPlayerComponent, AvatarModule, BadgeModule, Button, TooltipModule, Ripple, BreadcrumbModule, NgIf, AsyncPipe, ProgressBarModule],
-  templateUrl: './real-estate-detail.component.html',
-  styleUrl: './real-estate-detail.component.css',
+  imports: [HeaderComponent, FooterComponent, LightgalleryModule, YouTubePlayer, NgStyle, NgClass, YtPlayerComponent, AvatarModule, BadgeModule, Button, TooltipModule, Ripple, BreadcrumbModule, NgIf, AsyncPipe, ProgressBarModule],
+  templateUrl: './property-detail.component.html',
+  styleUrl: './property-detail.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RealEstateDetailComponent implements OnInit, AfterViewInit {
+
+export class PropertyDetail implements OnInit, AfterViewInit {
   @ViewChild('galleryContainer') galleryContainer!: ElementRef;
   private route = inject(ActivatedRoute);
 
   /*Services*/
-  private realEstateService = inject(RealEstateService);
+  private realEstateService = inject(PropertyService);
 
   /*Observable*/
   realEstate$: Observable<any> = this.realEstateService.realEstate$;

@@ -1,5 +1,5 @@
 <div class="flex min-h-screen select-none flex-col font-sans">
-  <app-nav></app-nav>
+  <app-header></app-header>
 
   @if (isLoading$ | async) {
     <p-progressBar class="progress-bar-container" mode="indeterminate" [style]="{ height: '3px' }" />
@@ -87,9 +87,9 @@
                   <div formGroupName="price">
                     <h2 class="mb-4 text-xl font-semibold">Price</h2>
                     <div class="flex flex-col gap-2">
-                      <p-checkbox formControlName="allPrices" label="All Prices" [binary]="true" (onChange)="onFilterFormChange()" />
-                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" (onChange)="onFilterFormChange()" />
-                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" (onChange)="onFilterFormChange()" />
+                      <p-checkbox formControlName="allPrices" label="All Prices" [binary]="true" />
+                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" />
+                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" />
                     </div>
                   </div>
 

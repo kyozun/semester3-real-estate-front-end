@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
-import { SwiperDirectiveDirective } from '../directives/swiper-directive.directive';
+import { SwiperDirectiveDirective } from '../../../../shared/directives/swiper-directive.directive';
 import { SwiperOptions } from 'swiper/types';
 
 interface Card {
@@ -25,7 +25,7 @@ export class HomeMostViewedComponent {
   swiperConfig: SwiperOptions = {
     slidesPerView: 4,
     spaceBetween: 16,
-    autoplay: { delay: 3000 },
+    autoplay: { delay: 1500 },
     loop: true,
     autoHeight: true,
   };

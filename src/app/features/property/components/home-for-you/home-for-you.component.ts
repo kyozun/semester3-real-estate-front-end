@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild }
 import { Button } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
 import { NgForOf, NgStyle } from '@angular/common';
-import { SwiperDirectiveDirective } from '../directives/swiper-directive.directive';
+import { SwiperDirectiveDirective } from '../../../../shared/directives/swiper-directive.directive';
 import { SwiperOptions } from 'swiper/types';
 
 interface Card {
