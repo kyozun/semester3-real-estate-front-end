@@ -82,14 +82,21 @@
 
                 <hr class="my-4 border-0 border-b border-solid border-gray-300" />
 
-                <form class="flex flex-col gap-4" [formGroup]="filterForm">
+                <form class="flex flex-col gap-4" [formGroup]="filterForm" (change)="onFilterFormChange($event)">
                   <!--Price-->
-                  <div formGroupName="price">
+                  <div>
                     <h2 class="mb-4 text-xl font-semibold">Price</h2>
                     <div class="flex flex-col gap-2">
-                      <p-checkbox formControlName="allPrices" label="All Prices" [binary]="true" />
-                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" />
-                      <p-checkbox formControlName="price" label="1,2000,000" value="1200000" [binary]="false" />
+                      @if (prices$ | async; as prices) {
+                        @for (price of prices; track $index) {
+                          <div class="flex items-center">
+                            <p-radioButton [inputId]="price.label" [value]="price" formControlName="price" />
+                            <label [for]="price.label" class="ml-2">
+                              {{ price.label === 'All Prices' ? 'All Prices' : price.min.toLocaleString() + 'đ to ' + price.max.toLocaleString() + 'đ' }}
+                            </label>
+                          </div>
+                        }
+                      }
                     </div>
                   </div>
 
@@ -122,15 +129,15 @@
                   <div formGroupName="bedrooms">
                     <h2 class="mb-4 text-xl font-semibold">Bedroom</h2>
                     <div class="mb-2 flex flex-row gap-4">
-                      <div>
-                        <label for="min-bedroom">Min</label>
-                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[0]" id="min-bedroom" type="text" pInputText #minBedroom />
-                      </div>
+                      <!--                      <div>-->
+                      <!--                        <label for="min-bedroom">Min</label>-->
+                      <!--                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.controls.bedrooms.bedroomRange.value?.[0]" id="min-bedroom" type="text" pInputText #minBedroom />-->
+                      <!--                      </div>-->
 
-                      <div>
-                        <label for="max-bedroom">Max</label>
-                        <input class="mb-4 mt-2 w-full" id="max-bedroom" type="text" pInputText #maxBedroom [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[1]" />
-                      </div>
+                      <!--                      <div>-->
+                      <!--                        <label for="max-bedroom">Max</label>-->
+                      <!--                        <input class="mb-4 mt-2 w-full" id="max-bedroom" type="text" pInputText #maxBedroom [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[1]" />-->
+                      <!--                      </div>-->
                     </div>
                     <p-slider formControlName="bedroomRange" [min]="1" [max]="50" (onChange)="OnBedroomChange($event)" class="w-full" [range]="true" />
                   </div>
@@ -141,15 +148,15 @@
                   <div formGroupName="bathrooms">
                     <h2 class="mb-4 text-xl font-semibold">Bathroom</h2>
                     <div class="mb-2 flex flex-row gap-4">
-                      <div>
-                        <label for="min-bathroom">Min</label>
-                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.controls.bathrooms.controls.bathroomRange.value?.[0]" id="min-bathroom" type="text" pInputText #minBathroom />
-                      </div>
+<!--                      <div>-->
+<!--                        <label for="min-bathroom">Min</label>-->
+<!--                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.get('bathrooms.bathroomRange')?.value[0]" id="min-bathroom" type="text" pInputText #minBathroom />-->
+<!--                      </div>-->
 
-                      <div>
-                        <label for="max-bathroom">Max</label>
-                        <input class="mb-4 mt-2 w-full" id="max-bathroom" type="text" pInputText #maxBathroom [value]="this.filterForm.controls.bathrooms.controls.bathroomRange.value?.[1]" />
-                      </div>
+<!--                      <div>-->
+<!--                        <label for="max-bathroom">Max</label>-->
+<!--                        <input class="mb-4 mt-2 w-full" id="max-bathroom" type="text" pInputText #maxBathroom [value]="this.filterForm.get('bathrooms.bathroomRange')?.value[1]" />-->
+<!--                      </div>-->
                     </div>
 
                     <p-slider formControlName="bathroomRange" [min]="1" [max]="50" (onChange)="OnBathroomChange($event)" class="w-full" [range]="true" />

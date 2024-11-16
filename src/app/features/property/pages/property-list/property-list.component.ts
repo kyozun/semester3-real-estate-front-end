@@ -4,10 +4,10 @@ import { HeaderComponent } from '../../../../core/layout/header/header.component
 import { Router, RouterLink } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
 import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
-import { Observable } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SliderChangeEvent, SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
@@ -17,6 +17,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { Button } from 'primeng/button';
 import { ScrollTopModule } from 'primeng/scrolltop';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 interface PageEvent {
   first: number;
@@ -53,6 +54,7 @@ interface City {
     ScrollTopModule,
     NgOptimizedImage,
     RouterLink,
+    RadioButtonModule,
   ],
   templateUrl: './property-list.component.html',
   styleUrl: './property-list.component.css',
@@ -68,55 +70,31 @@ export class PropertyListComponent implements OnInit {
   first: number = 0;
   rows: number = 10;
   cities!: City[];
+  filterForm!: FormGroup;
+
+  /*DI*/
+  private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private realEstateService = inject(PropertyService);
 
   /*Observable*/
   realEstates$: Observable<any[]> = this.realEstateService.realEstates$;
+  prices$: Observable<{ label: string; min: number; max: number }[]>;
   isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
 
-  // get bedroomRange() {
-  //   return this.filterForm.get('bedrooms.bedroomRange')?.value;
-  private formBuilder = inject(FormBuilder);
-  filterForm = this.formBuilder.group({
-    propertyTypes: this.formBuilder.group({
-      allTypes: [false],
-      house: [false],
-      apartment: [false],
-    }),
-    price: this.formBuilder.group({
-      allPrices: [true],
-      price: [0],
-    }),
-    area: this.formBuilder.group({
-      allAreas: [true],
-      area: [false],
-    }),
-    bedrooms: this.formBuilder.group({
-      bedroomRange: [[1, 5]],
-    }),
-    bathrooms: this.formBuilder.group({
-      bathroomRange: [[1, 5]],
-    }),
-    directions: [''],
-
-    outdoorFeatures: this.formBuilder.group({
-      swimmingPool: [false],
-      garage: [false],
-      balcony: [false],
-      outdoorArea: [false],
-    }),
-    indoorFeatures: this.formBuilder.group({
-      dishwasher: [false],
-      alarmSystem: [false],
-      gym: [false],
-    }),
-  });
 
   ngOnInit(): void {
-    this.onFilterFormChange();
     /*Get All Real Estate*/
     this.getRealEstates('phone');
+
+    this.prices$ = of([
+      { label: 'All Prices', min: 0, max: 0 },
+      { label: '0 - 120000', min: 0, max: 120000 },
+      { label: '120000 - 140000', min: 120000, max: 140000 },
+      { label: '140000 - 160000', min: 140000, max: 160000 },
+      { label: '160000 - 180000', min: 160000, max: 180000 },
+      { label: '180000 - 200000', min: 180000, max: 200000 },
+    ]).pipe(delay(500));
 
     this.cities = [
       { name: 'East', code: 'NY' },
@@ -128,6 +106,38 @@ export class PropertyListComponent implements OnInit {
       { name: 'South-east', code: 'PRS' },
       { name: 'South-west', code: 'PRS' },
     ];
+
+    this.filterForm = this.formBuilder.group({
+      propertyTypes: this.formBuilder.group({
+        allTypes: [false],
+        house: [false],
+        apartment: [false],
+      }),
+      price: this.formBuilder.control(''),
+      area: this.formBuilder.group({
+        allAreas: [true],
+        area: [false],
+      }),
+      bedrooms: this.formBuilder.group({
+        bedroomRange: [[1, 5]],
+      }),
+      bathrooms: this.formBuilder.group({
+        bathroomRange: [[1, 5]],
+      }),
+      directions: [''],
+
+      outdoorFeatures: this.formBuilder.group({
+        swimmingPool: [false],
+        garage: [false],
+        balcony: [false],
+        outdoorArea: [false],
+      }),
+      indoorFeatures: this.formBuilder.group({
+        dishwasher: [false],
+        alarmSystem: [false],
+        gym: [false],
+      }),
+    });
   }
 
   getRealEstates(query: string): void {
@@ -139,72 +149,44 @@ export class PropertyListComponent implements OnInit {
   }
 
   OnBedroomChange($event: SliderChangeEvent) {
-    if ($event.values) {
-      this.minBedroomInput.nativeElement.value = $event.values[0];
-      this.maxBedroomInput.nativeElement.value = $event.values[1];
-    }
+    // if ($event.values) {
+    //   this.minBedroomInput.nativeElement.value = $event.values[0];
+    //   this.maxBedroomInput.nativeElement.value = $event.values[1];
+    // }
   }
 
   OnBathroomChange($event: SliderChangeEvent) {
-    if ($event.values) {
-      this.minBathroomInput.nativeElement.value = $event.values[0];
-      this.maxBathroomInput.nativeElement.value = $event.values[1];
-    }
+    // if ($event.values) {
+    //   this.minBathroomInput.nativeElement.value = $event.values[0];
+    //   this.maxBathroomInput.nativeElement.value = $event.values[1];
+    // }
   }
 
   clearFilters() {
     this.filterForm.reset();
   }
 
-  onFilterFormChange() {
-    this.filterForm.valueChanges.subscribe((value) => {
-      if (value.propertyTypes?.allTypes) {
-        this.selectAllTypes();
-        this.getRealEstates('phone');
-      } else if (!value.propertyTypes?.allTypes) {
-        this.deselectAllTypes();
-      }
-      else {}
-    });
+  onFilterFormChange($event: any) {
+    console.log($event);
+    // this.filterForm.valueChanges.subscribe((value) => {
+    //   if (value.propertyTypes?.allTypes) {
+    //     this.selectAllTypes();
+    //     this.getRealEstates('phone');
+    //   } else if (!value.propertyTypes?.allTypes) {
+    //     this.deselectAllTypes();
+    //   } else {
+    //   }
+    // });
   }
 
-  selectAllTypes() {
-    this.filterForm.controls.propertyTypes.patchValue(
-      {
-        allTypes: true,
-        house: true,
-        apartment: true,
-      },
-      { emitEvent: false }
-    );
-  }
 
-  deselectAllTypes() {
-    this.filterForm.controls.propertyTypes.patchValue(
-      {
-        allTypes: false,
-        house: false,
-        apartment: false,
-      },
-      { emitEvent: false }
-    );
-  }
 
   openPropertyDetail(property: any) {
     this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
   }
 
-  clearSpecificTypes(selectAll = true) {
-    this.filterForm.controls.propertyTypes.patchValue(
-      {
-        allTypes: true,
-        house: false,
-        apartment: false,
-      },
-      { emitEvent: false }
-    );
-    if (selectAll) {
-      this.filterForm.controls.propertyTypes.controls.allTypes.setValue(true, { emitEvent: false });
-    }
+
+  onCheckBoxChange(event: any) {
+    console.log(event.value);
   }
 }
