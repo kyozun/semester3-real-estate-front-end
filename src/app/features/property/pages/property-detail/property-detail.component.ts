@@ -40,7 +40,7 @@ export class PropertyDetail implements OnInit, AfterViewInit {
   private realEstateService = inject(PropertyService);
 
   /*Observable*/
-  realEstate$: Observable<any> = this.realEstateService.realEstate$;
+  realEstate$: Observable<any> = this.realEstateService.property$;
   isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
 
   private propertyId: string;
@@ -75,7 +75,7 @@ export class PropertyDetail implements OnInit, AfterViewInit {
       next: (params: Params) => {
         this.propertyId = params['id'];
         console.log(this.propertyId);
-        this.realEstateService.getRealEstate('1');
+        this.realEstateService.getProperty('1');
       },
     });
   }

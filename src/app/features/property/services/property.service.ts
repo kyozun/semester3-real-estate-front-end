@@ -10,20 +10,20 @@ export class PropertyService {
   private http = inject(HttpClient);
 
   /*PropertyList*/
-  private realEstatesSubject = new BehaviorSubject<any[]>([]);
-  realEstates$ = this.realEstatesSubject.asObservable();
+  private propertiesSubject = new BehaviorSubject<any[]>([]);
+  properties$ = this.propertiesSubject.asObservable();
 
   /*Property Detail*/
-  private realEstateSubject = new BehaviorSubject<any>('');
-  realEstate$ = this.realEstateSubject.asObservable();
+  private propertySubject = new BehaviorSubject<any>('');
+  property$ = this.propertySubject.asObservable();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
 
-  getRealEstates(query: string) {
+  getProperties(query: string) {
     this.isLoadingSubject.next(true);
     this.http
-      .get<any>(`${this.baseUrl}/search?q=${query}`)
+      .get<any>(`${this.baseUrl}/search?${query}`)
       .pipe(
         map((response) => response.products),
         tap(() => {
@@ -33,7 +33,7 @@ export class PropertyService {
       )
       .subscribe({
         next: (realEstates) => {
-          this.realEstatesSubject.next(realEstates);
+          this.propertiesSubject.next(realEstates);
         },
         error: () => {
           this.isLoadingSubject.next(false);
@@ -41,7 +41,7 @@ export class PropertyService {
       });
   }
 
-  getRealEstate(id: string) {
+  getProperty(id: string) {
     this.isLoadingSubject.next(true);
     this.http
       .get<any>(`${this.baseUrl}/${id}`)
@@ -53,7 +53,7 @@ export class PropertyService {
       )
       .subscribe({
         next: (realEstate) => {
-          this.realEstateSubject.next(realEstate);
+          this.propertySubject.next(realEstate);
         },
         error: () => {
           this.isLoadingSubject.next(false);

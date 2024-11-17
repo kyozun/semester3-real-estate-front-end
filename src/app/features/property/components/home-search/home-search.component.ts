@@ -97,7 +97,7 @@ export class HomeSearchComponent implements OnInit {
     console.log(queryParams);
 
     // Navigate to a new route with the query parameters
-    this.router.navigate(['/property/search'], { queryParams });
+    this.router.navigate(['/property/search']);
 
     // Close the dialog
     this.visible = false;

@@ -8,7 +8,7 @@
   <div class="flex-1 bg-gray-100">
     <div class="container mx-auto py-6 font-sans">
       <div class="text-black">
-        @if (realEstates$ | async; as realEstates) {
+        @if (properties$ | async; as realEstates) {
           <div class="grid grid-cols-12 gap-6">
             <!--Column 1-->
             <div class="col-span-9 space-y-4">
@@ -82,7 +82,7 @@
 
                 <hr class="my-4 border-0 border-b border-solid border-gray-300" />
 
-                <form class="flex flex-col gap-4" [formGroup]="filterForm" (change)="onFilterFormChange($event)">
+                <form class="flex flex-col gap-4" [formGroup]="filterForm">
                   <!--Price-->
                   <div>
                     <h2 class="mb-4 text-xl font-semibold">Price</h2>
@@ -90,9 +90,9 @@
                       @if (prices$ | async; as prices) {
                         @for (price of prices; track $index) {
                           <div class="flex items-center">
-                            <p-radioButton [inputId]="price.label" [value]="price" formControlName="price" />
+                            <p-radioButton [inputId]="price.label" [value]="price.value" formControlName="price" (onClick)="onFilterFormChange($event)" />
                             <label [for]="price.label" class="ml-2">
-                              {{ price.label === 'All Prices' ? 'All Prices' : price.min.toLocaleString() + 'đ to ' + price.max.toLocaleString() + 'đ' }}
+                              {{ price.label === 'All Prices' ? 'All Prices' : price.label.toLocaleString() + ' đ' }}
                             </label>
                           </div>
                         }
@@ -103,63 +103,64 @@
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Property type-->
-                  <div formGroupName="propertyTypes">
+                  <div>
                     <h2 class="mb-4 text-xl font-semibold">Property type</h2>
-                    <div class="flex flex-row gap-4">
-                      <p-checkbox formControlName="allTypes" label="All Types" [binary]="true" />
-                      <p-checkbox formControlName="house" label="House" [binary]="true" />
-                      <p-checkbox formControlName="apartment" label="Apartment" [binary]="true" />
+                    <div class="flex flex-row flex-wrap gap-4">
+                      @if (propertyTypeOptions$ | async; as propertyTypeOptions) {
+                        @for (propertyTypeOptions of propertyTypeOptions; track $index) {
+                          <p-checkbox [label]="propertyTypeOptions.label" formControlName="propertyType" [value]="propertyTypeOptions.value" (onChange)="onFilterFormChange($event)"></p-checkbox>
+                        }
+                      }
                     </div>
                   </div>
 
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Area-->
-                  <div formGroupName="area">
+                  <div>
                     <h2 class="mb-4 text-xl font-semibold">Area</h2>
                     <div class="flex flex-col gap-2">
-                      <p-checkbox formControlName="allAreas" label="All Areas" [binary]="true" />
-                      <p-checkbox formControlName="area" label="1 2000 000 m2" [binary]="true" />
+                      @if (area$ | async; as areas) {
+                        @for (area of areas; track $index) {
+                          <div class="flex items-center gap-2">
+                            <p-checkbox [inputId]="area.label" formControlName="area" [value]="area.label" (onChange)="onFilterFormChange($event)"></p-checkbox>
+                            <label [for]="area.label">
+                              @if (area.label === 'All Areas') {
+                                All Areas
+                              } @else {
+                                {{ area.label }}
+                                m
+                                <sup>2</sup>
+                              }
+                            </label>
+                          </div>
+                        }
+                      }
                     </div>
                   </div>
 
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
-                  <!--bedrooms-->
-                  <div formGroupName="bedrooms">
+                  <!--Bedrooms-->
+                  <div>
                     <h2 class="mb-4 text-xl font-semibold">Bedroom</h2>
-                    <div class="mb-2 flex flex-row gap-4">
-                      <!--                      <div>-->
-                      <!--                        <label for="min-bedroom">Min</label>-->
-                      <!--                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.controls.bedrooms.bedroomRange.value?.[0]" id="min-bedroom" type="text" pInputText #minBedroom />-->
-                      <!--                      </div>-->
-
-                      <!--                      <div>-->
-                      <!--                        <label for="max-bedroom">Max</label>-->
-                      <!--                        <input class="mb-4 mt-2 w-full" id="max-bedroom" type="text" pInputText #maxBedroom [value]="this.filterForm.controls.bedrooms.controls.bedroomRange.value?.[1]" />-->
-                      <!--                      </div>-->
-                    </div>
-                    <p-slider formControlName="bedroomRange" [min]="1" [max]="50" (onChange)="OnBedroomChange($event)" class="w-full" [range]="true" />
+                    <div class="mb-2 flex flex-row gap-4"></div>
+                    <p-slider formControlName="bedroom" [min]="0" [max]="50" [step]="1" (onChange)="OnBedroomChange($event)" class="w-full" />
+                    @if (filterForm.get('bedroom')?.value > 0) {
+                      <p class="mt-4">{{ filterForm.get('bedroom')?.value }} {{ +filterForm.get('bedroom')?.value > 0 ? 'Bedrooms' : 'Bedroom' }}</p>
+                    }
                   </div>
 
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
                   <!--Bathrooms-->
-                  <div formGroupName="bathrooms">
+                  <div>
                     <h2 class="mb-4 text-xl font-semibold">Bathroom</h2>
-                    <div class="mb-2 flex flex-row gap-4">
-<!--                      <div>-->
-<!--                        <label for="min-bathroom">Min</label>-->
-<!--                        <input class="mb-4 mt-2 w-full" [value]="this.filterForm.get('bathrooms.bathroomRange')?.value[0]" id="min-bathroom" type="text" pInputText #minBathroom />-->
-<!--                      </div>-->
-
-<!--                      <div>-->
-<!--                        <label for="max-bathroom">Max</label>-->
-<!--                        <input class="mb-4 mt-2 w-full" id="max-bathroom" type="text" pInputText #maxBathroom [value]="this.filterForm.get('bathrooms.bathroomRange')?.value[1]" />-->
-<!--                      </div>-->
-                    </div>
-
-                    <p-slider formControlName="bathroomRange" [min]="1" [max]="50" (onChange)="OnBathroomChange($event)" class="w-full" [range]="true" />
+                    <div class="mb-2 flex flex-row gap-4"></div>
+                    <p-slider formControlName="bathroom" [min]="0" [max]="50" [step]="1" (onChange)="OnBathroomChange($event)" class="w-full" />
+                    @if (filterForm.get('bathroom')?.value > 0) {
+                      <p class="mt-4">{{ filterForm.get('bathroom')?.value }} {{ +filterForm.get('bathroom')?.value > 0 ? 'Bathrooms' : 'Bathroom' }}</p>
+                    }
                   </div>
 
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
@@ -167,53 +168,53 @@
                   <!--Direction-->
                   <div>
                     <h2 class="mb-4 text-xl font-semibold">Directions</h2>
-                    <p-multiSelect [options]="cities" formControlName="directions" optionLabel="name" placeholder="Select Directions" />
+                    <p-multiSelect [options]="directions" formControlName="directions" optionLabel="name" placeholder="Select Directions" />
                   </div>
                 </form>
-              </div>
 
-              <!--Row 2-->
-              <!--Top Agents-->
-              <div class="rounded-xl border border-solid border-gray-200 bg-white px-6 py-4">
-                <div>
-                  <div class="relative flex items-center justify-center gap-2 rounded-xl border-0 border-b-8 border-solid border-blue-800 bg-blue-200 p-3 shadow">
-                    <!--Pattern-->
-                    <div class="absolute inset-0">
-                      <img class="h-full w-full object-cover opacity-60" src="dotted-line.png" alt="" />
-                    </div>
-
-                    <img class="relative z-10 w-10 rounded-full bg-blue-800 object-cover p-1" src="cute-star.png" alt="" />
-                    <h2 class="relative z-10 text-xl font-medium">Top Agents</h2>
-                  </div>
-
-                  <div class="mt-6 flex flex-col gap-4">
-                    <div class="flex flex-row items-center justify-between gap-6 font-medium">
-                      <div class="w-1/2">Username</div>
-                      <div class="w-1/2 text-right">Rank</div>
-                    </div>
-
-                    <div class="flex flex-row items-center justify-between">
-                      <div class="flex flex-row items-center">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-4" size="large" shape="circle" />
-                        <div>
-                          <p class="mb-0.5 font-medium">Donald Trump</p>
-                          <p class="text-gray-700">40 listings</p>
-                        </div>
+                <!--Row 2-->
+                <!--Top Agents-->
+                <div class="rounded-xl border border-solid border-gray-200 bg-white px-6 py-4">
+                  <div>
+                    <div class="relative flex items-center justify-center gap-2 rounded-xl border-0 border-b-8 border-solid border-blue-800 bg-blue-200 p-3 shadow">
+                      <!--Pattern-->
+                      <div class="absolute inset-0">
+                        <img class="h-full w-full object-cover opacity-60" src="dotted-line.png" alt="" />
                       </div>
 
-                      <span class="text-3xl">🥇</span>
+                      <img class="relative z-10 w-10 rounded-full bg-blue-800 object-cover p-1" src="cute-star.png" alt="" />
+                      <h2 class="relative z-10 text-xl font-medium">Top Agents</h2>
                     </div>
 
-                    <div class="flex flex-row items-center justify-between">
-                      <div class="flex flex-row items-center">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-4" size="large" shape="circle" />
-                        <div>
-                          <p class="mb-0.5 font-medium">Kamala Harris</p>
-                          <p class="text-gray-700">40 listings</p>
-                        </div>
+                    <div class="mt-6 flex flex-col gap-4">
+                      <div class="flex flex-row items-center justify-between gap-6 font-medium">
+                        <div class="w-1/2">Username</div>
+                        <div class="w-1/2 text-right">Rank</div>
                       </div>
 
-                      <span class="text-3xl">🥈</span>
+                      <div class="flex flex-row items-center justify-between">
+                        <div class="flex flex-row items-center">
+                          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-4" size="large" shape="circle" />
+                          <div>
+                            <p class="mb-0.5 font-medium">Donald Trump</p>
+                            <p class="text-gray-700">40 listings</p>
+                          </div>
+                        </div>
+
+                        <span class="text-3xl">🥇</span>
+                      </div>
+
+                      <div class="flex flex-row items-center justify-between">
+                        <div class="flex flex-row items-center">
+                          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-4" size="large" shape="circle" />
+                          <div>
+                            <p class="mb-0.5 font-medium">Kamala Harris</p>
+                            <p class="text-gray-700">40 listings</p>
+                          </div>
+                        </div>
+
+                        <span class="text-3xl">🥈</span>
+                      </div>
                     </div>
                   </div>
                 </div>
