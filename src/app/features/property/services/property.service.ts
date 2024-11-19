@@ -17,6 +17,10 @@ export class PropertyService {
   private propertySubject = new BehaviorSubject<any>('');
   property$ = this.propertySubject.asObservable();
 
+  /*Property Type*/
+  private propertyTypeSubject = new BehaviorSubject<any>('');
+  propertyType$ = this.propertyTypeSubject.asObservable();
+
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
 
@@ -54,6 +58,26 @@ export class PropertyService {
       .subscribe({
         next: (realEstate) => {
           this.propertySubject.next(realEstate);
+        },
+        error: () => {
+          this.isLoadingSubject.next(false);
+        },
+      });
+  }
+
+  getPropertyType() {
+    this.isLoadingSubject.next(true);
+    this.http
+      .get<any>(`${this.baseUrl}/category-list`)
+      .pipe(
+        tap(() => {
+          // Stop loading
+          this.isLoadingSubject.next(false);
+        })
+      )
+      .subscribe({
+        next: (propertyType) => {
+          this.propertyTypeSubject.next(propertyType);
         },
         error: () => {
           this.isLoadingSubject.next(false);

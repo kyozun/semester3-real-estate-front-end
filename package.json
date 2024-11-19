@@ -23,6 +23,7 @@
     "lightgallery": "^2.8.1",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.11",
+    "quill": "^2.0.2",
     "rxjs": "~7.8.0",
     "swiper": "^11.1.14",
     "tslib": "^2.3.0",

@@ -8,8 +8,11 @@ import { DashboardComponent } from './features/admin/components/dashboard/dashbo
 import { UsersComponent } from './features/admin/components/users/users.component';
 import { SettingsComponent } from './features/admin/components/settings/settings.component';
 import { AnalyticComponent } from './features/admin/components/analytic/analytic.component';
-import { PropertyListComponent } from './features/admin/components/property-list/property-list.component';
 import { AddPropertyComponent } from './features/admin/components/add-property/add-property.component';
+import { PropertyListComponent } from './features/property/pages/property-list/property-list.component';
+import {
+  AdminPropertyListComponent
+} from './features/admin/components/admin-property-list/admin-property-list.component';
 
 export const routes: Routes = [
   {
@@ -43,7 +46,7 @@ export const routes: Routes = [
       {
         path: 'property',
         children: [
-          { path: '', component: PropertyListComponent },
+          { path: '', component: AdminPropertyListComponent },
           { path: 'add', component: AddPropertyComponent },
         ],
       },

@@ -1,75 +1,41 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
-import { AvatarModule } from 'primeng/avatar';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Button } from 'primeng/button';
-import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
-import { FooterComponent } from '../../../../core/layout/footer/footer.component';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../../../core/layout/header/header.component';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmationService, MessageService, PrimeTemplate } from 'primeng/api';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { ScrollTopModule } from 'primeng/scrolltop';
-import { SliderChangeEvent, SliderModule } from 'primeng/slider';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { delay, Observable, of } from 'rxjs';
-import { Router, RouterLink, RouterOutlet } from '@angular/router'
-import { HttpClient } from '@angular/common/http';
-import { PropertyService } from '../../../property/services/property.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RatingModule } from 'primeng/rating';
+import { Router, RouterLink } from '@angular/router';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { FileUploadModule } from 'primeng/fileupload';
-import { TableModule } from 'primeng/table';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { InputTextModule } from 'primeng/inputtext';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FormArray, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { delay, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { PropertyService } from '../../../property/services/property.service';
+import { CheckboxChangeEvent } from 'primeng/checkbox';
+import { SliderChangeEvent } from 'primeng/slider';
 
 interface Direction {
   name: string;
   code: string;
 }
 
+
 @Component({
-  selector: 'app-property-list',
+  selector: 'app-admin-property-list',
   standalone: true,
-  imports: [
-    AsyncPipe,
-    AvatarModule,
-    Button,
-    CheckboxModule,
-    CurrencyPipe,
-    FooterComponent,
-    FormsModule,
-    HeaderComponent,
-    MultiSelectModule,
-    NgOptimizedImage,
-    ProgressBarModule,
-    RadioButtonModule,
-    ReactiveFormsModule,
-    ScrollTopModule,
-    SliderModule,
-    ToggleButtonModule,
-    RatingModule,
-    TagModule,
-    ToastModule,
-    ToolbarModule,
-    FileUploadModule,
-    TableModule,
-    InputTextModule,
-    ConfirmDialogModule,
-    ProgressSpinnerModule,
-    RouterOutlet,
-    RouterLink,
-  ],
-  templateUrl: './property-list.component.html',
-  styleUrl: './property-list.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AsyncPipe, Button, ConfirmDialogModule, CurrencyPipe, InputTextModule, PrimeTemplate, ProgressBarModule, ProgressSpinnerModule, RatingModule, RouterLink, ScrollTopModule, TableModule, TagModule, ToastModule, ToolbarModule, FormsModule],
+  templateUrl: './admin-property-list.component.html',
+  styleUrl: './admin-property-list.component.css',
   providers: [MessageService, ConfirmationService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PropertyListComponent implements OnInit {
+export class AdminPropertyListComponent implements OnInit {
   query: string = '';
   checked: boolean = false;
   first: number = 0;
@@ -85,7 +51,6 @@ export class PropertyListComponent implements OnInit {
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
-  private http = inject(HttpClient);
   private realEstateService = inject(PropertyService);
   properties$: Observable<any[]> = this.realEstateService.properties$;
   isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
