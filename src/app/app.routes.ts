@@ -3,8 +3,13 @@ import { LoginComponent } from './core/auth/pages/login/login.component';
 import { HomeComponent } from './features/property/pages/home/home.component';
 import { RegisterComponent } from './core/auth/pages/register/register.component';
 import { NotFoundComponent } from './features/property/components/not-found/not-found.component';
-import { PropertyListComponent } from './features/property/pages/property-list/property-list.component';
 import { PropertyDetail } from './features/property/pages/property-detail/property-detail.component';
+import { DashboardComponent } from './features/admin/components/dashboard/dashboard.component';
+import { UsersComponent } from './features/admin/components/users/users.component';
+import { SettingsComponent } from './features/admin/components/settings/settings.component';
+import { AnalyticComponent } from './features/admin/components/analytic/analytic.component';
+import { PropertyListComponent } from './features/admin/components/property-list/property-list.component';
+import { AddPropertyComponent } from './features/admin/components/add-property/add-property.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +32,29 @@ export const routes: Routes = [
   {
     path: 'property',
     component: PropertyDetail,
+  },
+  {
+    path: 'admin',
+    // canActivate: [AuthGuard],
+    children: [
+      { path: 'dashboard', component: AnalyticComponent },
+      { path: 'user', component: UsersComponent },
+      { path: 'setting', component: SettingsComponent },
+      {
+        path: 'property',
+        children: [
+          { path: '', component: PropertyListComponent },
+          { path: 'add', component: AddPropertyComponent },
+        ],
+      },
+      { path: 'analytic', component: AnalyticComponent },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
+    component: DashboardComponent,
   },
   {
     path: '**',

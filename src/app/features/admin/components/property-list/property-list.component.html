@@ -1,0 +1,130 @@
+<div class="flex min-h-screen select-none flex-col font-sans">
+  @if (isLoading$ | async) {
+    <p-progressBar class="progress-bar-container" mode="indeterminate" [style]="{ height: '3px' }" />
+  }
+
+  <div class="flex-1">
+    <div class="container mx-auto py-6">
+      <div class="text-black">
+        @if (properties$ | async; as properties) {
+          @if (properties.length > 0) {
+            <div class="">
+              <p-toast />
+              <p-confirmDialog [style]="{ width: '460px' }" />
+              <p-toolbar styleClass="mb-4 gap-2">
+                <ng-template pTemplate="left">
+                  <p-button severity="primary" [rounded]="true" label="New Property" icon="pi pi-plus" class="mr-2" routerLink="add" />
+                  <p-button severity="danger" [rounded]="true" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()" />
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                  <p-button severity="secondary" [rounded]="true" label="Export" icon="pi pi-upload" />
+                </ng-template>
+              </p-toolbar>
+
+              <p-table
+                #dt
+                [value]="properties"
+                [rows]="10"
+                [paginator]="true"
+                [globalFilterFields]="['title', 'price', 'rating', 'availabilityStatus']"
+                [tableStyle]="{ 'min-width': '75rem' }"
+                [rowHover]="true"
+                [filterDelay]="0"
+                dataKey="id"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                  <div class="flex items-center justify-between">
+                    <h5 class="m-0 text-2xl font-semibold">Manage Properties</h5>
+                    <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" placeholder="Search..." />
+                      <!--                             <input-->
+                      <!--                               pInputText-->
+                      <!--                               type="text"-->
+                      <!--                               (input)="dt.filterGlobal($event.target.value, 'contains')"-->
+                      <!--                               placeholder="Search..." />-->
+                    </span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 4rem">
+                      <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="title" style="min-width: 15rem">
+                      Title
+                      <p-sortIcon field="title" />
+                    </th>
+                    <th>Image</th>
+                    <th pSortableColumn="price">
+                      Price
+                      <p-sortIcon field="price" />
+                    </th>
+                    <th pSortableColumn="category" style="min-width: 15rem">
+                      Category
+                      <p-sortIcon field="category" />
+                    </th>
+                    <th pSortableColumn="rating">
+                      Reviews
+                      <p-sortIcon field="rating" />
+                    </th>
+                    <th pSortableColumn="availabilityStatus">
+                      Status
+                      <p-sortIcon field="availabilityStatus" />
+                    </th>
+
+                    <th>Actions</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-property>
+                  <tr class="p-selectable-row">
+                    <td>
+                      <p-tableCheckbox [value]="property" />
+                    </td>
+                    <td>
+                      {{ property.title }}
+                    </td>
+                    <td>
+                      <img [src]="property.images" [alt]="property.name" width="100" class="shadow-4" />
+                    </td>
+                    <td>
+                      {{ property.price | currency: 'USD' }}
+                    </td>
+                    <td>
+                      {{ property.category }}
+                    </td>
+                    <td>
+                      <p-rating [(ngModel)]="property.rating" [readonly]="true" [cancel]="false" />
+                    </td>
+                    <td>
+                      <p-tag [value]="property.availabilityStatus" [severity]="getSeverity(property.availabilityStatus)" />
+                    </td>
+                    <td>
+                      <p-button icon="pi pi-eye" class="mr-2" [rounded]="true" severity="secondary"></p-button>
+                      <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" severity="primary"></p-button>
+                      <p-button icon="pi pi-trash" severity="danger" [rounded]="true"></p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <div class="flex items-center justify-between">In total there are {{ properties ? properties.length : 0 }} property</div>
+                </ng-template>
+              </p-table>
+            </div>
+          } @else {
+            <div class="relative">
+              <div class="absolute inset-0 top-80 flex items-center justify-center">
+                <p-progressSpinner ariaLabel="loading" strokeWidth="3" animationDuration=".5s" />
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>
+<p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up" />

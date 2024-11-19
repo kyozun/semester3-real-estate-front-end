@@ -1,0 +1,105 @@
+<div class="mb-6 text-2xl font-semibold">Add Property</div>
+
+<div class="rounded bg-gray-100 p-8 font-sans">
+  <div class="grid grid-cols-12 gap-8">
+    <div class="col-span-3 rounded border border-solid border-gray-300 bg-white p-4">
+      <div class="relative mb-4">
+        <img class="aspect-video w-full rounded object-cover" src="https://themes.techzaa.in/lahomes-angular/assets/p-1-BQ0X_fIz.jpg" alt="" />
+        <p-tag class="absolute right-2 top-2" value="For Rent" />
+      </div>
+
+      <div class="mb-3">
+        <div class="mb-2 font-semibold">Dvilla Residences Batu(Residences)</div>
+        <div class="text-sm text-gray-600">4604 , Philli Lane Kiowa U.S.A</div>
+      </div>
+      <div class="mb-3">
+        <div class="font-semibold">Price</div>
+        <div class="text-2xl font-bold text-blue-600">$8,930.00</div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="inline-flex items-center gap-1 rounded border border-solid border-blue-600 bg-blue-200 p-1 text-sm font-bold text-blue-600">
+          <span class="material-symbols-rounded">bathtub</span>
+          <span>5 Baths</span>
+        </div>
+
+        <div class="inline-flex items-center gap-1 rounded border border-solid border-blue-600 bg-blue-200 p-1 text-sm font-bold text-blue-600">
+          <span class="material-symbols-rounded">king_bed</span>
+          <span>6 Beds</span>
+        </div>
+
+        <div class="inline-flex items-center gap-1 rounded border border-solid border-blue-600 bg-blue-200 p-1 text-sm font-bold text-blue-600">
+          <span class="material-symbols-rounded">floor</span>
+          <span>6 Floors</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-9 rounded border border-solid border-gray-300 bg-white p-4">
+      <div>Property Information</div>
+
+      <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-6">
+          <div class="flex flex-col gap-2">
+            <label for="property-name">Property Name</label>
+            <input pInputText id="property-name" pInputText formControlName="text" placeholder="Name" />
+          </div>
+        </div>
+        <div class="col-span-3">
+          <div class="flex flex-col gap-2">
+            <label for="property-category">Property Category</label>
+            <input pInputText id="property-category" pInputText formControlName="text" placeholder="Name" />
+          </div>
+        </div>
+
+        <div class="col-span-3">
+          <div class="flex flex-col gap-2">
+            <label for="property-category">Property For</label>
+            <input pInputText id="property-category" pInputText formControlName="text" placeholder="Name" />
+          </div>
+        </div>
+
+        <div class="col-span-3">
+          <div class="flex flex-col gap-2">
+            <label for="price">Price</label>
+            <p-inputGroup>
+              <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">payments</span></p-inputGroupAddon>
+              <input id="price" type="text" pInputText placeholder="Price" />
+            </p-inputGroup>
+          </div>
+        </div>
+
+        <div class="col-span-3">
+          <div class="flex flex-col gap-2">
+            <label for="bedroom">Bedroom</label>
+            <p-inputGroup>
+              <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">king_bed</span></p-inputGroupAddon>
+              <input id="bedroom" type="text" pInputText />
+            </p-inputGroup>
+          </div>
+        </div>
+
+        <div class="col-span-3">
+          <div class="flex flex-col gap-2">
+            <label for="bedroom">Bathroom</label>
+            <p-inputGroup>
+              <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">bathtub</span></p-inputGroupAddon>
+              <input id="bathroom" type="text" pInputText />
+            </p-inputGroup>
+          </div>
+        </div>
+
+        <div class="col-span-3">
+          <div class="flex flex-col gap-2">
+            <label for="floor">Floor</label>
+            <p-inputGroup>
+              <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">floor</span></p-inputGroupAddon>
+              <input id="floor" type="text" pInputText />
+            </p-inputGroup>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

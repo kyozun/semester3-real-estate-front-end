@@ -1,25 +1,31 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { FooterComponent } from '../../../../core/layout/footer/footer.component';
-import { HeaderComponent } from '../../../../core/layout/header/header.component';
-import { Router, RouterLink, RouterOutlet } from '@angular/router'
-import { PropertyService } from '../../services/property.service';
-import { AsyncPipe, CurrencyPipe, NgForOf, NgOptimizedImage } from '@angular/common';
-import { combineLatest, delay, Observable, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { AsyncPipe, CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
-import { SliderChangeEvent, SliderModule } from 'primeng/slider';
-import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { SkeletonModule } from 'primeng/skeleton';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { Button } from 'primeng/button';
-import { ScrollTopModule } from 'primeng/scrolltop';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
+import { FooterComponent } from '../../../../core/layout/footer/footer.component';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HeaderComponent } from '../../../../core/layout/header/header.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { SliderChangeEvent, SliderModule } from 'primeng/slider';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { delay, Observable, of } from 'rxjs';
+import { Router, RouterLink, RouterOutlet } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
-
+import { PropertyService } from '../../../property/services/property.service';
+import { RatingModule } from 'primeng/rating';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TableModule } from 'primeng/table';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 interface Direction {
   name: string;
@@ -30,32 +36,38 @@ interface Direction {
   selector: 'app-property-list',
   standalone: true,
   imports: [
-    FormsModule,
-    SliderModule,
-    InputTextModule,
-    HeaderComponent,
     AsyncPipe,
-    CurrencyPipe,
-    ToggleButtonModule,
     AvatarModule,
-    CheckboxModule,
-    ReactiveFormsModule,
-    FooterComponent,
-    DropdownModule,
-    MultiSelectModule,
-    SkeletonModule,
-    ProgressBarModule,
     Button,
-    ScrollTopModule,
+    CheckboxModule,
+    CurrencyPipe,
+    FooterComponent,
+    FormsModule,
+    HeaderComponent,
+    MultiSelectModule,
     NgOptimizedImage,
-    RouterLink,
+    ProgressBarModule,
     RadioButtonModule,
-    NgForOf,
+    ReactiveFormsModule,
+    ScrollTopModule,
+    SliderModule,
+    ToggleButtonModule,
+    RatingModule,
+    TagModule,
+    ToastModule,
+    ToolbarModule,
+    FileUploadModule,
+    TableModule,
+    InputTextModule,
+    ConfirmDialogModule,
+    ProgressSpinnerModule,
     RouterOutlet,
+    RouterLink,
   ],
   templateUrl: './property-list.component.html',
   styleUrl: './property-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MessageService, ConfirmationService],
 })
 export class PropertyListComponent implements OnInit {
   query: string = '';
@@ -68,14 +80,19 @@ export class PropertyListComponent implements OnInit {
   prices$: Observable<{ label: string; value: string }[]>;
   propertyTypeOptions$: Observable<{ label: string; value: string }[]>;
   area$: Observable<{ label: string; min: number; max: number }[]>;
+  filteredProperties$: Observable<any[]>;
+
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private http = inject(HttpClient);
   private realEstateService = inject(PropertyService);
   properties$: Observable<any[]> = this.realEstateService.properties$;
-  filteredProperties$: Observable<any[]>;
   isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
+  private confirmationService = inject(ConfirmationService);
+  private messageService = inject(MessageService);
+
+  /*DI*/
 
   ngOnInit(): void {
     /*Get All Real Estate*/
@@ -194,7 +211,36 @@ export class PropertyListComponent implements OnInit {
     this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
   }
 
-  onCheckBoxChange(event: any) {
-    console.log(event.value);
+  /*OK*/
+  deleteSelectedProducts() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-secondary p-button-rounded',
+      acceptButtonStyleClass: 'p-button-primary p-button-rounded',
+      accept: () => {
+        this.properties$.subscribe((property) => {
+          property = property.filter((val) => !property?.includes(val) && property.includes(val));
+        });
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Successful',
+          detail: 'Property Deleted',
+          life: 2500,
+        });
+      },
+    });
+  }
+
+  getSeverity(status: string) {
+    switch (status) {
+      case 'In Stock':
+        return 'success';
+      case 'Low Stock':
+        return 'warning';
+      default:
+        return 'info';
+    }
   }
 }
