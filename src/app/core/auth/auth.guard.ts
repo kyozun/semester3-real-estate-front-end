@@ -9,12 +9,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   return authService.isLoggedIn$!.pipe(
     take(1),
     map((isLoggedIn: boolean) => {
-      if (isLoggedIn) {
-        return true;
-      } else {
+      // Nếu chưa login thì chuyển đến login
+      if (!isLoggedIn) {
         router.navigate(['/auth/login']);
         return false;
       }
+      return true;
     })
   );
 };

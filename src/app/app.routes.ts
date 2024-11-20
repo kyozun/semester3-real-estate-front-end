@@ -24,7 +24,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     children: [
-      { path: 'login', component: LoginComponent, title: 'Login' },
+      { path: 'login', component: LoginComponent, canActivate: [guessGuard], title: 'Login' },
       { path: 'register', component: RegisterComponent, title: 'Register' },
     ],
   },

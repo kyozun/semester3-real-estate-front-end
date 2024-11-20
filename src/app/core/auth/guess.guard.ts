@@ -9,13 +9,12 @@ export const guessGuard: CanActivateFn = (route, state) => {
   return authService.isLoggedIn$!.pipe(
     take(1),
     map((isLoggedIn: boolean) => {
-      if (isLoggedIn) {
-        router.navigate(['/']);
+      // Nếu chưa login thì cho phép truy cập login
+      if (!isLoggedIn) {
         return true;
-      } else {
-        router.navigate(['/auth/login']);
-        return false;
       }
+      router.navigate(['/']);
+      return false;
     })
   );
 };

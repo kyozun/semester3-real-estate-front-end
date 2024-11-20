@@ -18,10 +18,20 @@
               <h2 class="mb-4 text-xl font-normal text-gray-800">Login to continue</h2>
             </div>
           </div>
-          <input formControlName="username" class="mb-4 w-full" type="text" pInputText placeholder="Enter email or username" />
-          <input formControlName="password" class="mb-4 w-full" type="password" pInputText placeholder="Enter password" />
+          <div class="mb-4">
+            <input formControlName="username" class="mb-1 w-full" type="text" pInputText placeholder="Enter email or username" />
+            @if (loginForm.get('username')?.invalid && (loginForm.get('username')?.touched || loginForm.get('username')?.dirty)) {
+              <small class="font-medium text-rose-600">Username is required.</small>
+            }
+          </div>
+          <div class="mb-4">
+            <input formControlName="password" class="mb-1 w-full" type="password" pInputText placeholder="Enter password" />
+            @if (loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)) {
+              <small class="font-medium text-rose-600">Password is required.</small>
+            }
+          </div>
 
-          <button type="submit" class="mb-4 w-full text-center" pRipple pButton label="Login"></button>
+          <button [disabled]="loginForm.invalid" type="submit" class="mb-4 w-full text-center" pRipple pButton label="Login"></button>
 
           <div class="flex items-center justify-between">
             <div>

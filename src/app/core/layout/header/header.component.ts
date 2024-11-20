@@ -7,7 +7,7 @@ import { User } from '../../auth/auth.model';
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
           {
             label: 'Logout',
             icon: 'pi pi-sign-out',
-            disabled: true,
+            command: () => this.authService.logout(),
           },
         ],
       },

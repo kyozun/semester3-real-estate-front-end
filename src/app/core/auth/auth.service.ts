@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from './auth.model';
+import { LoginDto, User } from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('currentUser') || 'null'));
   currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.getUserToken());
   isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -22,11 +22,12 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
-    this.http.post<User>(`${this.baseUrl}/auth/login`, { username, password }).subscribe({
+  login(loginDto: LoginDto) {
+    this.http.post<User>(`${this.baseUrl}/auth/login`, loginDto).subscribe({
       next: (user) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
+        this.isLoggedInSubject.next(false);
         this.router.navigate(['/']);
       },
       error: () => {
@@ -38,9 +39,11 @@ export class AuthService {
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    this.isLoggedInSubject.next(false);
+    this.router.navigate(['/auth/login']);
   }
 
-  private hasToken(): boolean {
+  getUserToken(): boolean {
     const token = localStorage.getItem('currentUser');
     if (token) {
       return true;
