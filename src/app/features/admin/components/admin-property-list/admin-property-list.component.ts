@@ -15,7 +15,6 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { FormArray, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { delay, Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../../property/services/property.service';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { SliderChangeEvent } from 'primeng/slider';
@@ -24,7 +23,6 @@ interface Direction {
   name: string;
   code: string;
 }
-
 
 @Component({
   selector: 'app-admin-property-list',
@@ -106,10 +104,10 @@ export class AdminPropertyListComponent implements OnInit {
     });
 
     const queryParams = new URLSearchParams(this.filterForm.value).toString();
-    this.getRealEstates(queryParams);
+    this.getProperties(queryParams);
   }
 
-  getRealEstates(query: string): void {
+  getProperties(query: string): void {
     this.realEstateService.getProperties(query);
   }
 
@@ -169,7 +167,7 @@ export class AdminPropertyListComponent implements OnInit {
       .filter((key) => formValues[key] !== null && formValues[key] !== '')
       .reduce((acc, key) => ({ ...acc, [key]: formValues[key] }), {});
     const queryParams = new URLSearchParams(filteredValues).toString();
-    this.getRealEstates(queryParams);
+    this.getProperties(queryParams);
   }
 
   openPropertyDetail(property: any) {

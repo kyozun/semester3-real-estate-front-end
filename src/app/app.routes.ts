@@ -10,9 +10,9 @@ import { SettingsComponent } from './features/admin/components/settings/settings
 import { AnalyticComponent } from './features/admin/components/analytic/analytic.component';
 import { AddPropertyComponent } from './features/admin/components/add-property/add-property.component';
 import { PropertyListComponent } from './features/property/pages/property-list/property-list.component';
-import {
-  AdminPropertyListComponent
-} from './features/admin/components/admin-property-list/admin-property-list.component';
+import { AdminPropertyListComponent } from './features/admin/components/admin-property-list/admin-property-list.component';
+import { authGuard } from './core/auth/auth.guard';
+import { guessGuard } from './core/auth/guess.guard'
 
 export const routes: Routes = [
   {
@@ -38,7 +38,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    // canActivate: [AuthGuard],
+    canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: AnalyticComponent },
       { path: 'user', component: UsersComponent },

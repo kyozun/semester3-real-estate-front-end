@@ -6,7 +6,7 @@ import { BehaviorSubject, map, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class PropertyService {
-  private baseUrl = 'https://dummyjson.com/products';
+  private baseUrl = 'http://localhost:5245/api/property';
   private http = inject(HttpClient);
 
   /*PropertyList*/
@@ -27,9 +27,9 @@ export class PropertyService {
   getProperties(query: string) {
     this.isLoadingSubject.next(true);
     this.http
-      .get<any>(`${this.baseUrl}/search?${query}`)
+      .get<any>(`${this.baseUrl}?${query}&limit=10`)
       .pipe(
-        map((response) => response.products),
+        map((response) => response.data),
         tap(() => {
           // Stop loading
           this.isLoadingSubject.next(false);

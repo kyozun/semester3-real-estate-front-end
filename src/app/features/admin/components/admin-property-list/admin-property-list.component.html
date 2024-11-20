@@ -89,13 +89,13 @@
                       {{ property.title }}
                     </td>
                     <td>
-                      <img [src]="property.images" [alt]="property.name" width="100" class="shadow-4" />
+                      <img [src]="property.propertyImages[0].imageUrl" [alt]="property.name" width="100" class="shadow-4" />
                     </td>
                     <td>
                       {{ property.price | currency: 'USD' }}
                     </td>
                     <td>
-                      {{ property.category }}
+                      {{ property.category.name }}
                     </td>
                     <td>
                       <p-rating [(ngModel)]="property.rating" [readonly]="true" [cancel]="false" />

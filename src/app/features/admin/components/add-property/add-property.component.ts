@@ -39,22 +39,18 @@ export class AddPropertyComponent implements OnInit {
       propertyCategory: ['', Validators.required],
       propertyType: [''],
       description: [''],
+      propertyAddress: [''],
       address: this.formBuilder.group({
-        street: [''],
-        city: [''],
-        state: [''],
-        zip: [''],
+        province: [''],
+        district: [''],
+        ward: [''],
+        zipcode: [''],
       }),
     });
   }
 
-  formSubmitted = false;
   submitPropertyForm() {
-    this.formSubmitted = true;
-
-    if (this.propertyForm.valid) {
-      console.log(this.propertyForm.value);
-    }
+    console.log(this.propertyForm.value);
   }
 
   clearPropertyForm() {
