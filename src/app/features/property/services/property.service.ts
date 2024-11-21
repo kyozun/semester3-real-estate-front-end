@@ -1,12 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
+import { ApiResponse } from '../../../shared/models/api-response';
+import { Category } from '../../../shared/models/category';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PropertyService {
-  private baseUrl = 'http://localhost:5245/api/property';
   private http = inject(HttpClient);
 
   /*PropertyList*/
@@ -16,6 +18,10 @@ export class PropertyService {
   /*Property Detail*/
   private propertySubject = new BehaviorSubject<any>('');
   property$ = this.propertySubject.asObservable();
+
+  /*Category*/
+  private categorySubject = new BehaviorSubject<string[]>([]);
+  category$: Observable<string[]> = this.categorySubject.asObservable();
 
   /*Property Type*/
   private propertyTypeSubject = new BehaviorSubject<any>('');
@@ -27,7 +33,7 @@ export class PropertyService {
   getProperties(query: string) {
     this.isLoadingSubject.next(true);
     this.http
-      .get<any>(`${this.baseUrl}?${query}&limit=10`)
+      .get<any>(`${environment.apiUrl}/property?${query}&limit=10`)
       .pipe(
         map((response) => response.data),
         tap(() => {
@@ -36,8 +42,8 @@ export class PropertyService {
         })
       )
       .subscribe({
-        next: (realEstates) => {
-          this.propertiesSubject.next(realEstates);
+        next: (properties) => {
+          this.propertiesSubject.next(properties);
         },
         error: () => {
           this.isLoadingSubject.next(false);
@@ -48,7 +54,7 @@ export class PropertyService {
   getProperty(id: string) {
     this.isLoadingSubject.next(true);
     this.http
-      .get<any>(`${this.baseUrl}/${id}`)
+      .get<any>(`${environment.apiUrl}/property/${id}`)
       .pipe(
         tap(() => {
           // Stop loading
@@ -65,19 +71,20 @@ export class PropertyService {
       });
   }
 
-  getPropertyType() {
+  getCategories() {
     this.isLoadingSubject.next(true);
     this.http
-      .get<any>(`${this.baseUrl}/category-list`)
+      .get<ApiResponse<Category>>(`${environment.apiUrl}/category?limit=10`)
       .pipe(
+        map((response) => response.data.map((item: Category) => item.name)),
         tap(() => {
           // Stop loading
           this.isLoadingSubject.next(false);
         })
       )
       .subscribe({
-        next: (propertyType) => {
-          this.propertyTypeSubject.next(propertyType);
+        next: (categories) => {
+          this.categorySubject.next(categories);
         },
         error: () => {
           this.isLoadingSubject.next(false);

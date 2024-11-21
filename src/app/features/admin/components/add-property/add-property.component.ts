@@ -22,14 +22,14 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPropertyComponent implements OnInit {
-  propertyForm: FormGroup;
+  public propertyForm: FormGroup;
   private propertyService = inject(PropertyService);
-  propertyTypes$: Observable<any[]> = this.propertyService.propertyType$;
+  public categories$: Observable<string[]> = this.propertyService.category$;
   private formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
-    this.propertyService.getPropertyType();
-    this.propertyTypes$ = this.propertyService.propertyType$;
+    this.propertyService.getCategories();
+    this.categories$ = this.propertyService.category$;
     this.propertyForm = this.formBuilder.group({
       propertyName: [, Validators.required],
       price: ['', Validators.required],

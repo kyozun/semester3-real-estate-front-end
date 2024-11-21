@@ -18,6 +18,7 @@ import { delay, Observable, of } from 'rxjs';
 import { PropertyService } from '../../../property/services/property.service';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { SliderChangeEvent } from 'primeng/slider';
+import { environment } from '../../../../../environments/environment.development'
 
 interface Direction {
   name: string;
@@ -206,4 +207,6 @@ export class AdminPropertyListComponent implements OnInit {
         return 'info';
     }
   }
+
+  protected readonly environment = environment
 }

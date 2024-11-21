@@ -31,6 +31,8 @@
                 [tableStyle]="{ 'min-width': '75rem' }"
                 [rowHover]="true"
                 [filterDelay]="0"
+                [scrollable]="true"
+                scrollHeight="400px"
                 dataKey="id"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [showCurrentPageReport]="true">
@@ -50,60 +52,67 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                   <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 4rem" pFrozenColumn alignFrozen="left">
                       <p-tableHeaderCheckbox />
                     </th>
-                    <th pSortableColumn="title" style="min-width: 15rem">
+                    <th pSortableColumn="title" style="min-width: 15rem" pFrozenColumn alignFrozen="left">
                       Title
                       <p-sortIcon field="title" />
                     </th>
                     <th>Image</th>
-                    <th pSortableColumn="price">
+                    <th pSortableColumn="price" style="min-width: 10rem">
                       Price
                       <p-sortIcon field="price" />
                     </th>
-                    <th pSortableColumn="category" style="min-width: 15rem">
-                      Category
-                      <p-sortIcon field="category" />
+
+                    <th pSortableColumn="ward" style="min-width: 15rem">
+                      Ward
+                      <p-sortIcon field="ward" />
                     </th>
-                    <th pSortableColumn="rating">
-                      Reviews
-                      <p-sortIcon field="rating" />
+
+                    <th pSortableColumn="user" style="min-width: 15rem">
+                      Uploader
+                      <p-sortIcon field="user" />
                     </th>
-                    <th pSortableColumn="availabilityStatus">
+
+
+                    <th pSortableColumn="availabilityStatus" style="min-width: 15rem">
                       Status
                       <p-sortIcon field="availabilityStatus" />
                     </th>
 
-                    <th>Actions</th>
-                    <th></th>
+                    <th pFrozenColumn style="min-width: 200px" alignFrozen="right">Actions</th>
                   </tr>
                 </ng-template>
 
                 <ng-template pTemplate="body" let-property>
                   <tr class="p-selectable-row">
-                    <td>
+                    <td pFrozenColumn alignFrozen="left">
                       <p-tableCheckbox [value]="property" />
                     </td>
-                    <td>
+                    <td pFrozenColumn alignFrozen="left">
                       {{ property.title }}
                     </td>
                     <td>
-                      <img [src]="property.propertyImages[0].imageUrl" [alt]="property.name" width="100" class="shadow-4" />
+                      <img [src]="environment.baseUrl + property.coverImage" [alt]="property.name" width="100" class="rounded shadow-xl" />
                     </td>
                     <td>
                       {{ property.price | currency: 'USD' }}
                     </td>
+
                     <td>
-                      {{ property.category.name }}
+                      {{ property.area }}
                     </td>
+
                     <td>
-                      <p-rating [(ngModel)]="property.rating" [readonly]="true" [cancel]="false" />
+                      {{ property.ward.name }}
                     </td>
+
+
                     <td>
                       <p-tag [value]="property.availabilityStatus" [severity]="getSeverity(property.availabilityStatus)" />
                     </td>
-                    <td>
+                    <td pFrozenColumn style="min-width: 200px" alignFrozen="right">
                       <p-button icon="pi pi-eye" class="mr-2" [rounded]="true" severity="secondary"></p-button>
                       <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" severity="primary"></p-button>
                       <p-button icon="pi pi-trash" severity="danger" [rounded]="true"></p-button>
