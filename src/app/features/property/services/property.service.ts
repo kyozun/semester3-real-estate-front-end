@@ -4,6 +4,7 @@ import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { ApiResponse } from '../../../shared/models/api-response';
 import { Category } from '../../../shared/models/category';
+import { PropertyType } from '../../../shared/models/property-type';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class PropertyService {
   category$: Observable<string[]> = this.categorySubject.asObservable();
 
   /*Property Type*/
-  private propertyTypeSubject = new BehaviorSubject<any>('');
+  private propertyTypeSubject = new BehaviorSubject<string[]>([]);
   propertyType$ = this.propertyTypeSubject.asObservable();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -42,8 +43,8 @@ export class PropertyService {
         })
       )
       .subscribe({
-        next: (properties) => {
-          this.propertiesSubject.next(properties);
+        next: (items) => {
+          this.propertiesSubject.next(items);
         },
         error: () => {
           this.isLoadingSubject.next(false);
@@ -62,12 +63,27 @@ export class PropertyService {
         })
       )
       .subscribe({
-        next: (realEstate) => {
-          this.propertySubject.next(realEstate);
+        next: (items) => {
+          this.propertySubject.next(items);
         },
         error: () => {
           this.isLoadingSubject.next(false);
         },
+      });
+  }
+
+  getPropertyTypes() {
+    this.http
+      .get<ApiResponse<PropertyType>>(`${environment.apiUrl}/property-type?limit=10`)
+      .pipe(
+        map((response) => response.data.map((item: PropertyType) => item.name)),
+        tap(() => {})
+      )
+      .subscribe({
+        next: (items) => {
+          this.propertyTypeSubject.next(items);
+        },
+        error: () => {},
       });
   }
 
@@ -77,18 +93,13 @@ export class PropertyService {
       .get<ApiResponse<Category>>(`${environment.apiUrl}/category?limit=10`)
       .pipe(
         map((response) => response.data.map((item: Category) => item.name)),
-        tap(() => {
-          // Stop loading
-          this.isLoadingSubject.next(false);
-        })
+        tap(() => {})
       )
       .subscribe({
-        next: (categories) => {
-          this.categorySubject.next(categories);
+        next: (items) => {
+          this.categorySubject.next(items);
         },
-        error: () => {
-          this.isLoadingSubject.next(false);
-        },
+        error: () => {},
       });
   }
 }

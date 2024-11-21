@@ -3,7 +3,7 @@ import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { Observable } from 'rxjs';
 import { PropertyService } from '../../../property/services/property.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
@@ -12,6 +12,8 @@ import { EditorModule } from 'primeng/editor';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { RouterLink } from '@angular/router';
+import { ProvinceService } from '../../../property/services/province.service';
+import { SelectOption } from '../../../../shared/models/select-option';
 
 @Component({
   selector: 'app-add-property',
@@ -25,11 +27,17 @@ export class AddPropertyComponent implements OnInit {
   public propertyForm: FormGroup;
   private propertyService = inject(PropertyService);
   public categories$: Observable<string[]> = this.propertyService.category$;
+  public propertyTypes$: Observable<string[]> = this.propertyService.propertyType$;
+  private provinceService = inject(ProvinceService);
+  public provinces$: Observable<SelectOption[]> = this.provinceService.provinces$;
+  public districts$: Observable<SelectOption[]> = this.provinceService.districts$;
+  public wards$: Observable<SelectOption[]> = this.provinceService.wards$;
   private formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
     this.propertyService.getCategories();
-    this.categories$ = this.propertyService.category$;
+    this.propertyService.getPropertyTypes();
+    this.provinceService.getProvinces();
     this.propertyForm = this.formBuilder.group({
       propertyName: [, Validators.required],
       price: ['', Validators.required],
@@ -55,5 +63,15 @@ export class AddPropertyComponent implements OnInit {
 
   clearPropertyForm() {
     this.propertyForm.reset();
+  }
+
+  onProvinceChange($event: DropdownChangeEvent) {
+    console.log($event.value);
+    this.provinceService.getDistricts($event.value)
+  }
+
+  onDistrictChange($event: DropdownChangeEvent) {
+    console.log($event.value);
+    this.provinceService.getWards($event.value)
   }
 }
