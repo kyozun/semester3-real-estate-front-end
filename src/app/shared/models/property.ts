@@ -9,3 +9,4 @@ export interface Property {
   bathroom: number;
   viewCount: number;
 }
+

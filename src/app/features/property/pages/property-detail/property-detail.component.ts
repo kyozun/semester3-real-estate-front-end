@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { HeaderComponent } from '../../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../../core/layout/footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular/16';
@@ -8,7 +16,6 @@ import lgFullScreen from 'lightgallery/plugins/fullscreen';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgAutoPlay from 'lightgallery/plugins/autoplay';
 import { YouTubePlayer } from '@angular/youtube-player';
-import lightGallery from 'lightgallery';
 import { AsyncPipe, NgClass, NgIf, NgStyle } from '@angular/common';
 import { YtPlayerComponent } from '../../../../shared/components/yt-player/yt-player.component';
 import { AvatarModule } from 'primeng/avatar';
@@ -21,6 +28,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PropertyService } from '../../services/property.service';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { Property } from '../../models/property';
+import { environment } from '../../../../../environments/environment.development';
+import { LightGallerySettings } from 'lightgallery/lg-settings';
+import { LightGallery } from 'lightgallery/lightgallery';
 
 @Component({
   selector: 'app-property-detail',
@@ -29,54 +40,49 @@ import { ProgressBarModule } from 'primeng/progressbar';
   templateUrl: './property-detail.component.html',
   styleUrl: './property-detail.component.css',
   encapsulation: ViewEncapsulation.None,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class PropertyDetail implements OnInit {
+  settings: LightGallerySettings = {
+    selector: '.item',
+    counter: true,
+    closable: true,
+    rotate: true,
+    fullScreen: true,
+    download: false,
+    thumbnail: true,
+    autoplay: true,
+    autoplayControls: false,
+    slideShowAutoplay: true,
 
-export class PropertyDetail implements OnInit, AfterViewInit {
-  @ViewChild('galleryContainer') galleryContainer!: ElementRef;
+    thumbMargin: 6,
+    plugins: [lgZoom, lgRotate, lgFullScreen, lgThumbnail, lgAutoPlay],
+    slideDelay: 0,
+    animateThumb: true,
+    loop: true,
+    startAnimationDuration: 300,
+    mode: 'lg-fade',
+    speed: 200,
+    closeOnTap: true,
+  };
+  protected readonly environment = environment;
   private route = inject(ActivatedRoute);
-
   /*Services*/
-  private realEstateService = inject(PropertyService);
-
+  private propertyService = inject(PropertyService);
   /*Observable*/
-  realEstate$: Observable<any> = this.realEstateService.property$;
-  isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
-
-  private propertyId: string;
-
-  ngAfterViewInit() {
-    lightGallery(this.galleryContainer.nativeElement, {
-      selector: '.item',
-      counter: true,
-      closable: true,
-      rotate: true,
-      fullScreen: true,
-      download: false,
-      thumbnail: true,
-      autoplay: true,
-      autoplayControls: false,
-      slideShowAutoplay: true,
-
-      thumbMargin: 6,
-      plugins: [lgZoom, lgRotate, lgFullScreen, lgThumbnail, lgAutoPlay],
-      slideDelay: 0,
-      animateThumb: true,
-      loop: true,
-      startAnimationDuration: 300,
-      mode: 'lg-fade',
-      speed: 200,
-      closeOnTap: true,
-    });
-  }
+  property$: Observable<Property> = this.propertyService.property$;
+  isLoading$: Observable<boolean> = this.propertyService.isLoading$;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe({
       next: (params: Params) => {
-        this.propertyId = params['id'];
-        console.log(this.propertyId);
-        this.realEstateService.getProperty('1');
+        console.log(params['propertyId']);
+        this.propertyService.getProperty(params['propertyId']);
       },
     });
   }
+
+
 }

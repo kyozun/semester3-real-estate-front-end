@@ -27,7 +27,7 @@ export class AddPropertyComponent implements OnInit {
   public propertyForm: FormGroup;
   private propertyService = inject(PropertyService);
   public categories$: Observable<string[]> = this.propertyService.category$;
-  public propertyTypes$: Observable<string[]> = this.propertyService.propertyType$;
+  public propertyTypes$: Observable<SelectOption[]> = this.propertyService.propertyTypes$;
   private provinceService = inject(ProvinceService);
   public provinces$: Observable<SelectOption[]> = this.provinceService.provinces$;
   public districts$: Observable<SelectOption[]> = this.provinceService.districts$;

@@ -14,41 +14,44 @@
   </div>
 
   <swiper-container class="swiper" appSwiperDirective [swiperConfig]="swiperConfig" init="false">
-    <swiper-slide *ngFor="let item of contents">
-      <div class="relative rounded-xl border border-t-0 border-solid border-gray-300">
-        <img class="aspect-video w-full rounded-t-xl object-cover" src="https://images.homes.com/listings/214/9589073204-200303781/10614-crimson-trace-beasley-tx-buildingphoto-2.jpg" alt="" />
-        <p-button class="absolute right-2 top-2" icon="pi pi-bookmark" [rounded]="true" severity="primary" raised="true" />
+    @if (properties$ | async; as properties) {
+      @for (property of properties; track $index) {
+        <swiper-slide>
+          <div class="relative cursor-pointer rounded-xl border border-t-0 border-solid border-gray-300 bg-white transition-all duration-300 ease-in-out hover:bg-gray-100" (click)="navigateToPropertyDetail(property.propertyId)">
+            <img class="aspect-video w-full rounded-t-xl object-cover" [src]="environment.baseUrl + property.coverImage" alt="" />
+            <p-button class="absolute right-2 top-2" icon="pi pi-bookmark" [rounded]="true" severity="primary" raised="true" />
 
-        <div class="p-4 pt-2">
-          <div class="flex flex-row items-center justify-between">
-            <div class="text-2xl font-black">$300,000</div>
-            <div class="flex items-center gap-2">
-              <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-200 p-1 text-gray-900" pRipple>
-                <span class="material-symbols-rounded" style="font-size: 20px">bed</span>
-                <span>4 Beds</span>
+            <div class="p-4 pt-2">
+              <div class="flex flex-row items-center justify-between">
+                <div class="text-2xl font-black">{{ property.price | currency }}</div>
+                <div class="flex items-center gap-2">
+                  <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-200 p-1 text-gray-900" pRipple>
+                    <span class="material-symbols-rounded" style="font-size: 20px">bed</span>
+                    <span>{{ property.bedroom }} Beds</span>
+                  </div>
+
+                  <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-200 p-1 text-gray-900" pRipple>
+                    <span class="material-symbols-rounded" style="font-size: 20px">bathtub</span>
+                    <span>{{ property.bathroom }} Baths</span>
+                  </div>
+                </div>
               </div>
 
-              <div class="flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-200 p-1 text-gray-900" pRipple>
-                <span class="material-symbols-rounded" style="font-size: 20px">bathtub</span>
-                <span>3 Baths</span>
+              <hr class="my-2 border-0 border-b border-solid border-gray-300" />
+
+              <div class="flex flex-row items-center justify-between">
+                <div class="text-gray-800">
+                  <div class="font-semibold">{{ property.address }}</div>
+                </div>
+                <div class="flex flex-row items-center space-x-2 rounded bg-gray-500 p-1.5 font-semibold text-white shadow-2xl">
+                  <span class="material-symbols-rounded" style="font-size: 20px">visibility</span>
+                  <span>{{ property.viewCount }} views</span>
+                </div>
               </div>
             </div>
           </div>
-
-          <hr class="my-2 border-0 border-b border-solid border-gray-300" />
-
-          <div class="flex flex-row items-center justify-between">
-            <div class="text-gray-800">
-              <div class="font-semibold">10614 Crimson Trace</div>
-              <div>Beasley, TX 77417</div>
-            </div>
-            <div class="flex flex-row items-center space-x-2 rounded bg-blue-500 p-1.5 font-semibold text-white shadow-2xl">
-              <span class="material-symbols-rounded" style="font-size: 20px">visibility</span>
-              <span>512 views</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </swiper-slide>
+        </swiper-slide>
+      }
+    }
   </swiper-container>
 </div>

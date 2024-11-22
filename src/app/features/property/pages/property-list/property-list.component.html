@@ -15,13 +15,14 @@
               @if (properties.length > 0) {
                 <!--Nên để slider-->
                 <p class="text- xl rounded-xl border border-solid border-gray-200 bg-white p-4 font-bold text-blue-600">Results: 4</p>
-                @for (property of properties; track property.id) {
+                @for (property of properties; track $index) {
                   <div class="relative flex flex-row gap-6 rounded-xl border border-solid border-gray-200 bg-white p-6">
                     <!-- 2 Column-->
                     <div class="flex h-64 w-[600px] flex-row gap-2">
                       <!-- Column 1 -->
                       <div class="relative h-full w-2/3">
                         <img class="absolute inset-0 h-full w-full cursor-pointer rounded object-cover duration-300" [src]="environment.baseUrl + property.propertyImages[0]?.imageUrl" alt="Image 1" (click)="openPropertyDetail(property)" />
+                        <p-tag icon="pi pi-star-fill" class="absolute left-2 top-2" [value]="property.propertyType.name | uppercase" [severity]="getSeverity(property.propertyType.name)" [rounded]="true" />
                       </div>
 
                       <!-- Column 2 with 2 rows -->
@@ -64,8 +65,8 @@
                 }
               } @else {
                 <div class="relative">
-                  <div class="absolute inset-0 top-12">
-                    <p class="mb-4 text-center text-2xl font-semibold">No real estate found</p>
+                  <div class="absolute inset-0 top-8">
+                    <p class="mb-4 text-center text-2xl font-semibold">No property found</p>
                   </div>
                   <img class="w-full rounded-xl object-cover" src="theme.png" alt="" />
                 </div>
@@ -91,15 +92,10 @@
                   <div>
                     <h2 class="mb-4 text-xl font-semibold">Price</h2>
                     <div class="flex flex-col gap-2">
-                      @if (prices$ | async; as prices) {
-                        @for (price of prices; track $index) {
-                          <div class="flex items-center">
-                            <p-radioButton [inputId]="price.label" [value]="price.value" formControlName="price" (onClick)="onFilterFormChange($event)" />
-                            <label [for]="price.label" class="ml-2">
-                              {{ price.label === 'All Prices' ? 'All Prices' : price.label.toLocaleString() + ' đ' }}
-                            </label>
-                          </div>
-                        }
+                      @for (price of priceRanges; track $index) {
+                        <div class="flex items-center">
+                          <p-radioButton [inputId]="price.label" [label]="price.label" [value]="price.value" formControlName="price" (onClick)="onPriceRangeChange($event)" />
+                        </div>
                       }
                     </div>
                   </div>
@@ -110,13 +106,22 @@
                   <div>
                     <h2 class="mb-4 text-xl font-semibold">Property type</h2>
                     <div class="flex flex-row flex-wrap gap-4">
-                      @if (propertyTypeOptions$ | async; as propertyTypeOptions) {
-                        @for (propertyTypeOptions of propertyTypeOptions; track $index) {
-                          <p-checkbox [label]="propertyTypeOptions.label" formControlName="propertyType" [value]="propertyTypeOptions.value" (onChange)="onFilterFormChange($event)"></p-checkbox>
+                      @if (propertyTypes$ | async; as propertyTypes) {
+                        @for (propertyType of propertyTypes; track $index) {
+                          <p-checkbox [label]="propertyType.label" formControlName="propertyType" [value]="propertyType.value" (onChange)="onPropertyTypeChange($event)"></p-checkbox>
                         }
                       }
                     </div>
                   </div>
+
+                  <hr class="w-full border-0 border-b border-solid border-gray-200" />
+                  <!--Direction-->
+                  @if (directions$ | async; as directions) {
+                    <div>
+                      <h2 class="mb-4 text-xl font-semibold">Directions</h2>
+                      <p-multiSelect [options]="directions" formControlName="directions" optionLabel="name" optionValue="directionId" placeholder="Select Directions" (onChange)="onDirectionChange($event)" />
+                    </div>
+                  }
 
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
 
@@ -168,12 +173,6 @@
                   </div>
 
                   <hr class="w-full border-0 border-b border-solid border-gray-200" />
-
-                  <!--Direction-->
-                  <div>
-                    <h2 class="mb-4 text-xl font-semibold">Directions</h2>
-                    <p-multiSelect [options]="directions" formControlName="directions" optionLabel="name" placeholder="Select Directions" />
-                  </div>
                 </form>
 
                 <!--Row 2-->

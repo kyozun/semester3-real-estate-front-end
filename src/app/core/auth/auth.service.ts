@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoginDto, User } from './auth.model';
+import { LoginDto, UserResponse } from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -10,20 +10,20 @@ import { Router } from '@angular/router';
 export class AuthService {
   private baseUrl = 'http://localhost:5245/api';
 
-  private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('currentUser') || 'null'));
-  currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
+  private currentUserSubject: BehaviorSubject<UserResponse | null> = new BehaviorSubject<UserResponse | null>(JSON.parse(localStorage.getItem('currentUser') || 'null'));
+  currentUser$: Observable<UserResponse | null> = this.currentUserSubject.asObservable();
 
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.getUserToken());
   isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  get currentUserValue(): User | null {
+  get currentUserValue(): UserResponse | null {
     return this.currentUserSubject.value;
   }
 
   login(loginDto: LoginDto) {
-    this.http.post<User>(`${this.baseUrl}/auth/login`, loginDto).subscribe({
+    this.http.post<UserResponse>(`${this.baseUrl}/auth/login`, loginDto).subscribe({
       next: (user) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);

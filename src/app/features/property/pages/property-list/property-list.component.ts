@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FooterComponent } from '../../../../core/layout/footer/footer.component';
 import { HeaderComponent } from '../../../../core/layout/header/header.component';
-import { Router, RouterLink, RouterOutlet } from '@angular/router'
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
-import { AsyncPipe, CurrencyPipe, NgForOf, NgOptimizedImage } from '@angular/common';
-import { combineLatest, delay, Observable, of } from 'rxjs';
+import { AsyncPipe, CurrencyPipe, NgForOf, NgOptimizedImage, UpperCasePipe } from '@angular/common';
+import { BehaviorSubject, combineLatest, delay, map, Observable, of } from 'rxjs';
 import { AvatarModule } from 'primeng/avatar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,15 +17,12 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { Button } from 'primeng/button';
 import { ScrollTopModule } from 'primeng/scrolltop';
-import { RadioButtonModule } from 'primeng/radiobutton';
+import { RadioButtonClickEvent, RadioButtonModule } from 'primeng/radiobutton';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment.development'
-
-
-interface Direction {
-  name: string;
-  code: string;
-}
+import { environment } from '../../../../../environments/environment.development';
+import { SelectOption } from '../../../../shared/models/select-option';
+import { Direction } from '../../../../shared/models/direction';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-property-list',
@@ -53,9 +50,12 @@ interface Direction {
     RadioButtonModule,
     NgForOf,
     RouterOutlet,
+    TagModule,
+    UpperCasePipe,
   ],
   templateUrl: './property-list.component.html',
   styleUrl: './property-list.component.css',
+  providers: [CurrencyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyListComponent implements OnInit {
@@ -63,38 +63,89 @@ export class PropertyListComponent implements OnInit {
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
-  directions!: Direction[];
   filterForm!: FormGroup;
-  /*Observable*/
-  prices$: Observable<{ label: string; value: string }[]>;
-  propertyTypeOptions$: Observable<{ label: string; value: string }[]>;
   area$: Observable<{ label: string; min: number; max: number }[]>;
+  propertyTypeFilter$ = new BehaviorSubject<string[]>([]);
+  directionFilter$ = new BehaviorSubject<string[]>([]);
+  priceRangeFilter$ = new BehaviorSubject<string | null>(null);
+  protected readonly environment = environment;
+  private currencyPipe = inject(CurrencyPipe);
+
+  priceRanges: SelectOption[] = [
+    { label: 'All Prices', value: '0' },
+    {
+      label: this.currencyPipe.transform(0, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(100000, 'USD'),
+      value: '0-100000',
+    },
+    {
+      label: this.currencyPipe.transform(100000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(150000, 'USD', 'symbol', '1.0-0'),
+      value: '100000-150000',
+    },
+    {
+      label: this.currencyPipe.transform(150000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(200000, 'USD', 'symbol', '1.0-0'),
+      value: '150000-200000',
+    },
+    {
+      label: this.currencyPipe.transform(200000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(300000, 'USD', 'symbol', '1.0-0'),
+      value: '200000-300000',
+    },
+    { label: 'From ' + this.currencyPipe.transform(300000, 'USD', 'symbol', '1.0-0'), value: '300000' },
+  ];
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private http = inject(HttpClient);
-  private realEstateService = inject(PropertyService);
-  properties$: Observable<any[]> = this.realEstateService.properties$;
-  filteredProperties$: Observable<any[]>;
-  isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
+  private propertyService = inject(PropertyService);
+  /*Observable*/
+  propertyTypes$: Observable<SelectOption[]> = this.propertyService.propertyTypes$;
+  directions$: Observable<Direction[]> = this.propertyService.directions$;
+  isLoading$: Observable<boolean> = this.propertyService.isLoading$;
+  properties$ = combineLatest([this.propertyService.properties$, this.propertyTypeFilter$, this.priceRangeFilter$, this.directionFilter$]).pipe(
+    map(([properties, selectedPropertyTypeIds, selectedPriceRange, selectedDirectionsIds]) => {
+      let filteredProperties = properties;
+      console.log(selectedDirectionsIds);
+      console.log(properties);
+
+      // Filter by Direction
+      if (selectedDirectionsIds.length > 0) {
+        filteredProperties = filteredProperties.filter((property) => selectedDirectionsIds.includes(property.direction.directionId));
+      }
+
+      // Filter by Property Type
+      if (selectedPropertyTypeIds.length > 0) {
+        filteredProperties = filteredProperties.filter((property) => selectedPropertyTypeIds.includes(property.propertyType.propertyTypeId));
+      }
+
+      // Filter by Price Range
+      if (selectedPriceRange) {
+        switch (selectedPriceRange) {
+          case '0-100000':
+            filteredProperties = filteredProperties.filter((property) => property.price >= 0 && property.price <= 120000);
+            break;
+          case '100000-150000':
+            filteredProperties = filteredProperties.filter((property) => property.price >= 100000 && property.price <= 150000);
+            break;
+          case '150000-200000':
+            filteredProperties = filteredProperties.filter((property) => property.price >= 150000 && property.price <= 200000);
+            break;
+          case '200000-300000':
+            filteredProperties = filteredProperties.filter((property) => property.price >= 200000 && property.price <= 300000);
+            break;
+          case '300000':
+            filteredProperties = filteredProperties.filter((property) => property.price > 300000);
+            break;
+          default:
+            break;
+        }
+      }
+
+      return filteredProperties;
+    })
+  );
 
   ngOnInit(): void {
-    /*Get All Real Estate*/
-
-    this.prices$ = of([
-      { label: 'All Prices', value: '0-200000' },
-      { label: '0 - 120000', value: '0-120000' },
-      { label: '120000 - 140000', value: '120000-140000' },
-      { label: '140000 - 160000', value: '140000-160000' },
-      { label: '160000 - 180000', value: '160000-180000' },
-    ]).pipe(delay(500));
-
-    this.propertyTypeOptions$ = of([
-      { label: 'All Types', value: 'All Types' },
-      { label: 'House', value: 'House' },
-      { label: 'Apartment', value: 'Apartment' },
-      { label: 'Garden', value: 'Garden' },
-    ]).pipe(delay(500));
+    this.propertyService.getDirections();
+    this.propertyService.getPropertyTypes();
 
     this.area$ = of([
       { label: 'All Areas', min: 0, max: 0 },
@@ -103,17 +154,6 @@ export class PropertyListComponent implements OnInit {
       { label: '50 - 80', min: 50, max: 80 },
       { label: '80 - 100', min: 80, max: 100 },
     ]).pipe(delay(500));
-
-    this.directions = [
-      { name: 'East', code: 'NY' },
-      { name: 'West', code: 'RM' },
-      { name: 'North', code: 'LDN' },
-      { name: 'South', code: 'IST' },
-      { name: 'North-east', code: 'PRS' },
-      { name: 'North-west', code: 'PRS' },
-      { name: 'South-east', code: 'PRS' },
-      { name: 'South-west', code: 'PRS' },
-    ];
 
     this.filterForm = this.formBuilder.group({
       price: [''],
@@ -129,27 +169,7 @@ export class PropertyListComponent implements OnInit {
   }
 
   getRealEstates(query: string): void {
-    this.realEstateService.getProperties(query);
-  }
-
-  getRealEstate(id: string) {
-    // this.realEstateService.getRealEstates(id);
-  }
-
-  onPriceChange(price: { label: string; min: number; max: number }) {
-    console.log('Selected Price:', price);
-    // Add logic to filter based on the selected price
-  }
-
-  onPropertyTypeChange(event: CheckboxChangeEvent) {
-    if (event.checked as string[]) {
-      console.log(event.checked);
-      const queryParams = event.checked.map((q: string) => `q=${q}`).join('&');
-
-      console.log(queryParams);
-      // this.router.navigate([queryParams]);
-      // this.getRealEstates('tablet');
-    }
+    this.propertyService.getProperties(query);
   }
 
   onAreaChange(event: any) {
@@ -171,33 +191,49 @@ export class PropertyListComponent implements OnInit {
     console.log(this.filterForm.value);
   }
 
-  onDirectionChange(event: any) {
-    const directionsFormArray = this.filterForm.get('directions') as FormArray;
-    directionsFormArray.setValue(event.value); // Update the FormArray with the selected values
-    console.log('Directions:', directionsFormArray.value);
-  }
-
   clearFilters() {
     this.filterForm.reset();
+    this.properties$ = this.propertyService.properties$;
   }
 
   onFilterFormChange($event: any) {
-    // console.log(this.filterForm.value);
+    console.log($event.value);
+    this.properties$ = this.propertyService.properties$.pipe(map((properties) => properties.filter((property) => property.price > $event.value)));
+    console.log(this.filterForm.value);
     const formValues = this.filterForm.value;
-    const filteredValues = Object.keys(formValues)
-      .filter((key) => formValues[key] !== null && formValues[key] !== '')
-      .reduce((acc, key) => ({ ...acc, [key]: formValues[key] }), {});
-    const queryParams = new URLSearchParams(filteredValues).toString();
-    this.getRealEstates(queryParams);
+  }
+
+  // Update property type filter
+  onPropertyTypeChange($event: CheckboxChangeEvent) {
+    this.propertyTypeFilter$.next($event.checked);
+  }
+
+  onDirectionChange($event: any) {
+    this.directionFilter$.next($event.value);
+  }
+
+  // Update price range filter
+  onPriceRangeChange($event: RadioButtonClickEvent) {
+    this.priceRangeFilter$.next($event.value);
   }
 
   openPropertyDetail(property: any) {
     this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
   }
 
-  onCheckBoxChange(event: any) {
-    console.log(event.value);
+  getTagColor(name: string) {
+    if (name === 'For Rent') {
+      return 'success';
+    }
+    return 'success';
   }
 
-  protected readonly environment = environment
+  getSeverity(propertyTypeName: string) {
+    switch (propertyTypeName) {
+      case 'For Sell':
+        return;
+      default:
+        return 'danger';
+    }
+  }
 }

@@ -5,6 +5,9 @@ import { environment } from '../../../../environments/environment.development';
 import { ApiResponse } from '../../../shared/models/api-response';
 import { Category } from '../../../shared/models/category';
 import { PropertyType } from '../../../shared/models/property-type';
+import { defaultProperty, Property } from '../models/property';
+import { SelectOption } from '../../../shared/models/select-option';
+import { Direction } from '../../../shared/models/direction';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +16,11 @@ export class PropertyService {
   private http = inject(HttpClient);
 
   /*PropertyList*/
-  private propertiesSubject = new BehaviorSubject<any[]>([]);
-  properties$ = this.propertiesSubject.asObservable();
+  private propertiesSubject = new BehaviorSubject<Property[]>([]);
+  properties$: Observable<Property[]> = this.propertiesSubject.asObservable();
 
   /*Property Detail*/
-  private propertySubject = new BehaviorSubject<any>('');
+  private propertySubject = new BehaviorSubject<Property>(defaultProperty);
   property$ = this.propertySubject.asObservable();
 
   /*Category*/
@@ -25,8 +28,8 @@ export class PropertyService {
   category$: Observable<string[]> = this.categorySubject.asObservable();
 
   /*Property Type*/
-  private propertyTypeSubject = new BehaviorSubject<string[]>([]);
-  propertyType$ = this.propertyTypeSubject.asObservable();
+  private propertyTypesSubject = new BehaviorSubject<SelectOption[]>([]);
+  propertyTypes$ = this.propertyTypesSubject.asObservable();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
@@ -76,12 +79,16 @@ export class PropertyService {
     this.http
       .get<ApiResponse<PropertyType>>(`${environment.apiUrl}/property-type?limit=10`)
       .pipe(
-        map((response) => response.data.map((item: PropertyType) => item.name)),
-        tap(() => {})
+        map((response): SelectOption[] =>
+          response.data.map((item: PropertyType) => ({
+            label: item.name,
+            value: item.propertyTypeId,
+          }))
+        )
       )
       .subscribe({
         next: (items) => {
-          this.propertyTypeSubject.next(items);
+          this.propertyTypesSubject.next(items);
         },
         error: () => {},
       });
@@ -98,6 +105,22 @@ export class PropertyService {
       .subscribe({
         next: (items) => {
           this.categorySubject.next(items);
+        },
+        error: () => {},
+      });
+  }
+
+  /*Directions*/
+  private directionsSubject = new BehaviorSubject<Direction[]>([]);
+  directions$: Observable<Direction[]> = this.directionsSubject.asObservable();
+
+  getDirections() {
+    this.http
+      .get<ApiResponse<Direction>>(`${environment.apiUrl}/direction?limit=10`)
+      .pipe(map((response) => response.data))
+      .subscribe({
+        next: (items) => {
+          this.directionsSubject.next(items);
         },
         error: () => {},
       });

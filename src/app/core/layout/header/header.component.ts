@@ -3,7 +3,7 @@ import { Button } from 'primeng/button';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { Observable } from 'rxjs';
-import { User } from '../../auth/auth.model';
+import { UserResponse } from '../../auth/auth.model';
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
@@ -20,7 +20,7 @@ import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 export class HeaderComponent implements OnInit {
   items?: MenuItem[];
   private authService = inject(AuthService);
-  currentUser$: Observable<User | null> = this.authService.currentUser$;
+  currentUser$: Observable<UserResponse | null> = this.authService.currentUser$;
 
   ngOnInit(): void {
     this.items = [
