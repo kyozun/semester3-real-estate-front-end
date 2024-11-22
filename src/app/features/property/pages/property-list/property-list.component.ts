@@ -19,6 +19,7 @@ import { Button } from 'primeng/button';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment.development'
 
 
 interface Direction {
@@ -197,4 +198,6 @@ export class PropertyListComponent implements OnInit {
   onCheckBoxChange(event: any) {
     console.log(event.value);
   }
+
+  protected readonly environment = environment
 }

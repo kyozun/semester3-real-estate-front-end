@@ -8,52 +8,56 @@
   <div class="flex-1 bg-gray-100">
     <div class="container mx-auto py-6 font-sans">
       <div class="text-black">
-        @if (properties$ | async; as realEstates) {
+        @if (properties$ | async; as properties) {
           <div class="grid grid-cols-12 gap-6">
             <!--Column 1-->
             <div class="col-span-9 space-y-4">
-              @if (realEstates.length > 0) {
+              @if (properties.length > 0) {
                 <!--Nên để slider-->
                 <p class="text- xl rounded-xl border border-solid border-gray-200 bg-white p-4 font-bold text-blue-600">Results: 4</p>
-                @for (realEstate of realEstates; track realEstate.id) {
+                @for (property of properties; track property.id) {
                   <div class="relative flex flex-row gap-6 rounded-xl border border-solid border-gray-200 bg-white p-6">
                     <!-- 2 Column-->
-                    <div class="flex h-64 w-[600px] flex-row gap-6">
+                    <div class="flex h-64 w-[600px] flex-row gap-2">
                       <!-- Column 1 -->
                       <div class="relative h-full w-2/3">
-                        <img class="absolute inset-0 h-full w-full cursor-pointer object-cover duration-300" fill [ngSrc]="realEstate.thumbnail" alt="Thumbnail" (click)="openPropertyDetail(realEstate)" />
+                        <img class="absolute inset-0 h-full w-full cursor-pointer rounded object-cover duration-300" [src]="environment.baseUrl + property.propertyImages[0]?.imageUrl" alt="Image 1" (click)="openPropertyDetail(property)" />
                       </div>
 
                       <!-- Column 2 with 2 rows -->
-                      <div class="flex h-full w-1/3 flex-col gap-6">
-                        <div class="relative flex-1">
-                          <img class="absolute inset-0 h-full w-full cursor-pointer object-cover duration-300" fill [ngSrc]="realEstate.thumbnail" alt="Thumbnail" (click)="openPropertyDetail(realEstate)" />
-                        </div>
-                        <div class="relative flex-1">
-                          <img class="absolute inset-0 h-full w-full cursor-pointer object-cover duration-300" fill [ngSrc]="realEstate.thumbnail" alt="Thumbnail" (click)="openPropertyDetail(realEstate)" />
-                          <div class="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-gray-800 p-2 font-medium text-white">
-                            <span class="material-symbols-rounded">image</span>
-                            <span>6</span>
+                      <div class="flex h-full w-1/3 flex-col gap-2">
+                        @for (image of property.propertyImages.slice(1, 3); let i = $index; track $index) {
+                          <div class="relative flex-1">
+                            <img class="absolute inset-0 h-full w-full cursor-pointer rounded object-cover duration-300" [src]="environment.baseUrl + image.imageUrl" alt="Image {{ i + 2 }}" (click)="openPropertyDetail(property)" />
+                            <!-- Display overlay on the last image -->
+                            @if (i === 1 && property.propertyImages.length > 3) {
+                              <div class="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-gray-800 p-2 font-medium text-white">
+                                <span class="material-symbols-rounded">image</span>
+                                <span>{{ property.propertyImages.length }}</span>
+                              </div>
+                            }
                           </div>
-                        </div>
+                        }
                       </div>
                     </div>
 
                     <div class="flex-1">
-                      <div class="mb-4">
-                        <p class="mb-2 text-xl font-semibold">{{ realEstate.title }}</p>
-                        <p class="text-xl font-bold">{{ realEstate.price | currency }}</p>
+                      <div class="mb-2">
+                        <p class="mb-2 line-clamp-2 font-semibold">{{ property.title }}</p>
+                        <p class="text-xl font-bold text-blue-600">{{ property.price | currency }}</p>
                       </div>
                       <div>
-                        <p class="mb-4 text-gray-800">{{ realEstate.description }}</p>
-                        <div class="absolute right-6 top-6">
-                          <p-toggleButton [(ngModel)]="checked" onIcon="pi pi-bookmark-fill" offIcon="pi pi-bookmark" ariaLabel="Do you confirm" />
-                        </div>
+                        <p class="mb-6 line-clamp-4 text-gray-600">{{ property.description }}</p>
                       </div>
 
-                      <div class="flex items-center">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="normal" shape="circle" />
-                        <p>Alex</p>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2" size="normal" shape="circle" />
+                          <p>Alex</p>
+                        </div>
+                        <div>
+                          <p-toggleButton [(ngModel)]="checked" onIcon="pi pi-bookmark-fill" offIcon="pi pi-bookmark" ariaLabel="Do you confirm" />
+                        </div>
                       </div>
                     </div>
                   </div>
