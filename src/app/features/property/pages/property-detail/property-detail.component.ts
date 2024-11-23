@@ -40,8 +40,6 @@ import { LightGallery } from 'lightgallery/lightgallery';
   templateUrl: './property-detail.component.html',
   styleUrl: './property-detail.component.css',
   encapsulation: ViewEncapsulation.None,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyDetail implements OnInit {
@@ -76,12 +74,14 @@ export class PropertyDetail implements OnInit {
   isLoading$: Observable<boolean> = this.propertyService.isLoading$;
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.route.queryParams.subscribe({
       next: (params: Params) => {
         console.log(params['propertyId']);
         this.propertyService.getProperty(params['propertyId']);
       },
     });
+
   }
 
 

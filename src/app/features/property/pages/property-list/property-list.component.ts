@@ -23,6 +23,7 @@ import { environment } from '../../../../../environments/environment.development
 import { SelectOption } from '../../../../shared/models/select-option';
 import { Direction } from '../../../../shared/models/direction';
 import { TagModule } from 'primeng/tag';
+import { Property } from '../../models/property';
 
 @Component({
   selector: 'app-property-list',
@@ -63,27 +64,25 @@ export class PropertyListComponent implements OnInit {
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
-  filterForm!: FormGroup;
+  filterForm: FormGroup;
   area$: Observable<{ label: string; min: number; max: number }[]>;
   propertyTypeFilter$ = new BehaviorSubject<string[]>([]);
   directionFilter$ = new BehaviorSubject<string[]>([]);
   priceRangeFilter$ = new BehaviorSubject<string | null>(null);
+  bedroomFilter$ = new BehaviorSubject<number>(0);
+  bathroomFilter$ = new BehaviorSubject<number>(0);
   protected readonly environment = environment;
   private currencyPipe = inject(CurrencyPipe);
 
   priceRanges: SelectOption[] = [
     { label: 'All Prices', value: '0' },
     {
-      label: this.currencyPipe.transform(0, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(100000, 'USD'),
+      label: this.currencyPipe.transform(0, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(100000, 'USD', 'symbol', '1.0-0'),
       value: '0-100000',
     },
     {
-      label: this.currencyPipe.transform(100000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(150000, 'USD', 'symbol', '1.0-0'),
-      value: '100000-150000',
-    },
-    {
-      label: this.currencyPipe.transform(150000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(200000, 'USD', 'symbol', '1.0-0'),
-      value: '150000-200000',
+      label: this.currencyPipe.transform(100000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(200000, 'USD', 'symbol', '1.0-0'),
+      value: '100000-200000',
     },
     {
       label: this.currencyPipe.transform(200000, 'USD', 'symbol', '1.0-0') + ' to ' + this.currencyPipe.transform(300000, 'USD', 'symbol', '1.0-0'),
@@ -91,17 +90,19 @@ export class PropertyListComponent implements OnInit {
     },
     { label: 'From ' + this.currencyPipe.transform(300000, 'USD', 'symbol', '1.0-0'), value: '300000' },
   ];
+
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private http = inject(HttpClient);
   private propertyService = inject(PropertyService);
+
   /*Observable*/
   propertyTypes$: Observable<SelectOption[]> = this.propertyService.propertyTypes$;
   directions$: Observable<Direction[]> = this.propertyService.directions$;
   isLoading$: Observable<boolean> = this.propertyService.isLoading$;
-  properties$ = combineLatest([this.propertyService.properties$, this.propertyTypeFilter$, this.priceRangeFilter$, this.directionFilter$]).pipe(
-    map(([properties, selectedPropertyTypeIds, selectedPriceRange, selectedDirectionsIds]) => {
+  properties$: Observable<Property[]> = combineLatest([this.propertyService.properties$, this.propertyTypeFilter$, this.priceRangeFilter$, this.directionFilter$, this.bedroomFilter$, this.bathroomFilter$]).pipe(
+    map(([properties, selectedPropertyTypeIds, selectedPriceRange, selectedDirectionsIds, selectedBedroom, selectedBathroom]) => {
       let filteredProperties = properties;
       console.log(selectedDirectionsIds);
       console.log(properties);
@@ -120,13 +121,10 @@ export class PropertyListComponent implements OnInit {
       if (selectedPriceRange) {
         switch (selectedPriceRange) {
           case '0-100000':
-            filteredProperties = filteredProperties.filter((property) => property.price >= 0 && property.price <= 120000);
+            filteredProperties = filteredProperties.filter((property) => property.price >= 0 && property.price <= 100000);
             break;
-          case '100000-150000':
-            filteredProperties = filteredProperties.filter((property) => property.price >= 100000 && property.price <= 150000);
-            break;
-          case '150000-200000':
-            filteredProperties = filteredProperties.filter((property) => property.price >= 150000 && property.price <= 200000);
+          case '100000-200000':
+            filteredProperties = filteredProperties.filter((property) => property.price >= 100000 && property.price <= 200000);
             break;
           case '200000-300000':
             filteredProperties = filteredProperties.filter((property) => property.price >= 200000 && property.price <= 300000);
@@ -137,6 +135,16 @@ export class PropertyListComponent implements OnInit {
           default:
             break;
         }
+      }
+
+      // Filter by Bedroom
+      if (selectedBedroom) {
+        filteredProperties = filteredProperties.filter((property) => property.bedroom === selectedBedroom);
+      }
+
+      // Filter by Bedroom
+      if (selectedBathroom) {
+        filteredProperties = filteredProperties.filter((property) => property.bathroom === selectedBathroom);
       }
 
       return filteredProperties;
@@ -156,16 +164,16 @@ export class PropertyListComponent implements OnInit {
     ]).pipe(delay(500));
 
     this.filterForm = this.formBuilder.group({
-      price: [''],
+      price: ['0'],
       propertyType: [''],
       area: [''],
-      bedroom: [''],
-      bathroom: [''],
+      bedroom: ['0'],
+      bathroom: ['0'],
       directions: [''],
     });
 
     const queryParams = new URLSearchParams(this.filterForm.value).toString();
-    this.getRealEstates(queryParams);
+    this.getRealEstates('');
   }
 
   getRealEstates(query: string): void {
@@ -183,27 +191,25 @@ export class PropertyListComponent implements OnInit {
     console.log('Areas:', areaFormArray.value);
   }
 
-  OnBedroomChange(event: SliderChangeEvent) {
-    console.log(this.filterForm.value);
+  OnBedroomChange($event: SliderChangeEvent) {
+    this.bedroomFilter$.next($event.value as number);
   }
 
-  OnBathroomChange(event: SliderChangeEvent) {
-    console.log(this.filterForm.value);
+  OnBathroomChange($event: SliderChangeEvent) {
+    this.bathroomFilter$.next($event.value as number);
   }
 
   clearFilters() {
-    this.filterForm.reset();
-    this.properties$ = this.propertyService.properties$;
+    // this.properties$ = this.propertyService.properties$;
+    this.propertyTypeFilter$.next([]); // Emit default values
+    this.priceRangeFilter$.next('0');
+    this.directionFilter$.next([]);
+    this.bedroomFilter$.next(0);
+    this.filterForm.reset({
+      price: 0,
+    });
   }
 
-  onFilterFormChange($event: any) {
-    console.log($event.value);
-    this.properties$ = this.propertyService.properties$.pipe(map((properties) => properties.filter((property) => property.price > $event.value)));
-    console.log(this.filterForm.value);
-    const formValues = this.filterForm.value;
-  }
-
-  // Update property type filter
   onPropertyTypeChange($event: CheckboxChangeEvent) {
     this.propertyTypeFilter$.next($event.checked);
   }
@@ -212,13 +218,12 @@ export class PropertyListComponent implements OnInit {
     this.directionFilter$.next($event.value);
   }
 
-  // Update price range filter
   onPriceRangeChange($event: RadioButtonClickEvent) {
     this.priceRangeFilter$.next($event.value);
   }
 
-  openPropertyDetail(property: any) {
-    this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
+  navigateToPropertyDetail(propertyId: string) {
+    this.router.navigate(['/property'], { queryParams: { propertyId: propertyId } });
   }
 
   getTagColor(name: string) {
