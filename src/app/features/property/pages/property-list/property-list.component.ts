@@ -24,6 +24,9 @@ import { SelectOption } from '../../../../shared/models/select-option';
 import { Direction } from '../../../../shared/models/direction';
 import { TagModule } from 'primeng/tag';
 import { Property } from '../../models/property';
+import { PropertyType } from '../../../../shared/models/property-type';
+import { PropertyTypeService } from '../../services/property-type.service';
+import { DirectionService } from '../../services/direction.service';
 
 @Component({
   selector: 'app-property-list',
@@ -96,12 +99,8 @@ export class PropertyListComponent implements OnInit {
   private router = inject(Router);
   private http = inject(HttpClient);
   private propertyService = inject(PropertyService);
-
-  /*Observable*/
-  propertyTypes$: Observable<SelectOption[]> = this.propertyService.propertyTypes$;
-  directions$: Observable<Direction[]> = this.propertyService.directions$;
-  isLoading$: Observable<boolean> = this.propertyService.isLoading$;
-  properties$: Observable<Property[]> = combineLatest([this.propertyService.properties$, this.propertyTypeFilter$, this.priceRangeFilter$, this.directionFilter$, this.bedroomFilter$, this.bathroomFilter$]).pipe(
+  isLoading$: Observable<boolean> = this.propertyService.getLoading$();
+  properties$: Observable<Property[]> = combineLatest([this.propertyService.getProperties$(), this.propertyTypeFilter$, this.priceRangeFilter$, this.directionFilter$, this.bedroomFilter$, this.bathroomFilter$]).pipe(
     map(([properties, selectedPropertyTypeIds, selectedPriceRange, selectedDirectionsIds, selectedBedroom, selectedBathroom]) => {
       let filteredProperties = properties;
       console.log(selectedDirectionsIds);
@@ -150,10 +149,15 @@ export class PropertyListComponent implements OnInit {
       return filteredProperties;
     })
   );
+  private directionService = inject(DirectionService);
+  directions$: Observable<Direction[]> = this.directionService.getDirections$();
+  private propertyTypeService = inject(PropertyTypeService);
+  /*Observable*/
+  propertyTypes$: Observable<PropertyType[]> = this.propertyTypeService.getPropertyTypes$();
 
   ngOnInit(): void {
-    this.propertyService.getDirections();
-    this.propertyService.getPropertyTypes();
+    this.directionService.getDirections();
+    this.propertyTypeService.getPropertyTypes();
 
     this.area$ = of([
       { label: 'All Areas', min: 0, max: 0 },

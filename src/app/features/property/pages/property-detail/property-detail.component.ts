@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  inject,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { HeaderComponent } from '../../../../core/layout/header/header.component';
 import { FooterComponent } from '../../../../core/layout/footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular/16';
@@ -31,7 +23,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { Property } from '../../models/property';
 import { environment } from '../../../../../environments/environment.development';
 import { LightGallerySettings } from 'lightgallery/lg-settings';
-import { LightGallery } from 'lightgallery/lightgallery';
 
 @Component({
   selector: 'app-property-detail',
@@ -70,19 +61,15 @@ export class PropertyDetail implements OnInit {
   /*Services*/
   private propertyService = inject(PropertyService);
   /*Observable*/
-  property$: Observable<Property> = this.propertyService.property$;
-  isLoading$: Observable<boolean> = this.propertyService.isLoading$;
+  property$: Observable<Property> = this.propertyService.getProperty$();
+  isLoading$: Observable<boolean> = this.propertyService.getLoading$();
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
     this.route.queryParams.subscribe({
       next: (params: Params) => {
-        console.log(params['propertyId']);
-        this.propertyService.getProperty(params['propertyId']);
+       this.propertyService.getProperty(params['propertyId']);
       },
     });
-
   }
-
-
 }

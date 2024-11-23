@@ -19,6 +19,7 @@ import { PropertyService } from '../../../property/services/property.service';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { SliderChangeEvent } from 'primeng/slider';
 import { environment } from '../../../../../environments/environment.development'
+import { Property } from '../../../property/models/property';
 
 interface Direction {
   name: string;
@@ -51,8 +52,8 @@ export class AdminPropertyListComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private realEstateService = inject(PropertyService);
-  properties$: Observable<any[]> = this.realEstateService.properties$;
-  isLoading$: Observable<boolean> = this.realEstateService.isLoading$;
+  properties$: Observable<Property[]> = this.realEstateService.getProperties$();
+  isLoading$: Observable<boolean> = this.realEstateService.getLoading$();
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
 

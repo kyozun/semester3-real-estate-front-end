@@ -1,13 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { ApiResponse } from '../../../shared/models/api-response';
-import { Category } from '../../../shared/models/category';
-import { PropertyType } from '../../../shared/models/property-type';
 import { defaultProperty, Property } from '../models/property';
-import { SelectOption } from '../../../shared/models/select-option';
-import { Direction } from '../../../shared/models/direction';
 
 @Injectable({
   providedIn: 'root',
@@ -16,113 +12,112 @@ export class PropertyService {
   private http = inject(HttpClient);
 
   /*PropertyList*/
-  private propertiesSubject = new BehaviorSubject<Property[]>([]);
-  properties$: Observable<Property[]> = this.propertiesSubject.asObservable();
+  private propertiesSubject: BehaviorSubject<Property[]> = new BehaviorSubject<Property[]>([]);
 
   /*Property Detail*/
   private propertySubject = new BehaviorSubject<Property>(defaultProperty);
-  property$ = this.propertySubject.asObservable();
-
-  /*Category*/
-  private categorySubject = new BehaviorSubject<string[]>([]);
-  category$: Observable<string[]> = this.categorySubject.asObservable();
-
-  /*Property Type*/
-  private propertyTypesSubject = new BehaviorSubject<SelectOption[]>([]);
-  propertyTypes$ = this.propertyTypesSubject.asObservable();
 
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
-  isLoading$ = this.isLoadingSubject.asObservable();
+
+  private propertiesSearchSubject = new BehaviorSubject<Property[]>([]);
+  private searchKeywordSubject: Subject<string> = new Subject<string>();
+
+  constructor() {
+    this.searchKeywordSubject
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        switchMap((searchTerm) => this.getPropertiesSearch(`title=${searchTerm}`))
+      )
+      .subscribe();
+  }
+
+  getPropertiesSearch$() {
+    return this.propertiesSearchSubject.asObservable();
+  }
+
+  setPropertiesSearch$(properties: Property[]) {
+    return this.propertiesSearchSubject.next(properties);
+  }
+
+  getProperty$() {
+    return this.propertySubject.asObservable();
+  }
+
+  setProperty$(property: Property): void {
+    this.propertySubject.next(property);
+  }
+
+  setSearchKeyWordSubject(keyword: string) {
+    this.searchKeywordSubject.next(keyword);
+  }
+
+  getProperties$(): Observable<Property[]> {
+    return this.propertiesSubject.asObservable();
+  }
+
+  setProperties$(properties: Property[]) {
+    this.propertiesSubject.next(properties);
+  }
+
+  getLoading$(): Observable<boolean> {
+    return this.isLoadingSubject.asObservable();
+  }
+
+  setLoading$(isLoading: boolean) {
+    this.isLoadingSubject.next(isLoading);
+  }
+
+  searchByKeyword(keyword: string) {
+    this.setSearchKeyWordSubject(keyword);
+  }
 
   getProperties(query: string) {
-    this.isLoadingSubject.next(true);
-    this.http
-      .get<any>(`${environment.apiUrl}/property?${query}&limit=10`)
+    this.setLoading$(true);
+    return this.http
+      .get<ApiResponse<Property>>(`${environment.apiUrl}/property?${query}&limit=10`)
       .pipe(
         map((response) => response.data),
-        tap(() => {
-          // Stop loading
-          this.isLoadingSubject.next(false);
+        tap((properties) => {
+          this.setProperties$(properties);
+          this.setLoading$(false);
         })
       )
       .subscribe({
         next: (items) => {
-          this.propertiesSubject.next(items);
+          this.setProperties$(items);
         },
         error: () => {
-          this.isLoadingSubject.next(false);
+          this.setLoading$(false);
         },
       });
   }
 
-  getProperty(id: string) {
-    this.isLoadingSubject.next(true);
-    this.http
-      .get<any>(`${environment.apiUrl}/property/${id}`)
+  getPropertiesSearch(query: string) {
+    return this.http.get<ApiResponse<Property>>(`${environment.apiUrl}/property?${query}&limit=10`).pipe(
+      map((response) => response.data),
+      tap((properties) => {
+        this.setPropertiesSearch$(properties);
+      })
+    );
+  }
+
+  getProperty(propertyId: string) {
+    this.setLoading$(true);
+    return this.http
+      .get<Property>(`${environment.apiUrl}/property/${propertyId}`)
       .pipe(
         tap(() => {
-          // Stop loading
-          this.isLoadingSubject.next(false);
+          this.setLoading$(false);
         })
       )
       .subscribe({
         next: (items) => {
-          this.propertySubject.next(items);
+          this.setProperty$(items);
         },
         error: () => {
-          this.isLoadingSubject.next(false);
+          this.setLoading$(false);
         },
-      });
-  }
-
-  getPropertyTypes() {
-    this.http
-      .get<ApiResponse<PropertyType>>(`${environment.apiUrl}/property-type?limit=10`)
-      .pipe(
-        map((response): SelectOption[] =>
-          response.data.map((item: PropertyType) => ({
-            label: item.name,
-            value: item.propertyTypeId,
-          }))
-        )
-      )
-      .subscribe({
-        next: (items) => {
-          this.propertyTypesSubject.next(items);
-        },
-        error: () => {},
-      });
-  }
-
-  getCategories() {
-    this.isLoadingSubject.next(true);
-    this.http
-      .get<ApiResponse<Category>>(`${environment.apiUrl}/category?limit=10`)
-      .pipe(
-        map((response) => response.data.map((item: Category) => item.name)),
-        tap(() => {})
-      )
-      .subscribe({
-        next: (items) => {
-          this.categorySubject.next(items);
-        },
-        error: () => {},
-      });
-  }
-
-  /*Directions*/
-  private directionsSubject = new BehaviorSubject<Direction[]>([]);
-  directions$: Observable<Direction[]> = this.directionsSubject.asObservable();
-
-  getDirections() {
-    this.http
-      .get<ApiResponse<Direction>>(`${environment.apiUrl}/direction?limit=10`)
-      .pipe(map((response) => response.data))
-      .subscribe({
-        next: (items) => {
-          this.directionsSubject.next(items);
-        },
-        error: () => {},
       });
   }
 }

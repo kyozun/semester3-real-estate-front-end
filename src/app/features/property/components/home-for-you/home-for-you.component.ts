@@ -38,7 +38,7 @@ export class HomeForYouComponent implements OnInit {
   protected readonly environment = environment;
   private router = inject(Router);
   private propertyService = inject(PropertyService);
-  properties$: Observable<Property[]> = this.propertyService.properties$;
+  properties$: Observable<Property[]> = this.propertyService.getProperties$();
 
   onBack() {
     this.swiperDirective?.swiperContainer.nativeElement.swiper.slidePrev();
@@ -49,7 +49,7 @@ export class HomeForYouComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.propertyService.getProperties('');
+   this.propertyService.getProperties('');
   }
 
   navigateToPropertyDetail(propertyId: string) {

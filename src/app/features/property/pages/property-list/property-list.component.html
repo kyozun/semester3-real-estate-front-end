@@ -136,7 +136,7 @@
                     <div class="flex flex-row flex-wrap gap-4">
                       @if (propertyTypes$ | async; as propertyTypes) {
                         @for (propertyType of propertyTypes; track $index) {
-                          <p-checkbox [label]="propertyType.label" formControlName="propertyType" [value]="propertyType.value" (onChange)="onPropertyTypeChange($event)"></p-checkbox>
+                          <p-checkbox [label]="propertyType.name" formControlName="propertyType" [value]="propertyType.propertyTypeId" (onChange)="onPropertyTypeChange($event)"></p-checkbox>
                         }
                       }
                     </div>

@@ -55,7 +55,7 @@
             <div class="flex flex-col gap-2">
               <label for="property-category" class="font-medium">Property Category</label>
               @if (categories$ | async; as categories) {
-                <p-dropdown id="property-category" formControlName="propertyCategory" [options]="categories" [filter]="true" placeholder="Select Category" [showClear]="true" [style]="{ width: '100%' }" />
+                <p-dropdown id="property-category" formControlName="propertyCategory" [options]="categories" optionLabel="name" [filter]="true" placeholder="Select Category" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
@@ -66,7 +66,7 @@
             <div class="flex flex-col gap-2">
               <label for="property-type" class="font-medium">Property Type</label>
               @if (propertyTypes$ | async; as propertyTypes) {
-                <p-dropdown id="property-type" formControlName="propertyType" [options]="propertyTypes" [filter]="true" placeholder="Select Type" [showClear]="true" [style]="{ width: '100%' }" />
+                <p-dropdown optionLabel="name" id="property-type" formControlName="propertyType" [options]="propertyTypes" [filter]="true" placeholder="Select Type" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
@@ -119,7 +119,7 @@
             <div class="flex flex-col gap-2">
               <label for="province" class="font-medium">Province</label>
               @if (provinces$ | async; as provinces) {
-                <p-dropdown  id="province" formControlName="province" [options]="provinces" [filter]="true" placeholder="Select Province" (onChange)="onProvinceChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+                <p-dropdown id="province" formControlName="province" [options]="provinces" [filter]="true" placeholder="Select Province" (onChange)="onProvinceChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
@@ -130,7 +130,7 @@
             <div class="flex flex-col gap-2">
               <label for="district" class="font-medium">District</label>
               @if (districts$ | async; as districts) {
-                <p-dropdown id="district" formControlName="district" [options]="districts" [disabled]="districts.length < 0" [filter]="true" placeholder="Select District" (onChange)="onDistrictChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+                <p-dropdown id="district" formControlName="district" [options]="districts"  [filter]="true" placeholder="Select District" (onChange)="onDistrictChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }

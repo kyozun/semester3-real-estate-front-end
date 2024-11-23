@@ -14,6 +14,10 @@ import { Button } from 'primeng/button';
 import { RouterLink } from '@angular/router';
 import { ProvinceService } from '../../../property/services/province.service';
 import { SelectOption } from '../../../../shared/models/select-option';
+import { PropertyType } from '../../../../shared/models/property-type';
+import { PropertyTypeService } from '../../../property/services/property-type.service';
+import { CategoryService } from '../../../property/services/category.service';
+import { Category } from '../../../../shared/models/category';
 
 @Component({
   selector: 'app-add-property',
@@ -24,19 +28,21 @@ import { SelectOption } from '../../../../shared/models/select-option';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPropertyComponent implements OnInit {
-  public propertyForm: FormGroup;
+  propertyForm: FormGroup;
   private propertyService = inject(PropertyService);
-  public categories$: Observable<string[]> = this.propertyService.category$;
-  public propertyTypes$: Observable<SelectOption[]> = this.propertyService.propertyTypes$;
+  private categoryService = inject(CategoryService);
+  categories$: Observable<Category[]> = this.categoryService.getCategories$();
+  private propertyTypeService = inject(PropertyTypeService);
+  propertyTypes$: Observable<PropertyType[]> = this.propertyTypeService.getPropertyTypes$();
   private provinceService = inject(ProvinceService);
-  public provinces$: Observable<SelectOption[]> = this.provinceService.provinces$;
-  public districts$: Observable<SelectOption[]> = this.provinceService.districts$;
-  public wards$: Observable<SelectOption[]> = this.provinceService.wards$;
+  provinces$: Observable<SelectOption[]> = this.provinceService.provinces$;
+  districts$: Observable<SelectOption[]> = this.provinceService.districts$;
+  wards$: Observable<SelectOption[]> = this.provinceService.wards$;
   private formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
-    this.propertyService.getCategories();
-    this.propertyService.getPropertyTypes();
+    this.categoryService.getCategories();
+    this.propertyTypeService.getPropertyTypes();
     this.provinceService.getProvinces();
     this.propertyForm = this.formBuilder.group({
       propertyName: [, Validators.required],
@@ -67,11 +73,11 @@ export class AddPropertyComponent implements OnInit {
 
   onProvinceChange($event: DropdownChangeEvent) {
     console.log($event.value);
-    this.provinceService.getDistricts($event.value)
+    this.provinceService.getDistricts($event.value);
   }
 
   onDistrictChange($event: DropdownChangeEvent) {
     console.log($event.value);
-    this.provinceService.getWards($event.value)
+    this.provinceService.getWards($event.value);
   }
 }

@@ -37,7 +37,7 @@ export class HomeMostViewedComponent implements OnInit {
   private router = inject(Router);
   private propertyService = inject(PropertyService);
   // Tạo observable array mới and sắp xếp theo view giảm dần
-  sortedProperties$ = this.propertyService.properties$.pipe(map((properties) => [...properties].sort((a, b) => b.viewCount - a.viewCount)));
+  sortedProperties$ = this.propertyService.getProperties$().pipe(map((properties) => [...properties].sort((a, b) => b.viewCount - a.viewCount)));
 
   ngOnInit(): void {
     this.propertyService.getProperties('');

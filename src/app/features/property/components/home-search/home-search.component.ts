@@ -6,28 +6,29 @@ import { HomeMostViewedComponent } from '../home-most-viewed/home-most-viewed.co
 import { HomeForYouComponent } from '../home-for-you/home-for-you.component';
 import { HomeAgentComponent } from '../home-agent/home-agent.component';
 import { DialogModule } from 'primeng/dialog';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { Ripple } from 'primeng/ripple';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { SliderModule } from 'primeng/slider';
-
-interface City {
-  name: string;
-  code: string;
-}
+import { Observable } from 'rxjs';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { Property } from '../../models/property';
+import { PropertyService } from '../../services/property.service';
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
   selector: 'app-home-search',
   standalone: true,
-  imports: [TabViewModule, InputTextModule, ButtonModule, HomeMostViewedComponent, HomeForYouComponent, HomeAgentComponent, DialogModule, CheckboxModule, FormsModule, ReactiveFormsModule, DropdownModule, Ripple, SliderModule],
+  imports: [TabViewModule, InputTextModule, ButtonModule, HomeMostViewedComponent, HomeForYouComponent, HomeAgentComponent, DialogModule, CheckboxModule, FormsModule, ReactiveFormsModule, DropdownModule, Ripple, SliderModule, AsyncPipe, RouterLink, CurrencyPipe],
   templateUrl: './home-search.component.html',
   styleUrl: './home-search.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeSearchComponent implements OnInit {
   visible: boolean = false;
+  isInputFocused = false;
 
   bathroomOptions = [
     { label: 'Any', value: null },
@@ -39,10 +40,8 @@ export class HomeSearchComponent implements OnInit {
     { label: '6+', value: 6 },
   ];
 
-  selectedCity: City | undefined;
-
+  searchInput = new FormControl('');
   private formBuilder = inject(FormBuilder);
-
   searchForm = this.formBuilder.group({
     propertyTypes: this.formBuilder.group({
       allTypes: [false],
@@ -75,14 +74,18 @@ export class HomeSearchComponent implements OnInit {
     }),
   });
   private router = inject(Router);
+  private propertyService = inject(PropertyService);
+
+  properties$: Observable<Property[]> = this.propertyService.getPropertiesSearch$();
 
   showDialog() {
     this.visible = true;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.searchInput.valueChanges.subscribe((value) => this.propertyService.searchByKeyword(value as string));
+  }
 
-  /* Submit the form */
   onSubmit() {
     const formValues = this.searchForm.value;
     console.log(formValues);
@@ -96,14 +99,14 @@ export class HomeSearchComponent implements OnInit {
     };
     console.log(queryParams);
 
-    // Navigate to a new route with the query parameters
     this.router.navigate(['/property/search']);
-
-    // Close the dialog
+    // Close dialog
     this.visible = false;
   }
 
   clearFilters() {
     this.searchForm.reset();
   }
+
+  protected readonly environment = environment;
 }

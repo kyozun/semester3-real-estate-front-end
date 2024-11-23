@@ -1,7 +1,7 @@
 <div class="mt-4 font-sans">
   <!--  For You-->
   <div class="mb-6 flex flex-row items-center justify-between">
-    <h1 class="font-sans text-3xl font-semibold">Real Restate For You</h1>
+    <h1 class="font-sans text-2xl font-semibold">Real Restate For You</h1>
     <div>
       <p-button class="mr-2" icon="pi pi-chevron-left" size="small" iconPos="left" [rounded]="true" severity="primary" raised="true" (click)="onBack()" />
       <p-button icon="pi pi-chevron-right" size="small" iconPos="left" [rounded]="true" severity="primary" raised="true" (click)="onNext()" />
@@ -19,7 +19,7 @@
         <swiper-slide>
           <div class="relative cursor-pointer rounded-xl border border-t-0 border-solid border-gray-300 bg-white transition-all duration-300 ease-in-out hover:bg-gray-100" (click)="navigateToPropertyDetail(property.propertyId)">
             <img class="aspect-video w-full rounded-t-xl object-cover" [src]="environment.baseUrl + property.coverImage" alt="" />
-            <p-button class="absolute right-2 top-2" icon="pi pi-bookmark" [rounded]="true" severity="primary" raised="true" />
+<!--            <p-button class="absolute right-2 top-2" icon="pi pi-bookmark" [rounded]="true" severity="primary" raised="true" />-->
 
             <div class="p-4 pt-2">
               <div class="flex flex-row items-center justify-between">

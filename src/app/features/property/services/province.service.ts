@@ -26,7 +26,7 @@ export class ProvinceService {
   wards$ = this.wardsSubject.asObservable();
 
   getProvinces() {
-    this.http
+    return this.http
       .get<ApiResponse<Province>>(`${environment.apiUrl}/province?limit=10`)
       .pipe(
         map((response): SelectOption[] =>
@@ -51,7 +51,7 @@ export class ProvinceService {
       return;
     }
 
-    this.http
+    return this.http
       .get<ApiResponse<District>>(`${environment.apiUrl}/district?provinceId=${provinceId}&limit=10`)
       .pipe(
         map((response): SelectOption[] =>
@@ -78,7 +78,7 @@ export class ProvinceService {
       return;
     }
 
-    this.http
+    return this.http
       .get<ApiResponse<District>>(`${environment.apiUrl}/ward?districtId=${districtId}&limit=10`)
       .pipe(
         map((response): SelectOption[] =>
@@ -99,23 +99,4 @@ export class ProvinceService {
       });
   }
 
-  // getProvince(id: string) {
-  //   this.isLoadingSubject.next(true);
-  //   this.http
-  //     .get<any>(`${environment.apiUrl}/property/${id}`)
-  //     .pipe(
-  //       tap(() => {
-  //         // Stop loading
-  //         this.isLoadingSubject.next(false);
-  //       })
-  //     )
-  //     .subscribe({
-  //       next: (realEstate) => {
-  //         this.propertySubject.next(realEstate);
-  //       },
-  //       error: () => {
-  //         this.isLoadingSubject.next(false);
-  //       },
-  //     });
-  // }
 }
