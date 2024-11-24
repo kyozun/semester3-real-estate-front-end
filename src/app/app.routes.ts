@@ -12,7 +12,10 @@ import { AddPropertyComponent } from './features/admin/components/add-property/a
 import { PropertyListComponent } from './features/property/pages/property-list/property-list.component';
 import { AdminPropertyListComponent } from './features/admin/components/admin-property-list/admin-property-list.component';
 import { authGuard } from './core/auth/auth.guard';
-import { guessGuard } from './core/auth/guess.guard'
+import { guessGuard } from './core/auth/guess.guard';
+import { MyAccountComponent } from './features/my-account/pages/my-account/my-account.component';
+import { AllListingsComponent } from './features/my-account/components/all-listings/all-listings.component'
+import { AddListingComponent } from './features/my-account/components/add-listing/add-listing.component'
 
 export const routes: Routes = [
   {
@@ -20,6 +23,27 @@ export const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     title: 'Real Estate',
+  },
+  {
+    path: 'my-account',
+    component: MyAccountComponent,
+    title: 'My Account',
+    children: [
+      { path: 'settings', component: SettingsComponent },
+      {
+        path: 'all-listings',
+        children: [
+          { path: '', component: AllListingsComponent, title: 'All Listings' },
+          { path: 'add', component: AddListingComponent, title: 'Add Property' },
+        ],
+      },
+      { path: 'analytic', component: AnalyticComponent },
+      {
+        path: '',
+        redirectTo: 'all-listings',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: 'auth',
@@ -35,7 +59,6 @@ export const routes: Routes = [
   {
     path: 'property',
     component: PropertyDetail,
-
   },
   {
     path: 'admin',

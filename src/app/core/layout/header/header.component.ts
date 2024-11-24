@@ -28,13 +28,13 @@ export class HeaderComponent implements OnInit {
         label: 'Options',
         items: [
           {
-            label: 'Balance',
-            icon: 'pi pi-money-bill\n',
-          },
-          {
             label: 'Upload',
             icon: 'pi pi-upload',
           },
+          {
+            label: 'Balance',
+            icon: 'pi pi-money-bill\n',
+          }
         ],
       },
       {

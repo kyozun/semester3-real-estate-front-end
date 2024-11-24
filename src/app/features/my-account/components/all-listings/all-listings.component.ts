@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -6,47 +6,40 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmationService, MessageService, PrimeTemplate } from 'primeng/api';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { RatingModule } from 'primeng/rating';
 import { Router, RouterLink } from '@angular/router';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { FormArray, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { delay, Observable, of } from 'rxjs';
 import { PropertyService } from '../../../property/services/property.service';
+import { Property } from '../../../property/models/property';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { SliderChangeEvent } from 'primeng/slider';
-import { environment } from '../../../../../environments/environment.development'
-import { Property } from '../../../property/models/property';
-
-interface Direction {
-  name: string;
-  code: string;
-}
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
-  selector: 'app-admin-property-list',
+  selector: 'app-all-listings',
   standalone: true,
-  imports: [AsyncPipe, Button, ConfirmDialogModule, CurrencyPipe, InputTextModule, PrimeTemplate, ProgressBarModule, ProgressSpinnerModule, RatingModule, RouterLink, ScrollTopModule, TableModule, TagModule, ToastModule, ToolbarModule, FormsModule],
-  templateUrl: './admin-property-list.component.html',
-  styleUrl: './admin-property-list.component.css',
-  providers: [MessageService, ConfirmationService],
+  imports: [AsyncPipe, Button, ConfirmDialogModule, CurrencyPipe, InputTextModule, PrimeTemplate, ProgressBarModule, ProgressSpinnerModule, RouterLink, ScrollTopModule, TableModule, TagModule, ToastModule, ToolbarModule],
+  templateUrl: './all-listings.component.html',
+  styleUrl: './all-listings.component.css',
+  providers: [ConfirmationService, MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminPropertyListComponent implements OnInit {
+export class AllListingsComponent {
   query: string = '';
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
-  directions!: Direction[];
   filterForm!: FormGroup;
   /*Observable*/
   prices$: Observable<{ label: string; value: string }[]>;
   propertyTypeOptions$: Observable<{ label: string; value: string }[]>;
   area$: Observable<{ label: string; min: number; max: number }[]>;
-
+  protected readonly environment = environment;
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
@@ -54,9 +47,9 @@ export class AdminPropertyListComponent implements OnInit {
   properties$: Observable<Property[]> = this.realEstateService.getProperties$();
   isLoading$: Observable<boolean> = this.realEstateService.getLoading$();
   private confirmationService = inject(ConfirmationService);
-  private messageService = inject(MessageService);
 
   /*DI*/
+  private messageService = inject(MessageService);
 
   ngOnInit(): void {
     /*Get All Real Estate*/
@@ -83,17 +76,6 @@ export class AdminPropertyListComponent implements OnInit {
       { label: '50 - 80', min: 50, max: 80 },
       { label: '80 - 100', min: 80, max: 100 },
     ]).pipe(delay(500));
-
-    this.directions = [
-      { name: 'East', code: 'NY' },
-      { name: 'West', code: 'RM' },
-      { name: 'North', code: 'LDN' },
-      { name: 'South', code: 'IST' },
-      { name: 'North-east', code: 'PRS' },
-      { name: 'North-west', code: 'PRS' },
-      { name: 'South-east', code: 'PRS' },
-      { name: 'South-west', code: 'PRS' },
-    ];
 
     this.filterForm = this.formBuilder.group({
       price: [''],
@@ -207,6 +189,4 @@ export class AdminPropertyListComponent implements OnInit {
         return 'info';
     }
   }
-
-  protected readonly environment = environment
 }

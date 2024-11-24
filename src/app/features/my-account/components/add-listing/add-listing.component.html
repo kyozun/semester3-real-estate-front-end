@@ -1,0 +1,200 @@
+<div>
+  <div class="rounded bg-gray-100 font-sans">
+    <form [formGroup]="propertyForm" (ngSubmit)="submitPropertyForm()">
+      <div class="grid grid-cols-12 items-start gap-6">
+        <!--Col 1-->
+        <div class="sticky top-4 col-span-3 rounded">
+          <div class="mb-6 border border-solid border-gray-300 bg-white p-6">
+            <div class="relative mb-4">
+              <img class="aspect-video w-full rounded object-cover" src="https://themes.techzaa.in/lahomes-angular/assets/p-1-BQ0X_fIz.jpg" alt="" />
+              <p-tag class="absolute right-2 top-2" value="For Rent" />
+            </div>
+
+            <div class="mb-3">
+              <div class="mb-2 font-semibold">{{ propertyForm.get('propertyName')?.value }}</div>
+              <div class="text-sm text-gray-600">{{ propertyForm.get('propertyAddress')?.value }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="font-semibold">Price</div>
+              <div class="text-3xl font-bold text-blue-600">{{ propertyForm.get('price')?.value | currency }}</div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-2">
+              <div class="col-span-6 inline-flex items-center gap-1 rounded bg-blue-100 p-1 text-xs font-medium text-blue-800">
+                <span class="material-symbols-rounded">king_bed</span>
+                <span>{{ propertyForm.get('bedroom')?.value }} Beds</span>
+              </div>
+
+              <div class="col-span-6 inline-flex items-center gap-1 rounded bg-blue-100 p-1 text-xs font-medium text-blue-800">
+                <span class="material-symbols-rounded">bathtub</span>
+                <span>{{ propertyForm.get('bathroom')?.value }} Baths</span>
+              </div>
+
+              <div class="col-span-6 inline-flex items-center gap-1 rounded bg-blue-100 p-1 text-xs font-medium text-blue-800">
+                <span class="material-symbols-rounded">floor</span>
+                <span>{{ propertyForm.get('floor')?.value }} Floors</span>
+              </div>
+            </div>
+          </div>
+
+          @if (getVideoId()) {
+            <div class="border border-solid border-gray-300 bg-white px-6 py-4">
+              <div class="mb-2 flex items-center gap-1 font-semibold">
+                <span class="material-symbols-rounded">smart_display</span>
+                <div>Videos</div>
+              </div>
+
+              <app-yt-player [videoID]="getVideoId()"></app-yt-player>
+            </div>
+          }
+        </div>
+
+        <!--Col 2-->
+        <div class="col-span-9 rounded border border-solid border-gray-300 bg-white p-6">
+          <div class="mb-4 border-0 border-l-8 border-solid border-blue-600 pl-2 text-xl font-semibold text-blue-600">Property Information</div>
+
+          <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-6">
+              <div class="flex flex-col gap-2">
+                <label for="property-name" class="font-medium">Property Name</label>
+                <input id="property-name" pInputText formControlName="propertyName" placeholder="Name" />
+                @if (propertyForm.get('propertyName')?.invalid && (propertyForm.get('propertyName')?.touched || propertyForm.get('propertyName')?.dirty)) {
+                  <small class="font-medium text-rose-600">Property Name is required.</small>
+                }
+              </div>
+            </div>
+            <div class="col-span-3">
+              <div class="flex flex-col gap-2">
+                <label for="property-category" class="font-medium">Property Category</label>
+                @if (categories$ | async; as categories) {
+                  <p-dropdown id="property-category" formControlName="propertyCategory" [options]="categories" optionLabel="name" [filter]="true" placeholder="Select Category" [showClear]="true" [style]="{ width: '100%' }" />
+                } @else {
+                  <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+                }
+              </div>
+            </div>
+
+            <div class="col-span-3">
+              <div class="flex flex-col gap-2">
+                <label for="property-type" class="font-medium">Property Type</label>
+                @if (propertyTypes$ | async; as propertyTypes) {
+                  <p-dropdown optionLabel="name" id="property-type" formControlName="propertyType" [options]="propertyTypes" [filter]="true" placeholder="Select Type" [showClear]="true" [style]="{ width: '100%' }" />
+                } @else {
+                  <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+                }
+              </div>
+            </div>
+
+            <div class="col-span-3">
+              <div class="flex flex-col gap-2">
+                <label for="price" class="font-medium">Price</label>
+                <p-inputGroup>
+                  <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">payments</span></p-inputGroupAddon>
+                  <input formControlName="price" id="price" type="number" pInputText placeholder="Price" />
+                </p-inputGroup>
+                @if (propertyForm.get('price')?.invalid && (propertyForm.get('price')?.touched || propertyForm.get('price')?.dirty)) {
+                  <small class="font-medium text-rose-600">Price is required.</small>
+                }
+              </div>
+            </div>
+
+            <div class="col-span-3">
+              <div class="flex flex-col gap-2">
+                <label for="bedroom" class="font-medium">Bedroom</label>
+                <p-inputGroup>
+                  <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">king_bed</span></p-inputGroupAddon>
+                  <input formControlName="bedroom" id="bedroom" type="number" pInputText />
+                </p-inputGroup>
+              </div>
+            </div>
+
+            <div class="col-span-3">
+              <div class="flex flex-col gap-2">
+                <label for="bedroom" class="font-medium">Bathroom</label>
+                <p-inputGroup>
+                  <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">bathtub</span></p-inputGroupAddon>
+                  <input formControlName="bathroom" id="bathroom" type="number" pInputText />
+                </p-inputGroup>
+              </div>
+            </div>
+
+            <div class="col-span-3">
+              <div class="flex flex-col gap-2">
+                <label for="floor" class="font-medium">Floor</label>
+                <p-inputGroup>
+                  <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">floor</span></p-inputGroupAddon>
+                  <input formControlName="floor" id="floor" type="number" pInputText />
+                </p-inputGroup>
+              </div>
+            </div>
+            <div class="col-span-3" formGroupName="address">
+              <div class="flex flex-col gap-2">
+                <label for="province" class="font-medium">Province</label>
+                @if (provinces$ | async; as provinces) {
+                  <p-dropdown id="province" formControlName="province" [options]="provinces" [filter]="true" placeholder="Province" (onChange)="onProvinceChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+                } @else {
+                  <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+                }
+              </div>
+            </div>
+
+            <div class="col-span-3" formGroupName="address">
+              <div class="flex flex-col gap-2">
+                <label for="district" class="font-medium">District</label>
+                @if (districts$ | async; as districts) {
+                  <p-dropdown id="district" formControlName="district" [options]="districts" [filter]="true" placeholder="District" (onChange)="onDistrictChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+                } @else {
+                  <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+                }
+              </div>
+            </div>
+
+            <div class="col-span-3" formGroupName="address">
+              <div class="flex flex-col gap-2">
+                <label for="district" class="font-medium">Ward</label>
+                @if (wards$ | async; as wards) {
+                  <p-dropdown id="ward" formControlName="ward" [options]="wards" [filter]="true" placeholder="Ward" [showClear]="true" [style]="{ width: '100%' }" />
+                } @else {
+                  <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+                }
+              </div>
+            </div>
+
+            <div class="col-span-3" formGroupName="address">
+              <div class="flex flex-col gap-2">
+                <label for="zipcode" class="font-medium">Zipcode</label>
+                <input id="zipcode" pInputText formControlName="zipcode" placeholder="Zipcode" />
+              </div>
+            </div>
+
+            <div class="col-span-12">
+              <div class="flex flex-col gap-2">
+                <label for="property-address" class="font-medium">Property Address</label>
+                <input id="property-address" pInputText formControlName="propertyAddress" placeholder="Address" />
+              </div>
+            </div>
+
+            <div class="col-span-12">
+              <div class="flex flex-col gap-2">
+                <label for="youtubeLink" class="font-medium">Youtube Link</label>
+                <input id="youtubeLink" pInputText formControlName="youtubeLink" placeholder="Link to Youtube Video" />
+              </div>
+            </div>
+
+            <div class="col-span-12">
+              <div class="flex flex-col gap-2">
+                <label for="description" class="font-medium">Description</label>
+                <p-editor formControlName="description" id="description" [style]="{ height: '260px' }" />
+              </div>
+            </div>
+
+            <div class="col-span-12 flex items-center justify-between">
+              <p-button severity="danger" (onClick)="clearPropertyForm()" label="Clear" [rounded]="true" icon="pi pi-times" iconPos="left" />
+              <p-button type="submit" label="Submit" [rounded]="true" icon="pi pi-send" iconPos="left" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

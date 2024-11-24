@@ -1,0 +1,66 @@
+<div class="flex min-h-screen flex-col bg-gray-100 font-sans">
+  <app-header></app-header>
+  <div class="container mx-auto my-6 grid min-h-[600px] flex-1 grid-cols-12 gap-6">
+    <!--Column 1-->
+    <div class="col-span-3 overflow-y-auto rounded border border-solid border-gray-300 bg-white ">
+      <div class="overflow-hidden">
+        @if (currentUser$ | async; as currentUser) {
+          <div>
+            <div class="flex items-center justify-center bg-blue-500 p-4 text-white" (click)="menu.toggle($event)">
+              <span class="material-symbols-rounded mr-2" style="font-size: 80px">account_circle</span>
+              <div>
+                <div class="text-xl">My account</div>
+                <div class="text-4xl font-bold">{{ 115 | currency }}</div>
+              </div>
+            </div>
+            <p-menu #menu [model]="items" [popup]="true" />
+          </div>
+        }
+
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div class="text-700 flex items-center">
+            <i class="pi pi-file mr-2"></i>
+            <span class="font-medium">Manage Listing</span>
+          </div>
+        </div>
+
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div class="text-700 flex items-center">
+            <i class="pi pi-plus mr-2"></i>
+            <span class="font-medium">Create New Listing</span>
+          </div>
+        </div>
+
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div class="text-700 flex items-center">
+            <i class="pi pi-trash mr-2"></i>
+            <span class="font-medium">Draft Listing</span>
+          </div>
+        </div>
+
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div class="text-700 flex items-center">
+            <i class="pi pi-credit-card mr-2"></i>
+            <span class="font-medium">Deposit</span>
+          </div>
+        </div>
+
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div class="text-700 flex items-center">
+            <i class="pi pi-cog mr-2"></i>
+            <span class="font-medium">Account Settings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Column 2-->
+    <div class="col-span-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+<p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up" />
