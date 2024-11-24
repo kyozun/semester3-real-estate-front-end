@@ -1,48 +1,52 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, NgForOf, NgIf } from '@angular/common';
 import { Button } from 'primeng/button';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
+import { EditorModule } from 'primeng/editor';
+import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
+import { YtPlayerComponent } from '../../../../shared/components/yt-player/yt-player.component';
 import { PropertyService } from '../../../property/services/property.service';
 import { CategoryService } from '../../../property/services/category.service';
 import { Observable } from 'rxjs';
 import { Category } from '../../../../shared/models/category';
 import { PropertyTypeService } from '../../../property/services/property-type.service';
 import { PropertyType } from '../../../../shared/models/property-type';
-import { ProvinceService } from '../../../property/services/province.service';
-import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
-import { TagModule } from 'primeng/tag';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { SkeletonModule } from 'primeng/skeleton';
-import { EditorModule } from 'primeng/editor';
-import { RouterLink } from '@angular/router';
-import { YtPlayerComponent } from '../../../../shared/components/yt-player/yt-player.component';
-import { CreateProperty } from '../../../property/models/createProperty';
-import { DirectionService } from '../../../property/services/direction.service';
-import { Direction } from '../../../../shared/models/direction';
 import { JuridicalService } from '../../../property/services/juridical.service';
 import { Juridical } from '../../../../shared/models/juridical';
-import { Ward } from '../../../../shared/models/ward';
+import { DirectionService } from '../../../property/services/direction.service';
+import { Direction } from '../../../../shared/models/direction';
+import { ProvinceService } from '../../../property/services/province.service';
 import { Province } from '../../../../shared/models/province';
 import { District } from '../../../../shared/models/district';
-import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
+import { Ward } from '../../../../shared/models/ward';
+import { Property } from '../../../property/models/property';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { CreateProperty } from '../../../property/models/createProperty';
 import FormData from 'form-data';
-import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
-  selector: 'app-add-listing',
+  selector: 'app-view-listings',
   standalone: true,
   imports: [TagModule, InputTextModule, InputGroupModule, InputGroupAddonModule, DropdownModule, AsyncPipe, SkeletonModule, EditorModule, FormsModule, ReactiveFormsModule, Button, RouterLink, CurrencyPipe, YtPlayerComponent, FileUploadModule, NgIf, NgForOf, ToastModule],
-  templateUrl: './add-listing.component.html',
-  styleUrl: './add-listing.component.css',
+  templateUrl: './view-listings.component.html',
+  styleUrl: './view-listings.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddListingComponent implements OnInit {
+export class ViewListingsComponent implements OnInit {
   propertyForm: FormGroup;
   imagePreview: string | ArrayBuffer | null | undefined = null;
   uploadedFiles: File[] = [];
+  protected readonly environment = environment;
   private propertyService = inject(PropertyService);
+  property$: Observable<Property> = this.propertyService.getProperty$();
   private categoryService = inject(CategoryService);
   categories$: Observable<Category[]> = this.categoryService.getCategories$();
   private propertyTypeService = inject(PropertyTypeService);
@@ -56,6 +60,8 @@ export class AddListingComponent implements OnInit {
   districts$: Observable<District[]> = this.provinceService.getDistricts$();
   wards$: Observable<Ward[]> = this.provinceService.getWards$();
   private formBuilder = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.categoryService.getCategories();
@@ -63,6 +69,13 @@ export class AddListingComponent implements OnInit {
     this.provinceService.getProvinces();
     this.directionService.getDirections();
     this.juridicalService.getJuridicals();
+
+    this.route.queryParams.subscribe({
+      next: (params: Params) => {
+        this.propertyService.getProperty(params['propertyId']);
+      },
+    });
+
     this.propertyForm = this.formBuilder.group({
       title: ['', Validators.required],
       price: ['', Validators.required],
@@ -131,11 +144,6 @@ export class AddListingComponent implements OnInit {
     this.provinceService.getDistricts($event.value);
   }
 
-  onDistrictChange($event: DropdownChangeEvent) {
-    console.log($event.value);
-    this.provinceService.getWards($event.value);
-  }
-
   // onFileSelect(event: any): void {
   //   const file: File = event.files[0];
   //
@@ -148,6 +156,11 @@ export class AddListingComponent implements OnInit {
   //   }
   // }
 
+  onDistrictChange($event: DropdownChangeEvent) {
+    console.log($event.value);
+    this.provinceService.getWards($event.value);
+  }
+
   getVideoId(): string {
     const videoLink = this.propertyForm.get('youtubeLink')?.value;
 
@@ -159,13 +172,18 @@ export class AddListingComponent implements OnInit {
     return videoId || '';
   }
 
-  onSelect($event: FileSelectEvent) {
+  onSelect($event: any) {
     const files = $event.files;
     this.uploadedFiles = [...this.uploadedFiles, ...files];
+    this.uploadedFiles.push($event);
     this.propertyForm.get('propertyImages')?.setValue(this.uploadedFiles);
   }
 
   onSelectCoverImage($event: FileSelectEvent) {
     this.propertyForm.get('coverImage')?.setValue($event.files[0]);
+  }
+
+  editListing(propertyId: string) {
+    this.router.navigate(['/my-account/all-listings/edit'], { queryParams: { propertyId: propertyId } });
   }
 }

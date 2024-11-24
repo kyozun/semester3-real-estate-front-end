@@ -1,15 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, delay, distinctUntilChanged, map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { ApiResponse } from '../../../shared/models/api-response';
 import { defaultProperty, Property } from '../models/property';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
+  deps: [MessageService],
 })
 export class PropertyService {
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   /*PropertyList*/
   private propertiesSubject: BehaviorSubject<Property[]> = new BehaviorSubject<Property[]>([]);
@@ -21,6 +25,7 @@ export class PropertyService {
 
   private propertiesSearchSubject = new BehaviorSubject<Property[]>([]);
   private searchKeywordSubject: Subject<string> = new Subject<string>();
+  private messageService = inject(MessageService);
 
   constructor() {
     this.searchKeywordSubject
@@ -75,7 +80,7 @@ export class PropertyService {
   getProperties(query: string) {
     this.setLoading$(true);
     return this.http
-      .get<ApiResponse<Property>>(`${environment.apiUrl}/property?${query}&limit=10`)
+      .get<ApiResponse<Property>>(`${environment.apiUrl}/property?${query}&limit=99`)
       .pipe(
         map((response) => response.data),
         tap((properties) => {
@@ -93,8 +98,31 @@ export class PropertyService {
       });
   }
 
+  createProperty(payload: any) {
+    this.http
+      .post(environment.apiUrl + '/property', payload)
+      .pipe(
+        tap(() =>
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Create Property Successfully',
+          })
+        ),
+        delay(1000)
+      )
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/my-account/all-listings']);
+        },
+        error: () => {
+          console.log('ERROR');
+        },
+      });
+  }
+
   getPropertiesSearch(query: string) {
-    return this.http.get<ApiResponse<Property>>(`${environment.apiUrl}/property?${query}&limit=10`).pipe(
+    return this.http.get<ApiResponse<Property>>(`${environment.apiUrl}/property?${query}&limit=99`).pipe(
       map((response) => response.data),
       tap((properties) => {
         this.setPropertiesSearch$(properties);

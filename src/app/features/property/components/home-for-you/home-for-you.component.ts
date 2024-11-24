@@ -31,7 +31,6 @@ export class HomeForYouComponent implements OnInit {
     slidesPerView: 4,
     spaceBetween: 16,
     autoplay: { delay: 1500 },
-    loop: true,
     autoHeight: true,
   };
 
@@ -49,7 +48,7 @@ export class HomeForYouComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.propertyService.getProperties('');
+    this.propertyService.getProperties('');
   }
 
   navigateToPropertyDetail(propertyId: string) {

@@ -4,8 +4,8 @@ import { BehaviorSubject, map } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { ApiResponse } from '../../../shared/models/api-response';
 import { Province } from '../../../shared/models/province';
-import { SelectOption } from '../../../shared/models/select-option';
 import { District } from '../../../shared/models/district';
+import { Ward } from '../../../shared/models/ward';
 
 @Injectable({
   providedIn: 'root',
@@ -14,28 +14,42 @@ export class ProvinceService {
   private http = inject(HttpClient);
 
   /*Province*/
-  private provincesSubject = new BehaviorSubject<SelectOption[]>([]);
-  provinces$ = this.provincesSubject.asObservable();
+  private provincesSubject = new BehaviorSubject<Province[]>([]);
 
   /*District*/
-  private districtsSubject = new BehaviorSubject<SelectOption[]>([]);
-  districts$ = this.districtsSubject.asObservable();
+  private districtsSubject = new BehaviorSubject<District[]>([]);
 
   /*Ward*/
-  private wardsSubject = new BehaviorSubject<SelectOption[]>([]);
-  wards$ = this.wardsSubject.asObservable();
+  private wardsSubject = new BehaviorSubject<Ward[]>([]);
+
+  getProvinces$() {
+    return this.provincesSubject.asObservable();
+  }
+
+  setProvinces$(provinces: Province[]) {
+    this.provincesSubject.next(provinces);
+  }
+
+  getDistricts$() {
+    return this.districtsSubject.asObservable();
+  }
+
+  setDistricts$(districts: District[]) {
+    this.districtsSubject.next(districts);
+  }
+
+  getWards$() {
+    return this.wardsSubject.asObservable();
+  }
+
+  setWards$(wards: Ward[]) {
+    this.wardsSubject.next(wards);
+  }
 
   getProvinces() {
     return this.http
       .get<ApiResponse<Province>>(`${environment.apiUrl}/province?limit=10`)
-      .pipe(
-        map((response): SelectOption[] =>
-          response.data.map((item: Province) => ({
-            label: item.name, // Map name to label
-            value: item.provinceId, // Map provinceId to value
-          }))
-        )
-      )
+      .pipe(map((response) => response.data))
       .subscribe({
         next: (items) => {
           this.districtsSubject.next([]);
@@ -53,17 +67,9 @@ export class ProvinceService {
 
     return this.http
       .get<ApiResponse<District>>(`${environment.apiUrl}/district?provinceId=${provinceId}&limit=10`)
-      .pipe(
-        map((response): SelectOption[] =>
-          response.data.map((item: District) => ({
-            label: item.name, // Map name to label
-            value: item.districtId, // Map provinceId to value
-          }))
-        )
-      )
+      .pipe(map((response) => response.data))
       .subscribe({
         next: (items) => {
-          console.log(items);
           this.districtsSubject.next(items);
         },
         error: () => {
@@ -79,18 +85,10 @@ export class ProvinceService {
     }
 
     return this.http
-      .get<ApiResponse<District>>(`${environment.apiUrl}/ward?districtId=${districtId}&limit=10`)
-      .pipe(
-        map((response): SelectOption[] =>
-          response.data.map((item: District) => ({
-            label: item.name, // Map name to label
-            value: item.districtId, // Map districtId to value
-          }))
-        )
-      )
+      .get<ApiResponse<Ward>>(`${environment.apiUrl}/ward?districtId=${districtId}&limit=10`)
+      .pipe(map((response) => response.data))
       .subscribe({
         next: (items) => {
-          console.log(items);
           this.wardsSubject.next(items);
         },
         error: () => {
@@ -98,5 +96,4 @@ export class ProvinceService {
         },
       });
   }
-
 }

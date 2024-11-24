@@ -18,6 +18,9 @@ import { PropertyType } from '../../../../shared/models/property-type';
 import { PropertyTypeService } from '../../../property/services/property-type.service';
 import { CategoryService } from '../../../property/services/category.service';
 import { Category } from '../../../../shared/models/category';
+import { Province } from '../../../../shared/models/province';
+import { District } from '../../../../shared/models/district';
+import { Ward } from '../../../../shared/models/ward';
 
 @Component({
   selector: 'app-add-property',
@@ -35,9 +38,9 @@ export class AddPropertyComponent implements OnInit {
   private propertyTypeService = inject(PropertyTypeService);
   propertyTypes$: Observable<PropertyType[]> = this.propertyTypeService.getPropertyTypes$();
   private provinceService = inject(ProvinceService);
-  provinces$: Observable<SelectOption[]> = this.provinceService.provinces$;
-  districts$: Observable<SelectOption[]> = this.provinceService.districts$;
-  wards$: Observable<SelectOption[]> = this.provinceService.wards$;
+  provinces$: Observable<Province[]> = this.provinceService.getProvinces$();
+  districts$: Observable<District[]> = this.provinceService.getDistricts$();
+  wards$: Observable<Ward[]> = this.provinceService.getWards$();
   private formBuilder = inject(FormBuilder);
 
   ngOnInit(): void {

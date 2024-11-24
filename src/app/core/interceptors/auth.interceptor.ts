@@ -12,11 +12,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorageService = inject(LocalStorageService);
   req = req.clone({
     setHeaders: {
-      Authorization: `Bearer ${authService.getUserToken()}`,
+      Authorization: `Bearer ${authService.getAccessToken()?.token}`,
     },
   });
   return next(req).pipe(
-    retry(2),
+    retry(1),
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         localStorageService.removeItem(LocalStorageKeys.CurrentUser);

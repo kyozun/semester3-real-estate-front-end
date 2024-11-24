@@ -16,6 +16,8 @@ import { guessGuard } from './core/auth/guess.guard';
 import { MyAccountComponent } from './features/my-account/pages/my-account/my-account.component';
 import { AllListingsComponent } from './features/my-account/components/all-listings/all-listings.component'
 import { AddListingComponent } from './features/my-account/components/add-listing/add-listing.component'
+import { EditListingsComponent } from './features/my-account/components/edit-listings/edit-listings.component';
+import { ViewListingsComponent } from './features/my-account/components/view-listings/view-listings.component';
 
 export const routes: Routes = [
   {
@@ -34,7 +36,9 @@ export const routes: Routes = [
         path: 'all-listings',
         children: [
           { path: '', component: AllListingsComponent, title: 'All Listings' },
-          { path: 'add', component: AddListingComponent, title: 'Add Property' },
+          { path: 'add', component: AddListingComponent, title: 'Add Listing' },
+          { path: 'edit', component: EditListingsComponent, title: 'Edit Listing' },
+          { path: 'view', component: ViewListingsComponent, title: 'View Listing' },
         ],
       },
       { path: 'analytic', component: AnalyticComponent },

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -30,6 +30,7 @@ import { environment } from '../../../../../environments/environment.development
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AllListingsComponent {
+  @ViewChild('inputSearch', { static: true }) inputSearch = HTMLInputElement;
   query: string = '';
   checked: boolean = false;
   first: number = 0;
@@ -153,8 +154,12 @@ export class AllListingsComponent {
     this.getProperties(queryParams);
   }
 
-  openPropertyDetail(property: any) {
-    this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
+  openProperty(propertyId: string) {
+    this.router.navigate(['/my-account/all-listings/view'], { queryParams: { propertyId: propertyId } });
+  }
+
+  editProperty(propertyId: string) {
+    this.router.navigate(['/my-account/all-listings/edit'], { queryParams: { propertyId: propertyId } });
   }
 
   /*OK*/
@@ -179,14 +184,12 @@ export class AllListingsComponent {
     });
   }
 
-  getSeverity(status: string) {
+  getSeverity(status: boolean) {
     switch (status) {
-      case 'In Stock':
-        return 'success';
-      case 'Low Stock':
-        return 'warning';
-      default:
-        return 'info';
+      case true:
+        return 'danger';
+      case false:
+        return;
     }
   }
 }

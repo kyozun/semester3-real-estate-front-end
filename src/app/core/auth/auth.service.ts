@@ -43,6 +43,14 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
   }
 
+  getAccessToken(): UserResponse | null {
+    const token = localStorage.getItem('currentUser');
+    if (token) {
+      return JSON.parse(token);
+    }
+    return null;
+  }
+
   getUserToken(): boolean {
     const token = localStorage.getItem('currentUser');
     if (token) {

@@ -31,7 +31,7 @@
               [rowHover]="true"
               [filterDelay]="0"
               [scrollable]="true"
-              scrollHeight="400px"
+              scrollHeight="600px"
               dataKey="id"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
               [showCurrentPageReport]="true">
@@ -40,12 +40,7 @@
                   <h5 class="m-0 text-2xl font-semibold">Manage Properties</h5>
                   <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Search..." />
-                    <!--                             <input-->
-                    <!--                               pInputText-->
-                    <!--                               type="text"-->
-                    <!--                               (input)="dt.filterGlobal($event.target.value, 'contains')"-->
-                    <!--                               placeholder="Search..." />-->
+                    <input #inputSearch pInputText type="text" (input)="dt.filterGlobal(inputSearch.value, 'contains')" placeholder="Search..." />
                   </span>
                 </div>
               </ng-template>
@@ -64,9 +59,9 @@
                     <p-sortIcon field="price" />
                   </th>
 
-                  <th pSortableColumn="ward" style="min-width: 15rem">
-                    Ward
-                    <p-sortIcon field="ward" />
+                  <th pSortableColumn="area" style="min-width: 15rem">
+                    Area
+                    <p-sortIcon field="area" />
                   </th>
 
                   <th pSortableColumn="user" style="min-width: 15rem">
@@ -100,18 +95,22 @@
 
                   <td>
                     {{ property.area }}
+                    <span>
+                      <span>ft</span>
+                      <sup>2</sup>
+                    </span>
                   </td>
 
                   <td>
-                    {{ property.ward.name }}
+                    {{ property.user.userName }}
                   </td>
 
                   <td>
-                    <p-tag [value]="property.availabilityStatus" [severity]="getSeverity(property.availabilityStatus)" />
+                    <p-tag [value]="property.isExpiry ? 'Expired' : 'Active'" [severity]="getSeverity(property.isExpiry)" />
                   </td>
                   <td pFrozenColumn style="min-width: 200px" alignFrozen="right">
-                    <p-button icon="pi pi-eye" class="mr-2" [rounded]="true" severity="secondary"></p-button>
-                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" severity="primary"></p-button>
+                    <p-button icon="pi pi-eye" class="mr-2" [rounded]="true" severity="secondary" (click)="openProperty(property.propertyId)"></p-button>
+                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" severity="primary" (click)="editProperty(property.propertyId)"></p-button>
                     <p-button icon="pi pi-trash" severity="danger" [rounded]="true"></p-button>
                   </td>
                 </tr>

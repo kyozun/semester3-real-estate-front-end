@@ -16,7 +16,7 @@ export class DirectionService {
     return this.directionsSubject.asObservable();
   }
 
-  setDirections(directions: Direction[]) {
+  setDirections$(directions: Direction[]) {
     this.directionsSubject.next(directions);
   }
 
@@ -26,7 +26,7 @@ export class DirectionService {
       .pipe(map((response) => response.data))
       .subscribe({
         next: (items) => {
-          this.setDirections(items);
+          this.setDirections$(items);
         },
         error: () => {},
       });

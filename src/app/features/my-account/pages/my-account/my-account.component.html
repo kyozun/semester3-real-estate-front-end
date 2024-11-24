@@ -2,7 +2,7 @@
   <app-header></app-header>
   <div class="container mx-auto my-6 grid min-h-[600px] flex-1 grid-cols-12 gap-6">
     <!--Column 1-->
-    <div class="col-span-3 overflow-y-auto rounded border border-solid border-gray-300 bg-white ">
+    <div class="col-span-2 overflow-y-auto rounded border border-solid border-gray-300 bg-white">
       <div class="overflow-hidden">
         @if (currentUser$ | async; as currentUser) {
           <div>
@@ -10,21 +10,21 @@
               <span class="material-symbols-rounded mr-2" style="font-size: 80px">account_circle</span>
               <div>
                 <div class="text-xl">My account</div>
-                <div class="text-4xl font-bold">{{ 115 | currency }}</div>
+                <div class="text-3xl font-bold">{{ 115 | currency }}</div>
               </div>
             </div>
             <p-menu #menu [model]="items" [popup]="true" />
           </div>
         }
 
-        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/my-account/all-listings">
           <div class="text-700 flex items-center">
             <i class="pi pi-file mr-2"></i>
             <span class="font-medium">Manage Listing</span>
           </div>
         </div>
 
-        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+        <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/my-account/all-listings/add">
           <div class="text-700 flex items-center">
             <i class="pi pi-plus mr-2"></i>
             <span class="font-medium">Create New Listing</span>
@@ -55,7 +55,7 @@
     </div>
 
     <!--Column 2-->
-    <div class="col-span-9">
+    <div class="col-span-10">
       <router-outlet></router-outlet>
     </div>
   </div>

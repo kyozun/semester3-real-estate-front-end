@@ -50,7 +50,7 @@
                         <p class="text-2xl font-bold text-blue-600">{{ property.price | currency }}</p>
                       </div>
                       <div>
-                        <p class="mb-4 line-clamp-4 text-gray-600">{{ property.description }}</p>
+                        <p class="mb-4 line-clamp-4 text-gray-600" [innerHTML]="property.description"></p>
                       </div>
 
                       <div class="mb-4 flex items-center gap-2 text-xs text-gray-800">
