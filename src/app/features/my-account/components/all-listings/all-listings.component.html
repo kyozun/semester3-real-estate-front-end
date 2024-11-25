@@ -13,7 +13,7 @@
             <p-toolbar styleClass="mb-4 gap-2">
               <ng-template pTemplate="left">
                 <p-button severity="primary" [rounded]="true" label="New Property" icon="pi pi-plus" class="mr-2" routerLink="add" />
-                <p-button severity="danger" [rounded]="true" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()" />
+                <!--                <p-button severity="danger" [rounded]="true" label="Delete" icon="pi pi-trash" (onClick)="deleteSelectedProducts()" />-->
               </ng-template>
 
               <ng-template pTemplate="right">
@@ -79,9 +79,9 @@
               </ng-template>
 
               <ng-template pTemplate="body" let-property>
-                <tr class="p-selectable-row">
+                <tr class="p-selectable-row" (click)="openPropertyDetail(property.propertyId)">
                   <td pFrozenColumn alignFrozen="left">
-                    <p-tableCheckbox [value]="property" />
+                    <p-tableCheckbox [value]="property.propertyId" />
                   </td>
                   <td pFrozenColumn alignFrozen="left">
                     {{ property.title }}
@@ -110,8 +110,8 @@
                   </td>
                   <td pFrozenColumn style="min-width: 200px" alignFrozen="right">
                     <p-button icon="pi pi-eye" class="mr-2" [rounded]="true" severity="secondary" (click)="openProperty(property.propertyId)"></p-button>
-                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" severity="primary" (click)="editProperty(property.propertyId)"></p-button>
-                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true"></p-button>
+                    <!--                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" severity="primary" (click)="editProperty(property.propertyId)"></p-button>-->
+                    <!--                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" (click)="deleteProperty(property.propertyId)"></p-button>-->
                   </td>
                 </tr>
               </ng-template>

@@ -1,40 +1,54 @@
-<div class="mb-4 text-2xl font-semibold">Add Property</div>
-
-<div class="rounded bg-gray-100 p-8 font-sans">
+<div class="text-xl font-semibold mb-4">Add Property</div>
+<div class="rounded bg-gray-100 p-6 font-sans">
   <form [formGroup]="propertyForm" (ngSubmit)="submitPropertyForm()">
-    <div class="grid grid-cols-12 items-start gap-8">
+    <div class="grid grid-cols-12 items-start gap-6">
       <!--Col 1-->
-      <div class="col-span-3 rounded border border-solid border-gray-300 bg-white p-6">
-        <div class="relative mb-4">
-          <img class="aspect-video w-full rounded object-cover" src="https://themes.techzaa.in/lahomes-angular/assets/p-1-BQ0X_fIz.jpg" alt="" />
-          <p-tag class="absolute right-2 top-2" value="For Rent" />
-        </div>
-
-        <div class="mb-3">
-          <div class="mb-2 font-semibold">{{ propertyForm.get('propertyName')?.value }}</div>
-          <div class="text-sm text-gray-600">4604 , Philli Lane Kiowa U.S.A</div>
-        </div>
-        <div class="mb-3">
-          <div class="font-semibold">Price</div>
-          <div class="text-3xl font-bold text-blue-600">{{ propertyForm.get('price')?.value | currency }}</div>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <div class="inline-flex items-center gap-1 rounded border border-solid border-blue-600 bg-blue-100 p-1 text-xs font-medium text-blue-600">
-            <span class="material-symbols-rounded">king_bed</span>
-            <span>{{ propertyForm.get('bedroom')?.value }} Beds</span>
+      <div class="sticky top-4 col-span-3 rounded">
+        <div class="mb-6 border border-solid border-gray-300 bg-white p-6">
+          <div class="relative mb-4">
+            <img class="aspect-video w-full rounded object-cover" src="https://themes.techzaa.in/lahomes-angular/assets/p-1-BQ0X_fIz.jpg" alt="" />
+            <p-tag class="absolute right-2 top-2" value="For Rent" />
           </div>
 
-          <div class="inline-flex items-center gap-1 rounded border border-solid border-blue-600 bg-blue-100 p-1 text-xs font-medium text-blue-600">
-            <span class="material-symbols-rounded">bathtub</span>
-            <span>{{ propertyForm.get('bathroom')?.value }} Baths</span>
+          <div class="mb-3">
+            <div class="mb-2 font-semibold">{{ propertyForm.get('title')?.value }}</div>
+            <div class="text-sm text-gray-600">{{ propertyForm.get('address')?.value }}</div>
           </div>
 
-          <div class="inline-flex items-center gap-1 rounded border border-solid border-blue-600 bg-blue-100 p-1 text-xs font-medium text-blue-600">
-            <span class="material-symbols-rounded">floor</span>
-            <span>{{ propertyForm.get('floor')?.value }} Floors</span>
+          @if (propertyForm.get('price')?.value) {
+            <div class="mb-3">
+              <div class="font-semibold">Price</div>
+              <div class="text-3xl font-bold text-blue-600">{{ propertyForm.get('price')?.value | currency }}</div>
+            </div>
+          }
+
+          <div class="grid grid-cols-12 gap-2">
+            <div class="col-span-6 inline-flex items-center gap-1 rounded bg-blue-100 p-1 text-xs font-medium text-blue-800">
+              <span class="material-symbols-rounded">king_bed</span>
+              <span>{{ propertyForm.get('bedroom')?.value }} Beds</span>
+            </div>
+
+            <div class="col-span-6 inline-flex items-center gap-1 rounded bg-blue-100 p-1 text-xs font-medium text-blue-800">
+              <span class="material-symbols-rounded">bathtub</span>
+              <span>{{ propertyForm.get('bathroom')?.value }} Baths</span>
+            </div>
+
+            <div class="col-span-6 inline-flex items-center gap-1 rounded bg-blue-100 p-1 text-xs font-medium text-blue-800">
+              <span class="material-symbols-rounded">floor</span>
+              <span>{{ propertyForm.get('floor')?.value }} Floors</span>
+            </div>
           </div>
         </div>
+
+        @if (getVideoId()) {
+          <div class="border border-solid border-gray-300 bg-white px-6 py-4">
+            <div class="mb-2 flex items-center gap-1 font-semibold">
+              <span class="material-symbols-rounded">smart_display</span>
+              <div>Videos</div>
+            </div>
+            <app-yt-player [videoID]="getVideoId()"></app-yt-player>
+          </div>
+        }
       </div>
 
       <!--Col 2-->
@@ -44,10 +58,10 @@
         <div class="grid grid-cols-12 gap-6">
           <div class="col-span-6">
             <div class="flex flex-col gap-2">
-              <label for="property-name" class="font-medium">Property Name</label>
-              <input id="property-name" pInputText formControlName="propertyName" placeholder="Name" />
-              @if (propertyForm.get('propertyName')?.invalid && (propertyForm.get('propertyName')?.touched || propertyForm.get('propertyName')?.dirty)) {
-                <small class="font-medium text-rose-600">Property Name is required.</small>
+              <label for="title" class="font-medium">Title</label>
+              <input id="title" pInputText formControlName="title" placeholder="Title" />
+              @if (propertyForm.get('title')?.invalid && (propertyForm.get('title')?.touched || propertyForm.get('title')?.dirty)) {
+                <small class="font-medium text-rose-600">Property Title is required.</small>
               }
             </div>
           </div>
@@ -55,7 +69,7 @@
             <div class="flex flex-col gap-2">
               <label for="property-category" class="font-medium">Property Category</label>
               @if (categories$ | async; as categories) {
-                <p-dropdown id="property-category" formControlName="propertyCategory" [options]="categories" optionLabel="name" [filter]="true" placeholder="Select Category" [showClear]="true" [style]="{ width: '100%' }" />
+                <p-dropdown id="property-category" formControlName="propertyCategory" [options]="categories" optionLabel="name" optionValue="categoryId" [filter]="true" placeholder="Category" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
@@ -66,7 +80,7 @@
             <div class="flex flex-col gap-2">
               <label for="property-type" class="font-medium">Property Type</label>
               @if (propertyTypes$ | async; as propertyTypes) {
-                <p-dropdown optionLabel="name" id="property-type" formControlName="propertyType" [options]="propertyTypes" [filter]="true" placeholder="Select Type" [showClear]="true" [style]="{ width: '100%' }" />
+                <p-dropdown optionLabel="name" optionValue="propertyTypeId" id="property-type" formControlName="propertyType" [options]="propertyTypes" [filter]="true" placeholder="Type" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
@@ -115,59 +129,121 @@
               </p-inputGroup>
             </div>
           </div>
-          <div class="col-span-3" formGroupName="address">
+
+          <div class="col-span-3">
             <div class="flex flex-col gap-2">
-              <label for="province" class="font-medium">Province</label>
-              @if (provinces$ | async; as provinces) {
-                <p-dropdown id="province" formControlName="province" [options]="provinces" [filter]="true" placeholder="Select Province" (onChange)="onProvinceChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+              <label for="floor" class="font-medium">Area</label>
+              <p-inputGroup>
+                <p-inputGroupAddon><span class="material-symbols-rounded" style="font-size: 1rem">area_chart</span></p-inputGroupAddon>
+                <input formControlName="area" id="area" type="number" pInputText />
+              </p-inputGroup>
+            </div>
+          </div>
+
+          <div class="col-span-3">
+            <div class="flex flex-col gap-2">
+              <label for="property-type" class="font-medium">Direction</label>
+              @if (directions$ | async; as directions) {
+                <p-dropdown optionLabel="name" optionValue="directionId" id="direction" formControlName="direction" [options]="directions" [filter]="true" placeholder="Direction" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
             </div>
           </div>
 
-          <div class="col-span-3" formGroupName="address">
+          <div class="col-span-3">
             <div class="flex flex-col gap-2">
-              <label for="district" class="font-medium">District</label>
-              @if (districts$ | async; as districts) {
-                <p-dropdown id="district" formControlName="district" [options]="districts"  [filter]="true" placeholder="Select District" (onChange)="onDistrictChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+              <label for="property-type" class="font-medium">Juridical</label>
+              @if (juridicals$ | async; as juridicals) {
+                <p-dropdown optionLabel="name" optionValue="juridicalId" id="juridical" formControlName="juridical" [options]="juridicals" [filter]="true" placeholder="Juridical" [showClear]="true" [style]="{ width: '100%' }" />
               } @else {
                 <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
               }
             </div>
           </div>
 
-          <div class="col-span-3" formGroupName="address">
-            <div class="flex flex-col gap-2">
-              <label for="district" class="font-medium">Ward</label>
-              @if (wards$ | async; as wards) {
-                <p-dropdown id="ward" formControlName="ward" [options]="wards" [filter]="true" placeholder="Select Ward" [showClear]="true" [style]="{ width: '100%' }" />
-              } @else {
-                <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
-              }
-            </div>
-          </div>
-
-          <div class="col-span-3" formGroupName="address">
+          <div class="col-span-3" formGroupName="propertyAddress">
             <div class="flex flex-col gap-2">
               <label for="zipcode" class="font-medium">Zipcode</label>
               <input id="zipcode" pInputText formControlName="zipcode" placeholder="Zipcode" />
             </div>
           </div>
 
+          <div class="col-span-3" formGroupName="propertyAddress">
+            <div class="flex flex-col gap-2">
+              <label for="province" class="font-medium">Province</label>
+              @if (provinces$ | async; as provinces) {
+                <p-dropdown id="province" optionLabel="name" optionValue="provinceId" formControlName="province" [options]="provinces" [filter]="true" placeholder="Province" (onChange)="onProvinceChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+              } @else {
+                <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+              }
+            </div>
+          </div>
+
+          <div class="col-span-3" formGroupName="propertyAddress">
+            <div class="flex flex-col gap-2">
+              <label for="district" class="font-medium">District</label>
+              @if (districts$ | async; as districts) {
+                <p-dropdown id="district" optionLabel="name" optionValue="districtId" formControlName="district" [options]="districts" [filter]="true" placeholder="District" (onChange)="onDistrictChange($event)" [showClear]="true" [style]="{ width: '100%' }" />
+              } @else {
+                <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+              }
+            </div>
+          </div>
+
+          <div class="col-span-3" formGroupName="propertyAddress">
+            <div class="flex flex-col gap-2">
+              <label for="district" class="font-medium">Ward</label>
+              @if (wards$ | async; as wards) {
+                <p-dropdown id="ward" optionLabel="name" optionValue="wardId" formControlName="ward" optionLabel="name" optionValue="wardId" [options]="wards" [filter]="true" placeholder="Ward" [showClear]="true" [style]="{ width: '100%' }" />
+              } @else {
+                <p-skeleton class="w-full" [style]="{ height: '2.5rem' }"></p-skeleton>
+              }
+            </div>
+          </div>
+
           <div class="col-span-12">
             <div class="flex flex-col gap-2">
-              <label for="property-address" class="font-medium">Property Address</label>
-              <input id="property-address" pInputText formControlName="propertyAddress" placeholder="Address" />
+              <label for="address" class="font-medium">Property Address</label>
+              <input id="address" pInputText formControlName="address" placeholder="Address" />
+            </div>
+          </div>
+
+          <div class="col-span-12">
+            <div class="flex flex-col gap-2">
+              <label for="youtubeLink" class="font-medium">Youtube Link</label>
+              <input id="youtubeLink" pInputText formControlName="youtubeLink" placeholder="Link to Youtube Video" />
             </div>
           </div>
 
           <div class="col-span-12">
             <div class="flex flex-col gap-2">
               <label for="description" class="font-medium">Description</label>
-              <p-editor formControlName="description" id="description" [style]="{ height: '130px' }" />
+              <p-editor formControlName="description" id="description" [style]="{ height: '260px' }" />
             </div>
           </div>
+
+          @if (imagePreview) {
+            <div class="preview-container">
+              <img [src]="imagePreview" alt="Image Preview" class="preview-image" />
+            </div>
+          }
+
+          <div class="col-span-12">
+            <div class="flex flex-col gap-2">
+              <label for="coverImage" class="font-medium">Cover Image</label>
+              <p-fileUpload cancelLabel="Delete" [showUploadButton]="false" id="coverImage" name="demo" url="https://www.primefaces.org/cdn/api/upload.php" (onSelect)="onSelectCoverImage($event)" [multiple]="false" accept="image/*" maxFileSize="2000000"></p-fileUpload>
+            </div>
+          </div>
+
+          <div class="col-span-12">
+            <div class="flex flex-col gap-2">
+              <label for="propertyImages" class="font-medium">Property Images</label>
+              <p-fileUpload cancelLabel="Delete" [showUploadButton]="false" id="propertyImages" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onSelect)="onSelect($event)" [multiple]="true" accept="image/*" maxFileSize="2000000"></p-fileUpload>
+            </div>
+          </div>
+
+          <!--            <p-fileUpload name="file" mode="basic" accept="image/*" customUpload="false" (onSelect)="onFileSelect($event)" chooseLabel="Browse" chooseIcon="pi pi-upload" [auto]="true"></p-fileUpload>-->
 
           <div class="col-span-12 flex items-center justify-between">
             <p-button severity="danger" (onClick)="clearPropertyForm()" label="Clear" [rounded]="true" icon="pi pi-times" iconPos="left" />
@@ -178,3 +254,5 @@
     </div>
   </form>
 </div>
+
+<p-toast />

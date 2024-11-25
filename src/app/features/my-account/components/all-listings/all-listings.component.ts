@@ -44,12 +44,10 @@ export class AllListingsComponent {
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
-  private realEstateService = inject(PropertyService);
-  properties$: Observable<Property[]> = this.realEstateService.getProperties$();
-  isLoading$: Observable<boolean> = this.realEstateService.getLoading$();
+  private propertyService = inject(PropertyService);
+  properties$: Observable<Property[]> = this.propertyService.getProperties$();
+  isLoading$: Observable<boolean> = this.propertyService.getLoading$();
   private confirmationService = inject(ConfirmationService);
-
-  /*DI*/
   private messageService = inject(MessageService);
 
   ngOnInit(): void {
@@ -92,11 +90,7 @@ export class AllListingsComponent {
   }
 
   getProperties(query: string): void {
-    this.realEstateService.getProperties(query);
-  }
-
-  getRealEstate(id: string) {
-    // this.realEstateService.getRealEstates(id);
+    this.propertyService.getProperties(query);
   }
 
   onPriceChange(price: { label: string; min: number; max: number }) {
@@ -191,5 +185,28 @@ export class AllListingsComponent {
       case false:
         return;
     }
+  }
+
+  deleteProperty(propertyId: string) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-secondary p-button-rounded',
+      acceptButtonStyleClass: 'p-button-primary p-button-rounded',
+      accept: () => {
+        this.propertyService.deleteProperty(propertyId);
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Successful',
+          detail: 'Property Deleted',
+          life: 2500,
+        });
+      },
+    });
+  }
+
+  openPropertyDetail(propertyId: string) {
+    this.router.navigate(['/property'], { queryParams: { propertyId: propertyId } });
   }
 }

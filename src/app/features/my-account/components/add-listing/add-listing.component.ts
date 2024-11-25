@@ -136,18 +136,6 @@ export class AddListingComponent implements OnInit {
     this.provinceService.getWards($event.value);
   }
 
-  // onFileSelect(event: any): void {
-  //   const file: File = event.files[0];
-  //
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       this.imagePreview = e.target?.result; // Get the file content as a data URL
-  //     };
-  //     reader.readAsDataURL(file); // Read the file as a data URL
-  //   }
-  // }
-
   getVideoId(): string {
     const videoLink = this.propertyForm.get('youtubeLink')?.value;
 

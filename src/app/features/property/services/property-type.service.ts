@@ -3,12 +3,11 @@ import { ApiResponse } from '../../../shared/models/api-response';
 import { PropertyType } from '../../../shared/models/property-type';
 import { environment } from '../../../../environments/environment.development';
 import { BehaviorSubject, map } from 'rxjs';
-import { SelectOption } from '../../../shared/models/select-option';
 import { HttpClient } from '@angular/common/http';
-import { Property } from '../models/property';
+import { CreatePropertyType } from '../../admin/models/create-property-type';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PropertyTypeService {
   private http = inject(HttpClient);
@@ -41,5 +40,18 @@ export class PropertyTypeService {
         },
         error: () => {},
       });
+  }
+
+  createPropertyType(payload: CreatePropertyType) {
+    return this.http.post(environment.apiUrl + '/property-type', payload);
+  }
+
+  deletePropertyType(id: string) {
+    return this.http.delete(`${environment.apiUrl}/property-type`, { body: [id] }).subscribe({
+      next: () => {
+        this.getPropertyTypes();
+      },
+      error: () => {},
+    });
   }
 }

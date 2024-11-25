@@ -27,14 +27,12 @@
               </g>
             </g>
           </svg>
-          <div class="text-2xl font-bold text-blue-600">RealEstate</div>
+          <div class="text-2xl font-bold text-blue-600">RealtorPortal</div>
         </div>
       </div>
-      <div class="nav-item">Rent</div>
-      <div class="nav-item">Sold</div>
-      <div class="nav-item">New Homes</div>
-      <div class="nav-item">Find Agents</div>
-      <div class="nav-item">News</div>
+      <div class="nav-item" routerLink="/property/search">Rent</div>
+      <div class="nav-item" routerLink="/property/search">Sold</div>
+      <div class="nav-item" routerLink="/property/search">New Homes</div>
     </div>
 
     @if (currentUser$ | async; as currentUser) {
@@ -44,7 +42,7 @@
           <div class="flex cursor-pointer items-center" (click)="menu.toggle($event)" pRipple>
             <p-avatar class="mr-2" image="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/808px-Donald_Trump_official_portrait.jpg" size="large" shape="circle" />
             <div>
-              <div class="font-medium text-blue-600">Hi⭐, {{ currentUser.userName | uppercase }}</div>
+              <div class="font-medium text-blue-600">Hi, {{ currentUser.userName | uppercase }}</div>
               <div class="text-sm font-normal text-gray-600">{{ currentUser.email }}</div>
             </div>
           </div>

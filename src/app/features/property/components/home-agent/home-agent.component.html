@@ -2,13 +2,13 @@
   <!--Agents Specializing in Your Search Areas-->
   <h1 class="mb-6 font-sans text-2xl font-semibold">Agents Specializing</h1>
 
-  <div class="grid grid-cols-12 gap-6">
+  <div class="mb-8 grid grid-cols-12 gap-6">
     <div class="col-span-3">
       <div class="flex flex-col overflow-hidden rounded-xl border border-solid border-gray-200 bg-white shadow-lg">
         <!-- Header -->
         <div class="relative flex flex-col items-center gap-2 rounded-t-lg border-0 border-b border-solid border-gray-300 bg-gray-100 p-4">
-          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" />
-          <div class="text-xl font-semibold">Tom Jonson</div>
+          <img class="h-20 w-20 rounded-full object-cover" src="https://gifdb.com/images/thumbnail/mighty-thor-flirty-eye-wink-f5q9i8vma0ito020.gif" alt="" />
+          <div class="text-xl font-semibold">David Thor</div>
         </div>
 
         <!--Body-->
@@ -19,28 +19,132 @@
               Total Sales
             </div>
             <div class="text-right">
-              <strong>$100,000</strong>
+              <strong>$1,020,000</strong>
               Price
             </div>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="material-symbols-rounded text-blue-600">phone_iphone</span>
-              <span>0123456789</span>
+              <span>0123456***</span>
             </div>
-            <p-button pTooltip="Copy" [text]="true" icon="pi pi-copy" size="small" severity="primary" />
+            <p-button pTooltip="Copy" [text]="true" icon="pi pi-copy" size="small" severity="primary" routerLink="/my-account" />
           </div>
         </div>
 
         <div class="flex items-end justify-end gap-2 p-4">
-          <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" />
-          <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" />
+          <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" routerLink="/my-account" />
+          <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" routerLink="/my-account" />
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="text-right">
-    <p-button size="small" label="See More Agents" icon="pi pi-arrow-right " iconPos="right" severity="secondary" />
+    <div class="col-span-3">
+      <div class="flex flex-col overflow-hidden rounded-xl border border-solid border-gray-200 bg-white shadow-lg">
+        <!-- Header -->
+        <div class="relative flex flex-col items-center gap-2 rounded-t-lg border-0 border-b border-solid border-gray-300 bg-gray-100 p-4">
+          <img class="h-20 w-20 rounded-full object-cover" src="https://es.web.img3.acsta.net/c_310_420/pictures/23/05/30/13/16/0004762.jpg" alt="" />
+          <div class="text-xl font-semibold">Tom Jonson</div>
+        </div>
+
+        <!--Body-->
+        <div class="space-y-4 border-0 border-b border-solid border-gray-300 p-6 text-gray-700">
+          <div class="flex justify-between">
+            <div>
+              <strong>96</strong>
+              Total Sales
+            </div>
+            <div class="text-right">
+              <strong>$600,000</strong>
+              Price
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-blue-600">phone_iphone</span>
+              <span>0123456***</span>
+            </div>
+            <p-button pTooltip="Copy" [text]="true" icon="pi pi-copy" size="small" severity="primary" routerLink="/my-account" />
+          </div>
+        </div>
+
+        <div class="flex items-end justify-end gap-2 p-4">
+          <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" routerLink="/my-account" />
+          <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" routerLink="/my-account" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-3">
+      <div class="flex flex-col overflow-hidden rounded-xl border border-solid border-gray-200 bg-white shadow-lg">
+        <!-- Header -->
+        <div class="relative flex flex-col items-center gap-2 rounded-t-lg border-0 border-b border-solid border-gray-300 bg-gray-100 p-4">
+          <img class="h-20 w-20 rounded-full object-cover" src="https://upload.wikimedia.org/wikipedia/commons/6/67/Tom_Hiddleston_%2836109110291%29_%28cropped%29.jpg" alt="" />
+          <div class="text-xl font-semibold">Loki Michael</div>
+        </div>
+
+        <!--Body-->
+        <div class="space-y-4 border-0 border-b border-solid border-gray-300 p-6 text-gray-700">
+          <div class="flex justify-between">
+            <div>
+              <strong>80</strong>
+              Total Sales
+            </div>
+            <div class="text-right">
+              <strong>$300,000</strong>
+              Price
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-blue-600">phone_iphone</span>
+              <span>0123456***</span>
+            </div>
+            <p-button pTooltip="Copy" [text]="true" icon="pi pi-copy" size="small" severity="primary" routerLink="/my-account" />
+          </div>
+        </div>
+
+        <div class="flex items-end justify-end gap-2 p-4">
+          <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" routerLink="/my-account" />
+          <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" routerLink="/my-account" />
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-3">
+      <div class="flex flex-col overflow-hidden rounded-xl border border-solid border-gray-200 bg-white shadow-lg">
+        <!-- Header -->
+        <div class="relative flex flex-col items-center gap-2 rounded-t-lg border-0 border-b border-solid border-gray-300 bg-gray-100 p-4">
+          <img class="h-20 w-20 rounded-full object-cover" src="https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/Elon-Musk-doi-mat-voi-moi-de-doa-lon-nay-ke-tu-sau-bau-cu-Tong-thong-My-45-1732265550-392-width740height444.jpg" alt="" />
+          <div class="text-xl font-semibold">Elon Banana</div>
+        </div>
+
+        <!--Body-->
+        <div class="space-y-4 border-0 border-b border-solid border-gray-300 p-6 text-gray-700">
+          <div class="flex justify-between">
+            <div>
+              <strong>52</strong>
+              Total Sales
+            </div>
+            <div class="text-right">
+              <strong>$200,000</strong>
+              Price
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-blue-600">phone_iphone</span>
+              <span>0123456***</span>
+            </div>
+            <p-button pTooltip="Copy" [text]="true" icon="pi pi-copy" size="small" severity="primary" routerLink="/my-account" />
+          </div>
+        </div>
+
+        <div class="flex items-end justify-end gap-2 p-4">
+          <p-button class="custom-button" label="Email " [rounded]="true" icon="pi pi-envelope" size="small" severity="secondary" routerLink="/my-account" />
+          <p-button class="custom-button" label="Call" [rounded]="true" icon="pi pi-phone" size="small" routerLink="/my-account" />
+        </div>
+      </div>
+    </div>
   </div>
 </div>

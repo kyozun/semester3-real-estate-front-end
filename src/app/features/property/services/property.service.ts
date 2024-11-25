@@ -4,7 +4,7 @@ import { BehaviorSubject, debounceTime, delay, distinctUntilChanged, map, Observ
 import { environment } from '../../../../environments/environment.development';
 import { ApiResponse } from '../../../shared/models/api-response';
 import { defaultProperty, Property } from '../models/property';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -26,6 +26,7 @@ export class PropertyService {
   private propertiesSearchSubject = new BehaviorSubject<Property[]>([]);
   private searchKeywordSubject: Subject<string> = new Subject<string>();
   private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
 
   constructor() {
     this.searchKeywordSubject
@@ -147,5 +148,15 @@ export class PropertyService {
           this.setLoading$(false);
         },
       });
+  }
+
+  deleteProperty(propertyId: string) {
+    const payload = { propertyId: propertyId };
+    this.http.delete(environment.apiUrl + '/property', { body: [propertyId] }).subscribe({
+      next: () => {
+        this.getProperties('');
+      },
+      error: () => {},
+    });
   }
 }

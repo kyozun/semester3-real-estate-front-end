@@ -247,7 +247,7 @@
 
             <div class="col-span-12 flex items-center justify-between">
               <p-button severity="danger" (onClick)="clearPropertyForm()" label="Clear" [rounded]="true" icon="pi pi-times" iconPos="left" />
-              <p-button type="submit"  label="Submit" [rounded]="true" icon="pi pi-send" iconPos="left" />
+              <p-button type="submit" [disabled]="propertyForm.invalid" label="Submit" [rounded]="true" icon="pi pi-send" iconPos="left" />
             </div>
           </div>
         </div>

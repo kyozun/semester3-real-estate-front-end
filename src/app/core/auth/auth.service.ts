@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoginDto, UserResponse } from './auth.model';
+import { LoginDto, RegisterDto, UserResponse } from './auth.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -22,17 +22,24 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  register(registerDto: RegisterDto) {
+    this.http.post<UserResponse>(`${this.baseUrl}/auth/register`, registerDto).subscribe({
+      next: (user) => {},
+      error: () => {
+        this.router.navigate(['/auth/login']);
+      },
+    });
+  }
+
   login(loginDto: LoginDto) {
     this.http.post<UserResponse>(`${this.baseUrl}/auth/login`, loginDto).subscribe({
       next: (user) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
-        this.isLoggedInSubject.next(false);
+        this.isLoggedInSubject.next(true);
         this.router.navigate(['/']);
       },
-      error: () => {
-        console.log('Fail Login');
-      },
+      error: () => {},
     });
   }
 

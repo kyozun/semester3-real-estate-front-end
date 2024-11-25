@@ -3,7 +3,7 @@
   <div [ngClass]="{ 'w-64': sidebarVisible, 'hidden w-0': !sidebarVisible }" class="border-0 border-r border-solid border-gray-300 text-black transition-all duration-300">
     <div class="flex h-full flex-col">
       <div class="flex items-center justify-center border-0 border-b border-solid border-gray-300">
-        <div class="flex items-center gap-2 py-6 cursor-pointer" routerLink="/">
+        <div class="flex cursor-pointer items-center gap-2 py-6" routerLink="/">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="258.0896 359.6492 142.7188 142.72" width="50" height="50">
             <g transform="matrix(1, 0, 0, 1, -272.4770812988281, -12.385309219360352)">
               <g>
@@ -41,6 +41,27 @@
             </div>
           </div>
 
+          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/property">
+            <div class="text-700 flex items-center">
+              <i class="pi pi-building mr-2"></i>
+              <span class="font-medium">Properties</span>
+            </div>
+          </div>
+
+          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/property-type">
+            <div class="text-700 flex items-center">
+              <i class="pi pi-cog mr-2"></i>
+              <span class="font-medium">Property Types</span>
+            </div>
+          </div>
+
+          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/category">
+            <div class="text-700 flex items-center">
+              <i class="pi pi-th-large mr-2"></i>
+              <span class="font-medium">Categories</span>
+            </div>
+          </div>
+
           <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/user">
             <div class="text-700 flex items-center">
               <i class="pi pi-users mr-2"></i>
@@ -48,35 +69,14 @@
             </div>
           </div>
 
-          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLinkActive="border-0 border-l-8 border-solid  p-4 border-blue-600 bg-blue-100" routerLink="/admin/property">
-            <div class="text-700 flex items-center">
-              <i class="pi pi-building mr-2"></i>
-              <span class="font-medium">Properties</span>
-            </div>
-          </div>
-
-          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/property">
-            <div class="text-700 flex items-center">
-              <i class="pi pi-cog mr-2"></i>
-              <span class="font-medium">Property Types</span>
-            </div>
-          </div>
-
-          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/property">
-            <div class="text-700 flex items-center">
-              <i class="pi pi-th-large mr-2"></i>
-              <span class="font-medium">Categories</span>
-            </div>
-          </div>
-
-          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/juridical">
             <div class="text-700 flex items-center">
               <i class="pi pi-file mr-2"></i>
               <span class="font-medium">Juridical</span>
             </div>
           </div>
 
-          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100">
+          <div pRipple class="cursor-pointer border-0 border-l-8 border-solid border-transparent p-4 hover:border-blue-600 hover:bg-blue-100" routerLink="/admin/direction">
             <div class="text-700 flex items-center">
               <i class="pi pi-directions mr-2"></i>
               <span class="font-medium">Directions</span>

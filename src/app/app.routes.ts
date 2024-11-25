@@ -14,10 +14,12 @@ import { AdminPropertyListComponent } from './features/admin/components/admin-pr
 import { authGuard } from './core/auth/auth.guard';
 import { guessGuard } from './core/auth/guess.guard';
 import { MyAccountComponent } from './features/my-account/pages/my-account/my-account.component';
-import { AllListingsComponent } from './features/my-account/components/all-listings/all-listings.component'
-import { AddListingComponent } from './features/my-account/components/add-listing/add-listing.component'
+import { AllListingsComponent } from './features/my-account/components/all-listings/all-listings.component';
+import { AddListingComponent } from './features/my-account/components/add-listing/add-listing.component';
 import { EditListingsComponent } from './features/my-account/components/edit-listings/edit-listings.component';
 import { ViewListingsComponent } from './features/my-account/components/view-listings/view-listings.component';
+import { PropertyTypeListComponent } from './features/admin/components/property-type/property-type-list/property-type-list.component';
+import { AddPropertyTypeComponent } from './features/admin/components/property-type/add-property-type/add-property-type.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'my-account',
     component: MyAccountComponent,
+    canActivateChild: [authGuard],
     title: 'My Account',
     children: [
       { path: 'settings', component: SettingsComponent },
@@ -41,7 +44,6 @@ export const routes: Routes = [
           { path: 'view', component: ViewListingsComponent, title: 'View Listing' },
         ],
       },
-      { path: 'analytic', component: AnalyticComponent },
       {
         path: '',
         redirectTo: 'all-listings',
@@ -68,7 +70,7 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [authGuard],
     children: [
-      { path: 'dashboard', component: AnalyticComponent },
+      { path: 'dashboard', component: AnalyticComponent, title: 'Dashboard' },
       { path: 'user', component: UsersComponent },
       { path: 'setting', component: SettingsComponent },
       {
@@ -76,6 +78,14 @@ export const routes: Routes = [
         children: [
           { path: '', component: AdminPropertyListComponent },
           { path: 'add', component: AddPropertyComponent },
+        ],
+      },
+
+      {
+        path: 'property-type',
+        children: [
+          { path: '', component: PropertyTypeListComponent },
+          { path: 'add', component: AddPropertyTypeComponent },
         ],
       },
       { path: 'analytic', component: AnalyticComponent },

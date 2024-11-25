@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core'
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -36,27 +36,27 @@ interface Direction {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminPropertyListComponent implements OnInit {
+  @ViewChild('inputSearch', { static: true }) inputSearch = HTMLInputElement;
   query: string = '';
   checked: boolean = false;
   first: number = 0;
   rows: number = 10;
-  directions!: Direction[];
   filterForm!: FormGroup;
   /*Observable*/
   prices$: Observable<{ label: string; value: string }[]>;
   propertyTypeOptions$: Observable<{ label: string; value: string }[]>;
   area$: Observable<{ label: string; min: number; max: number }[]>;
-
+  protected readonly environment = environment;
   /*DI*/
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
-  private realEstateService = inject(PropertyService);
-  properties$: Observable<Property[]> = this.realEstateService.getProperties$();
-  isLoading$: Observable<boolean> = this.realEstateService.getLoading$();
+  private propertyService = inject(PropertyService);
+  properties$: Observable<Property[]> = this.propertyService.getProperties$();
+  isLoading$: Observable<boolean> = this.propertyService.getLoading$();
   private confirmationService = inject(ConfirmationService);
-  private messageService = inject(MessageService);
 
   /*DI*/
+  private messageService = inject(MessageService);
 
   ngOnInit(): void {
     /*Get All Real Estate*/
@@ -84,17 +84,6 @@ export class AdminPropertyListComponent implements OnInit {
       { label: '80 - 100', min: 80, max: 100 },
     ]).pipe(delay(500));
 
-    this.directions = [
-      { name: 'East', code: 'NY' },
-      { name: 'West', code: 'RM' },
-      { name: 'North', code: 'LDN' },
-      { name: 'South', code: 'IST' },
-      { name: 'North-east', code: 'PRS' },
-      { name: 'North-west', code: 'PRS' },
-      { name: 'South-east', code: 'PRS' },
-      { name: 'South-west', code: 'PRS' },
-    ];
-
     this.filterForm = this.formBuilder.group({
       price: [''],
       propertyType: [''],
@@ -109,11 +98,11 @@ export class AdminPropertyListComponent implements OnInit {
   }
 
   getProperties(query: string): void {
-    this.realEstateService.getProperties(query);
+    this.propertyService.getProperties(query);
   }
 
   getRealEstate(id: string) {
-    // this.realEstateService.getRealEstates(id);
+    // this.propertyService.getRealEstates(id);
   }
 
   onPriceChange(price: { label: string; min: number; max: number }) {
@@ -171,8 +160,12 @@ export class AdminPropertyListComponent implements OnInit {
     this.getProperties(queryParams);
   }
 
-  openPropertyDetail(property: any) {
-    this.router.navigate(['/property'], { queryParams: { id: property.id, email: 'cuong@gmail.com' } });
+  openProperty(propertyId: string) {
+    this.router.navigate(['/my-account/all-listings/view'], { queryParams: { propertyId: propertyId } });
+  }
+
+  editProperty(propertyId: string) {
+    this.router.navigate(['/my-account/all-listings/edit'], { queryParams: { propertyId: propertyId } });
   }
 
   /*OK*/
@@ -197,16 +190,31 @@ export class AdminPropertyListComponent implements OnInit {
     });
   }
 
-  getSeverity(status: string) {
+  getSeverity(status: boolean) {
     switch (status) {
-      case 'In Stock':
-        return 'success';
-      case 'Low Stock':
-        return 'warning';
-      default:
-        return 'info';
+      case true:
+        return 'danger';
+      case false:
+        return;
     }
   }
 
-  protected readonly environment = environment
+  deleteProperty(propertyId: string) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-secondary p-button-rounded',
+      acceptButtonStyleClass: 'p-button-primary p-button-rounded',
+      accept: () => {
+        this.propertyService.deleteProperty(propertyId);
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Successful',
+          detail: 'Property Deleted',
+          life: 2500,
+        });
+      },
+    });
+  }
 }

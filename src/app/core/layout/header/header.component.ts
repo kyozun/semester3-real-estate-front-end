@@ -33,17 +33,22 @@ export class HeaderComponent implements OnInit {
           {
             label: 'Upload',
             icon: 'pi pi-upload',
-            command: () => this.router.navigate(['/my-account/all-listings']),
+            command: () => this.router.navigate(['/my-account']),
           },
           {
-            label: 'Balance',
-            icon: 'pi pi-money-bill\n',
+            label: 'Dashboard',
+            icon: 'pi pi-th-large',
+            command: () => this.router.navigate(['/admin']),
           },
         ],
       },
       {
         label: 'My Account',
         items: [
+          {
+            label: 'Balance',
+            icon: 'pi pi-money-bill',
+          },
           {
             label: 'Settings',
             icon: 'pi pi-cog',

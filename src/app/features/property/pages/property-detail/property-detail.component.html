@@ -37,7 +37,7 @@
       <lightgallery [settings]="settings">
         <div class="grid grid-cols-2 gap-1">
           <!-- First image -->
-          <div class="item h-96" [attr.data-src]="environment.baseUrl + property.propertyImages[0].imageUrl">
+          <div class="item h-96 cursor-pointer" [attr.data-src]="environment.baseUrl + property.propertyImages[0].imageUrl">
             <img class="h-full w-full rounded object-cover" [src]="environment.baseUrl + property.propertyImages[0].imageUrl" />
           </div>
 
@@ -63,48 +63,63 @@
             <div class="text-gray-800" [innerHTML]="property.description"></div>
           </div>
 
+          <!--          &lt;!&ndash;Property features&ndash;&gt;-->
+          <!--          <div>-->
+          <!--            <div class="mb-4 text-2xl font-semibold">Property features</div>-->
+          <!--            &lt;!&ndash;2 Columns&ndash;&gt;-->
+          <!--            <div class="grid grid-cols-2 gap-6 text-gray-800">-->
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">ac_unit</span>-->
+          <!--                <span>Air conditioning</span>-->
+          <!--              </div>-->
+
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">wifi</span>-->
+          <!--                <span>Broadband</span>-->
+          <!--              </div>-->
+
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">wifi</span>-->
+          <!--                <span>Broadband</span>-->
+          <!--              </div>-->
+
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">wifi</span>-->
+          <!--                <span>Broadband</span>-->
+          <!--              </div>-->
+
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">wifi</span>-->
+          <!--                <span>Broadband</span>-->
+          <!--              </div>-->
+
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">wifi</span>-->
+          <!--                <span>Broadband</span>-->
+          <!--              </div>-->
+
+          <!--              <div class="flex w-1/2 items-center gap-4">-->
+          <!--                <span class="material-symbols-rounded">wifi</span>-->
+          <!--                <span>Broadband</span>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
           <hr class="my-8 border-0 border-b border-solid border-gray-300" />
 
-          <!--Property features-->
-          <div>
-            <div class="mb-4 text-2xl font-semibold">Property features</div>
-            <!--2 Columns-->
-            <div class="grid grid-cols-2 gap-6 text-gray-800">
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">ac_unit</span>
-                <span>Air conditioning</span>
-              </div>
-
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">wifi</span>
-                <span>Broadband</span>
-              </div>
-
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">wifi</span>
-                <span>Broadband</span>
-              </div>
-
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">wifi</span>
-                <span>Broadband</span>
-              </div>
-
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">wifi</span>
-                <span>Broadband</span>
-              </div>
-
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">wifi</span>
-                <span>Broadband</span>
-              </div>
-
-              <div class="flex w-1/2 items-center gap-4">
-                <span class="material-symbols-rounded">wifi</span>
-                <span>Broadband</span>
-              </div>
-            </div>
+          <!--Google Map-->
+          <div class="mb-4">
+            <div class="mb-4 text-2xl font-semibold">Map</div>
+            <google-map
+              height="500px"
+              width="100%"
+              [center]="center"
+              [zoom]="zoom"
+              (mapClick)="addMarker($event)">
+              @for (position of markerPositions; track position) {
+                <map-marker [position]="position" [options]="markerOptions" />
+              }
+            </google-map>
           </div>
 
           <hr class="my-8 border-0 border-b border-solid border-gray-300" />
@@ -118,7 +133,7 @@
                   <span class="material-symbols-rounded">smart_display</span>
                   <span>Videos</span>
                 </div>
-                <app-yt-player videoID="bn0Kh9c4Zv4"></app-yt-player>
+                <app-yt-player videoID="e0qNKnwV40E"></app-yt-player>
               </div>
 
               <div>
@@ -145,7 +160,7 @@
               <div class="flex items-center">
                 <p-avatar class="mr-4" image="https://primefaces.org/cdn/primeng/images/demo/avatar/walter.jpg" size="xlarge" badgeSize="large" shape="circle" />
                 <div>
-                  <div class="font-semibold">Donald Trump</div>
+                  <div class="font-semibold">Kama Harris</div>
                   <div>0123456****</div>
                 </div>
               </div>
@@ -154,10 +169,10 @@
             </div>
 
             <div class="mt-4 w-full">
-              <p-button label=" Send email" [rounded]="true" [outlined]="true" icon="pi pi-google" size="small" class="w-full" severity="secondary" />
+              <p-button label=" Send email" routerLink="/my-account" [rounded]="true" [outlined]="true" icon="pi pi-google" size="small" class="w-full" severity="secondary" />
             </div>
             <div class="mt-4 w-full">
-              <p-button label="Save property" [rounded]="true" icon="pi pi-bookmark-fill" size="small" class="w-full" />
+              <p-button label="Save property" routerLink="/my-account" [rounded]="true" icon="pi pi-bookmark-fill" size="small" class="w-full" />
             </div>
           </div>
         </div>
